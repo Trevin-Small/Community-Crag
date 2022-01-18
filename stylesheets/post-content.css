@@ -54,6 +54,7 @@
     transform: translate(-50%, -50%);
     border-radius:14px;
     border: 3px solid black;
+    box-sizing: border-box;
 }
 .post-stats {
     display: flex;
