@@ -113,7 +113,7 @@
     margin: 5px;
     padding: 0px;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
     .grade-count {
         visibility: hidden;
         display: none;
@@ -121,6 +121,7 @@
     .hidden-name {
         margin-top: 5px;
         display: block;
+        text-align: center;
     }
     .post-text-container {
         display: none;
@@ -136,10 +137,10 @@
         margin-right: 10px;
     }
     .post-container {
-        justify-content: center;
+        justify-content: space-evenly;
     }
 }
-@media only screen and (min-width: 800px) {
+@media only screen and (min-width: 700px) {
     .grade-count {
         visibility: visible;
         display: inline;
