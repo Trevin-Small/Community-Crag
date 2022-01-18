@@ -1,0 +1,133 @@
+.no-highlight, .no-highlight:hover, .no-highlight:focus, .no-highlight:active {
+    text-decoration: none;
+    color: inherit;
+}
+.post-content {
+    height:100%;
+    width: 100vw;
+    left: 50vw;
+    top:0px;
+    position: relative;
+    transform: translate(-50%, 0);
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.post-list {
+    list-style-type: none; /* Remove bullets */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.spacer {
+    height: 30px;
+}
+.post-item {
+    display: block;
+    margin-bottom: 20px;
+}
+.post-container {
+    width: 90vw;
+    max-width: 55rem;
+    height: 15rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: 4px solid black;
+    border-radius: 20px;
+    background-color: var(--old-gold);
+}
+.post-img-container {
+    height: 90%;
+    width: 20%;
+    overflow: hidden;
+    margin-left: 15px;
+    padding: 0px;
+    object-fit: cover;
+}
+.post-img {
+    height: calc(100% - 6px);
+    width: auto;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius:14px;
+    border: 3px solid black;
+}
+.post-stats {
+    width: 15%;
+    min-width: 110px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius:14px;
+    border: 3px solid black;
+    margin-left: 15px;
+    background-color: var(--ivory-white);
+}
+.grade {
+    margin-top: 5px;
+}
+.stars {
+    height: 18%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.star-icon {
+    font-size: calc(15px + 1vw);
+    width: auto;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+.checked {
+    color: orange;
+}
+.post-text-container {
+    height: 90%;
+    width: 50%;
+    margin-left: 15px;
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: hidden;
+}
+.post-title {
+    height: auto;
+    width: 100%;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.grade-count {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
+}
+.divider {
+    margin: 5px;
+    padding: 0px;
+}
+@media only screen and (max-width: 800px) {
+    .grade-count {
+        visibility: hidden;
+        display: none;
+    }
+}
+@media only screen and (min-width: 800px) {
+    .grade-count {
+        visibility: visible;
+        display: inline;
+    }
+}

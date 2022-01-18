@@ -1,0 +1,9 @@
+.profile-item-container {
+    width: 50px;
+    height: 100%;
+    top: 0px;
+    background-color: white;
+    border-radius: 8px;
+    margin-left: 10px;
+    display: block;
+}

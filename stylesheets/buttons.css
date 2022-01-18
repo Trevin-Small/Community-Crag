@@ -1,0 +1,28 @@
+.btn {
+    width: auto;
+    height: auto;
+    background-color: var(--old-gold); /* Green */
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    padding: 6px 8px 6px 8px;
+    margin-left: 5px;
+    border-radius: 8px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: white; 
+    color: black; 
+}
+.login-btn {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.sign-up-btn {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;   
+}
+.search-bar {
+    width: 15vw;
+}
