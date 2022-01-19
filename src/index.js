@@ -1,7 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, doc, setDoc, addDoc, getDoc, getDocs } from 'firebase/firestore';
-import { Post } from './post';
-import { displayPosts } from './mainFunctions';
+import { getFirestore, collection } from 'firebase/firestore';
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -17,6 +15,4 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-var postRef = collection(db, 'community-posts');
-
-export { displayPosts };
+export var postRef = collection(db, 'community-posts');

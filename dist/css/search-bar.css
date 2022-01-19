@@ -1,0 +1,10 @@
+.search-bar {
+    width: 100vw;
+    height: 15vh;
+    max-height: 100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}

@@ -1,4 +1,8 @@
-async function pushPostToFireBase(post){
+import { doc, setDoc, addDoc, getDoc, getDocs } from 'firebase/firestore';
+import { postRef } from './index';
+import { Post } from './post';
+
+export async function pushPostToFireBase(post){
     try {
         const docRef = await addDoc(postRef, {
           name: post.getName(),
@@ -14,16 +18,20 @@ async function pushPostToFireBase(post){
       } catch (e) {
         console.error("Error adding document: ", e);
       }
-}
-
+  }
+  
 export async function displayPosts() {
-    let posts = [];
+
+    let postList = document.getElementById('post-list');
+    let postListChildren = postList.children;
+    while (postList.lastChild) {
+      postList.removeChild(postList.lastChild);
+    }
+
     let dbPosts = await getDocs(postRef);
     dbPosts.forEach((doc) => {
         let data = doc.data();
         let post = new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
-        posts.push(post);
-        console.log('Post:\n', post.toString());
         post.renderPost('placeholder-post', doc.id);
     });
-}
+  }
