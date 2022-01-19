@@ -1,4 +1,27 @@
 {
+  "name": "community-crag",
+  "version": "1.0.0",
+  "description": "An intuitive collaborative website that allows for climbers to share routes, suggest grades, and document add-on problems",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Trevin-Small/Community-Crag.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Trevin-Small/Community-Crag/issues"
+  },
+  "homepage": "https://github.com/Trevin-Small/Community-Crag#readme",
+  "devDependencies": {
+    "webpack": "^5.66.0",
+    "webpack-cli": "^4.9.1"
+  },
   "dependencies": {
     "firebase": "^9.6.3"
   }

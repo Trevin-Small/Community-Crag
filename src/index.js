@@ -1,3 +1,26 @@
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyDcpBJydcQt4vM-SAdnbRMI-GP0kPU_tn8",
+    authDomain: "community-crag.firebaseapp.com",
+    databaseURL: "https://community-crag-default-rtdb.firebaseio.com",
+    projectId: "community-crag",
+    storageBucket: "community-crag.appspot.com",
+    messagingSenderId: "683436041104",
+    appId: "1:683436041104:web:a8486a1b267488a5d2c915",
+    measurementId: "G-LJPR80L555"
+  };
+
+initializeApp(firebaseConfig);
+
+const db = getFirestore();
+
+var postRef = collection(db, 'community-posts');
+
+
 class Post {
     constructor(name, grade, comment, starRating, climbType) {
         this.name = name;
@@ -41,6 +64,10 @@ class Post {
         return Math.round(this.starRating);
     }
 
+    getStarRatingCount() {
+        return this.starRatingCount;
+    }
+
     getClimbType() {
         return this.climbType;
     }
@@ -73,7 +100,7 @@ class Post {
         this.starRating = ((this.starRatingCount - 1) * suggestionWeight * this.starRating) + (suggestionWeight * suggestedRating);
     }
 
-    createPost(baseElementId) {
+    async createPost(baseElementId) {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
         let postName = document.getElementById('post-name');
@@ -122,14 +149,33 @@ class Post {
                 starThree.classList.remove('checked');
             }
         }
-         
+        
         element.before(clone);
+        pushPostToFireBase(this);
     }
+}
+
+async function pushPostToFireBase(post){
+    try {
+        const docRef = await setDoc(doc(db, 'community-posts', post.getName()), {
+          name: post.getName(),
+          grade: post.getGrade(),
+          gradeCount: post.getGradeCount(),
+          comment: post.getComment(),
+          climbType: post.getClimbType(),
+          starRating: post.getStarRating(),
+          starRatingCount: post.getStarRatingCount(),
+        });
+    
+      } catch (e) {
+        console.error("Error adding document: ", e);
+      }
 }
 
 window.onload = function() {
     for (let i = 0; i < 20; i++){
         let typeNum = Math.round(Math.random() * 4);
+        let climbType = "empty";
         switch(typeNum){
             case 1:
                 climbType = "Slab";
@@ -145,7 +191,7 @@ window.onload = function() {
                 break;          
         }
         let post = new Post("Some Climb", i + Math.random(), "Haha noob", Math.round(Math.random() * 3), climbType);
-        for (let j = 0; j < Math.random() * 10; j++) {
+        for (let j = 0; j < Math.random() * 3; j++) {
             post.suggestGrade(i + Math.random());
         }
         post.createPost('placeholder-post');
