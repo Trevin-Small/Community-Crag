@@ -2,6 +2,10 @@
     text-decoration: none;
     color: inherit;
 }
+.hidden {
+    visibility: hidden;
+    display: none;
+}
 .post-content {
     height:100%;
     width: 100vw;

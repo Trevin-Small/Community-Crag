@@ -1,4 +1,4 @@
-class Post {
+export class Post {
     constructor(name, grade, comment, starRating, climbType) {
         this.name = name;
 
@@ -77,101 +77,63 @@ class Post {
         this.starRating = ((this.starRatingCount - 1) * suggestionWeight * this.starRating) + (suggestionWeight * suggestedRating);
     }
 
-    async createPost(baseElementId) {
+    renderPost(baseElementId, docId) {
         let element = document.getElementById(baseElementId);
-        let clone = element.cloneNode(true);
-        let postName = document.getElementById('post-name');
+        let postName = element.querySelector('#post-name');
+        let hiddenPostName = element.querySelector('#hidden-post-name');
         postName.innerHTML = this.name;
-        let postGrade = document.getElementById('post-grade');
+        hiddenPostName.innerHTML = this.name;
+        let postGrade = element.querySelector('#post-grade');
         postGrade.innerHTML = this.getGrade();
-        let postComment = document.getElementById('post-comment');
+        let postComment = element.querySelector('#post-comment');
         postComment.innerHTML = this.comment;
-        let climbType = document.getElementById('climb-type');
+        let climbType = element.querySelector('#climb-type');
         climbType.innerHTML = this.climbType;
-        let gradeCount = document.getElementById('count');
-        gradeCount.innerHTML = this.gradeCount + " Suggested Grades";  
+        let gradeCount = element.querySelector('#count');
+
+        if (this.gradeCount == 1) {
+            gradeCount.style.visibility = 'hidden';
+        } else {
+            gradeCount.style.visibility = 'visible';
+        }
+
+        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
 
         if (this.starRating >= 1) {
-            let starOne = document.getElementById("star-one");
-            if (!starOne.classList.contains('checked')) {
-                starOne.classList.add('checked');
-            }
+            let starOne = element.querySelector("#star-one");
+            starOne.classList.add('checked');
         } else {
-            let starOne = document.getElementById("star-one");
+            let starOne = element.querySelector("#star-one");
             if (starOne.classList.contains('checked')) {
                 starOne.classList.remove('checked');
             }
         }
 
         if (this.starRating >= 2) {
-            let starTwo = document.getElementById("star-two");
-            if (!starTwo.classList.contains('checked')) {
-                starTwo.classList.add('checked');
-            }
+            let starTwo = element.querySelector("#star-two");
+            starTwo.classList.add('checked');
         } else {
-            let starTwo = document.getElementById("star-two");
+            let starTwo = element.querySelector("#star-two");
             if (starTwo.classList.contains('checked')) {
                 starTwo.classList.remove('checked');
             }
         }
 
         if (this.starRating == 3) {
-            let starThree = document.getElementById("star-three");
-            if (!starThree.classList.contains('checked')) {
+            let starThree = element.querySelector("#star-three");
                 starThree.classList.add('checked');
-            }
         } else {
-            let starThree = document.getElementById("star-three");
+            let starThree = element.querySelector("#star-three");
             if (starThree.classList.contains('checked')) {
                 starThree.classList.remove('checked');
             }
         }
-        
-        element.before(clone);
-        //pushPostToFireBase(this);
+        let clone = element.cloneNode(true);
+        clone.id = docId;
+        document.getElementById('post-list').appendChild(clone);
     }
-}
 
-async function pushPostToFireBase(post){
-    try {
-        const docRef = await addDoc(collection(db, "community-posts"), {
-          name: post.getName(),
-          grade: post.getGrade(),
-          gradeCount: post.getGradeCount(),
-          comment: post.getComment(),
-          climbType: post.getClimbType(),
-          starRating: post.getStarRating(),
-          starRatingCount: post.getStarRatingCount(),
-        });
-      
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-}
-
-window.onload = function() {
-    for (let i = 0; i < 20; i++){
-        let typeNum = Math.round(Math.random() * 4);
-        let climbType = "empty";
-        switch(typeNum){
-            case 1:
-                climbType = "Slab";
-                break;
-            case 2:
-                climbType = "Overhang";
-                break;
-            case 3:
-                climbType = "Mixed";
-                break;
-            default:
-                climbType = "Other";
-                break;          
-        }
-        let post = new Post("Some Climb", i + Math.random(), "Haha noob", Math.round(Math.random() * 3), climbType);
-        for (let j = 0; j < Math.random() * 3; j++) {
-            post.suggestGrade(i + Math.random());
-        }
-        post.createPost('placeholder-post');
+    toString() {
+        return "Name: " + this.name + "\nGrade: " + this.grade + "\nStar Rating: " + this.starRating + "\nComment: " + this.comment;
     }
 }
