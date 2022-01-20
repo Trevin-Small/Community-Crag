@@ -67,18 +67,75 @@ export class Post {
 
     suggestGrade(suggestedGrade) {
         this.gradeCount++; 
-        var suggestionWeight = 1 / this.gradeCount;
+        let suggestionWeight = 1 / this.gradeCount;
         this.grade = ((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade);
     }
 
     suggestStarRating(suggestedRating) {
         this.starRatingCount++; 
-        var suggestionWeight = 1 / this.starRatingCount;
+        let suggestionWeight = 1 / this.starRatingCount;
         this.starRating = ((this.starRatingCount - 1) * suggestionWeight * this.starRating) + (suggestionWeight * suggestedRating);
     }
 
-    renderPost(baseElementId, docId) {
+    renderPostList(baseElementId, docId) {
         let element = document.getElementById(baseElementId);
+        let clone = element.cloneNode(true);
+        clone.id = docId;
+        clone.querySelector('#post-container').setAttribute('id',docId);
+        let postName = clone.querySelector('#post-name');
+        let hiddenPostName = clone.querySelector('#hidden-post-name');
+        postName.innerHTML = this.name;
+        hiddenPostName.innerHTML = this.name;
+        let postGrade = clone.querySelector('#post-grade');
+        postGrade.innerHTML = this.getGrade();
+        let postComment = clone.querySelector('#post-comment');
+        postComment.innerHTML = this.comment;
+        let climbType = clone.querySelector('#climb-type');
+        climbType.innerHTML = this.climbType;
+        let gradeCount = clone.querySelector('#count');
+
+        if (this.gradeCount == 1) {
+            gradeCount.style.visibility = 'hidden';
+        } else {
+            gradeCount.style.visibility = 'visible';
+        }
+
+        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
+
+        if (this.starRating >= 1) {
+            let starOne = clone.querySelector("#star-one");
+            starOne.classList.add('checked');
+        } else {
+            let starOne = clone.querySelector("#star-one");
+            if (starOne.classList.contains('checked')) {
+                starOne.classList.remove('checked');
+            }
+        }
+
+        if (this.starRating >= 2) {
+            let starTwo = clone.querySelector("#star-two");
+            starTwo.classList.add('checked');
+        } else {
+            let starTwo = clone.querySelector("#star-two");
+            if (starTwo.classList.contains('checked')) {
+                starTwo.classList.remove('checked');
+            }
+        }
+
+        if (this.starRating == 3) {
+            let starThree = clone.querySelector("#star-three");
+                starThree.classList.add('checked');
+        } else {
+            let starThree = clone.querySelector("#star-three");
+            if (starThree.classList.contains('checked')) {
+                starThree.classList.remove('checked');
+            }
+        }
+        document.getElementById('post-list').appendChild(clone);
+    }
+
+    viewPost() {
+        let element = document.getElementById('post-container');
         let postName = element.querySelector('#post-name');
         let hiddenPostName = element.querySelector('#hidden-post-name');
         postName.innerHTML = this.name;
@@ -128,12 +185,25 @@ export class Post {
                 starThree.classList.remove('checked');
             }
         }
-        let clone = element.cloneNode(true);
-        clone.id = docId;
-        document.getElementById('post-list').appendChild(clone);
     }
 
     toString() {
         return "Name: " + this.name + "\nGrade: " + this.grade + "\nStar Rating: " + this.starRating + "\nComment: " + this.comment;
+    }
+}
+
+const postConverter = {
+    toFirestore: (post) => {
+        return {
+            name: post.getName(),
+            comment: post.getComment(),
+            grade: post.getGrade(),
+            starRating: post.getStarRating(),
+            climbType: post.getClimbType()
+        };
+    },
+    fromFirestore: (snapshot, options) => {
+        const data = snapshot.data(options);
+        return new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
     }
 }

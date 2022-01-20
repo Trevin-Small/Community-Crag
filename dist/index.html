@@ -23,7 +23,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position:sticky; flex: 0 1 auto;">
             <div class="container">
                 <img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;">
-                <a class="navbar-brand" href="#">Community Crag</a>
+                <a class="navbar-brand" href="https://communitycrag.com/">Community Crag</a>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
                         <li class="nav-item"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
@@ -83,7 +83,7 @@
             </ul>
             <ul class="hidden">
                 <li class="post-item" id="placeholder-post">
-                    <div class="post-container">
+                    <div class="post-container" onClick="communityCrag.openPost(this.id);" id="post-container">
                         <div class="post-img-container">
                             <img src="assets/wall.JPG" class="post-img">
                         </div>

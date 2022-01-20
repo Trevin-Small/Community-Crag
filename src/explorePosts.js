@@ -1,7 +1,6 @@
-import { addDoc, getDocs, query, where } from 'firebase/firestore';
-import { post } from 'selenium-webdriver/http';
-import { postRef } from './index';
-import { Post } from './post';
+import { doc, addDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { db, postRef } from './index';
+import { Post, postConverter } from './post';
 
 export async function pushPostToFireBase(post){
     try {
@@ -100,14 +99,27 @@ export async function displayPosts(queryRef) {
     let dbPosts = await getDocs(queryRef);
 
     dbPosts.forEach((doc) => {
-        let data = doc.data();
+        const data = doc.data();
         let post = new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
-        post.renderPost('placeholder-post', doc.id);
+        post.renderPostList('placeholder-post', doc.id);
     });
 }
 
 export function searchByFilters(formId, e) {
     e.preventDefault();
-    let form = new FormData(document.getElementById(formId));
+    const form = new FormData(document.getElementById(formId));
     displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+}
+
+export async function openPost(postId) {
+    window.location.href = "https://communitycrag.com/viewpost?" + postId;
+}
+
+export async function viewPost() {
+    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
+    const docRef = doc(db, 'community-posts', postId);
+    const postDoc = await getDoc(docRef);
+    const postData = postDoc.data();
+    let post = new Post(postData.name, postData.grade, postData.comment, postData.starRating, postData.climbType);
+    post.viewPost();
 }
