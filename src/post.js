@@ -89,7 +89,14 @@ export class Post {
         let postGrade = clone.querySelector('#post-grade');
         postGrade.innerHTML = this.getGrade();
         let postComment = clone.querySelector('#post-comment');
-        postComment.innerHTML = this.comment;
+
+        const maxChars = (window.innerWidth / 700) * 75;
+        if (this.comment.length >= maxChars) {
+            postComment.innerHTML = this.comment.slice(0, maxChars) + '...';
+        } else {
+            postComment.innerHTML = this.comment;
+        }
+
         let climbType = clone.querySelector('#climb-type');
         climbType.innerHTML = this.climbType;
         let gradeCount = clone.querySelector('#count');
@@ -137,9 +144,7 @@ export class Post {
     viewPost() {
         let element = document.getElementById('post-container');
         let postName = element.querySelector('#post-name');
-        let hiddenPostName = element.querySelector('#hidden-post-name');
         postName.innerHTML = this.name;
-        hiddenPostName.innerHTML = this.name;
         let postGrade = element.querySelector('#post-grade');
         postGrade.innerHTML = this.getGrade();
         let postComment = element.querySelector('#post-comment');
@@ -147,12 +152,6 @@ export class Post {
         let climbType = element.querySelector('#climb-type');
         climbType.innerHTML = this.climbType;
         let gradeCount = element.querySelector('#count');
-
-        if (this.gradeCount == 1) {
-            gradeCount.style.visibility = 'hidden';
-        } else {
-            gradeCount.style.visibility = 'visible';
-        }
 
         gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
 
