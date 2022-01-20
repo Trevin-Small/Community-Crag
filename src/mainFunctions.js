@@ -1,4 +1,5 @@
 import { addDoc, getDocs, query, where } from 'firebase/firestore';
+import { post } from 'selenium-webdriver/http';
 import { postRef } from './index';
 import { Post } from './post';
 
@@ -20,6 +21,69 @@ export async function pushPostToFireBase(post){
     }
 }
 
+function queryPosts(grade, starRating, climbType) {
+
+    grade = parseInt(grade);
+    grade = grade == -1 ? null : parseInt(grade);
+    starRating = parseInt(starRating);
+    starRating = starRating == 0 ? null : starRating;
+
+    if (climbType == 1) {
+        climbType = "Overhang";
+    } else if (climbType == 2) {
+        climbType = "Slab";
+    } else if (climbType == 3) {
+        climbType = "Mixed";
+    } else if (climbType == 4) {
+        climbType = "Vertical";
+    } else if (climbType == 5) {
+        climbType = "Other";
+    } else {
+        climbType = null;
+    }
+
+    // If searching for V10, include all climbs V10+
+    let gradeSearchRange = 1;
+    if (grade == 10) { 
+        gradeSearchRange = 10;
+    }
+
+    // All possible Query Combinations
+    if (grade != null && starRating != null && climbType != null) {
+
+        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
+
+    } else if (grade != null && starRating != null) {
+
+        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
+
+    } else if (grade != null && climbType != null) {
+
+        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
+
+    } else if (starRating != null && climbType != null) {
+
+        return query(postRef, where("starRating", "==", starRating), where("climbType", "==", climbType));
+
+    } else if (grade != null) {
+
+        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
+        
+    } else if (climbType != null) {
+
+        return query(postRef, where("climbType", "==", climbType));
+        
+    } else if (starRating != null) {
+
+        return query(postRef, where("starRating", "==", starRating));
+        
+    } else {
+
+        return null;
+
+    }
+}
+
 export async function displayPosts(queryRef) {
 
     if (queryRef == null) {
@@ -28,7 +92,7 @@ export async function displayPosts(queryRef) {
 
     let postList = document.getElementById('post-list');
     if (postList.lastChild != null) {
-        while (postList.lastChild) {
+        while (postList.lastChild && postList.lastChild.nodeName.localeCompare('DIV') == 1) {
             postList.removeChild(postList.lastChild);
         }
     }
@@ -40,30 +104,6 @@ export async function displayPosts(queryRef) {
         let post = new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
         post.renderPost('placeholder-post', doc.id);
     });
-}
-
-export function queryPosts(grade, starRating, climbType) {
-
-    grade = parseInt(grade) === -1 ? null : parseInt(grade);
-    starRating = parseInt(starRating) === 0 ? null : parseInt(starRating);
-    climbType = parseInt(climbType) === 0 ? null : climbType;
-
-    let gradeSearchRange = 1;
-
-    // If searching for V10, include all climbs V10+
-    if (grade == 10) { 
-        gradeSearchRange = 10;
-    }
-
-    if (grade != null && starRating != null && climbType != null) {
-        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
-    } else if (grade != null && starRating != null) {
-        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating));
-    } else if (grade != null) {
-        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange));
-    } else {
-        return getDocs(postRef);
-    }
 }
 
 export function searchByFilters(formId, e) {

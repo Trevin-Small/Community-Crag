@@ -32,40 +32,54 @@
         </nav>
 
         <!-- Page content-->
-        <div class="search-bar-container">
-            <form id="search-form">
-                <select name="Grade" id="grade-filter">
-                    <option value="-1">All</option>
-                    <option value="0">V0</option>
-                    <option value="1">V1</option>
-                    <option value="2">V2</option>
-                    <option value="3">V3</option>
-                    <option value="4">V4</option>
-                    <option value="5">V5</option>
-                    <option value="6">V6</option>
-                    <option value="7">V7</option>
-                    <option value="8">V8</option>
-                    <option value="9">V9</option>
-                    <option value="10">V10+</option>
-                </select>
-                <select name="Climb Type" id="type-filter">
-                    <option value="0">All</option>
-                    <option value="1">Overhang</option>
-                    <option value="2">Slab</option>
-                    <option value="3">Mixed</option>
-                    <option value="4">Other</option>
-                </select>
-                <select name="Star Rating" id="star-filter">
-                    <option value="0">All</option>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Stars</option>
-                    <option value="3">3 Stars</option>
-                </select>
-                <button class="btn search-button" id="search-button" type="submit" onclick="communityCrag.searchByFilters('search-form', event)">Search</button>
-            </form>
-        </div>
         <div class="post-content">
             <ul class="post-list" id="post-list">
+                <div class="search-bar-container" id="search-container">
+                    <form class="search-form" id="search-form">
+                        <div class="select-container">
+                            <b class="select-text">Grade:</b>
+                            <select class="select" name="Grade" id="grade-filter">
+                                <option value="-1">All</option>
+                                <option value="0">V0</option>
+                                <option value="1">V1</option>
+                                <option value="2">V2</option>
+                                <option value="3">V3</option>
+                                <option value="4">V4</option>
+                                <option value="5">V5</option>
+                                <option value="6">V6</option>
+                                <option value="7">V7</option>
+                                <option value="8">V8</option>
+                                <option value="9">V9</option>
+                                <option value="10">V10+</option>
+                            </select>
+                        </div>
+                        <div class="select-container">
+                            <b class="select-text">Type:</b>
+                            <select class="select" name="Climb Type" id="type-filter">
+                                <option value="0">All</option>
+                                <option value="1">Overhang</option>
+                                <option value="2">Slab</option>
+                                <option value="3">Mixed</option>
+                                <option value="4">Vertical</option>
+                                <option value="5">Other</option>
+                            </select>
+                        </div>
+                        <div class="break"></div>
+                        <div class="select-container">
+                            <b class="select-text"> Stars:</b>
+                            <select class="select" name="Star Rating" id="star-filter">
+                                <option value="0">All</option>
+                                <option value="1">1 ⭐</option>
+                                <option value="2">2 ⭐</option>
+                                <option value="3">3 ⭐</option>
+                            </select>
+                        </div>
+                        <div class="select-container">
+                            <b class="select-text">Go:</b>
+                            <button class="btn search-button" id="search-button" type="submit" onclick="communityCrag.searchByFilters('search-form', event)">Search</button>
+                        </div>
+                    </form>
+                </div>
             </ul>
             <ul class="hidden">
                 <li class="post-item" id="placeholder-post">

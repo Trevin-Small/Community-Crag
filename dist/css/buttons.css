@@ -23,7 +23,9 @@
 .sign-up-btn {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;   
 }
-.serach-button {
-    padding: 8px 12px 8px 12px;
-    border-radius: 10px;
+.search-button {
+    height: 2.45rem;
+    padding: 0px 12px 0px 12px;
+    border-radius: 0.4em;
+    margin: 0px;
 }
