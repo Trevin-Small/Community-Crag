@@ -16,6 +16,7 @@
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/post-content.css" rel="stylesheet" />
         <link href="css/search-bar.css" rel="stylesheet" />
+        <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
         <!-- Responsive navbar-->
@@ -33,7 +34,7 @@
         <!-- Page content-->
         <div class="search-bar-container">
             <form id="search-form">
-                <select name="Grade" id="cars">
+                <select name="Grade" id="grade-filter">
                     <option value="-1">All</option>
                     <option value="0">V0</option>
                     <option value="1">V1</option>
@@ -47,20 +48,20 @@
                     <option value="9">V9</option>
                     <option value="10">V10+</option>
                 </select>
-                <select name="Climb Type" id="cars">
+                <select name="Climb Type" id="type-filter">
                     <option value="0">All</option>
                     <option value="1">Overhang</option>
                     <option value="2">Slab</option>
                     <option value="3">Mixed</option>
                     <option value="4">Other</option>
                 </select>
-                <select name="Star Rating" id="cars">
+                <select name="Star Rating" id="star-filter">
                     <option value="0">All</option>
                     <option value="1">1 Star</option>
                     <option value="2">2 Stars</option>
                     <option value="3">3 Stars</option>
                 </select>
-                <button class="btn search-button" id="search-button">Search</button>
+                <button class="btn search-button" id="search-button" type="submit" onsubmit="return communityCrag.searchByFilters('search-form')">Search</button>
             </form>
         </div>
         <div class="post-content">
@@ -97,9 +98,8 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Main JS-->
-        <script src="https://communitycrag.com/bundle.js"></script>
         <script>
-            communityCrag.displayPosts();
+            communityCrag.displayPosts(null);
         </script>
     </body>
 </html>

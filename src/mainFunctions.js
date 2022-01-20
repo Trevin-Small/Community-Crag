@@ -1,4 +1,4 @@
-import { doc, setDoc, addDoc, getDoc, getDocs } from 'firebase/firestore';
+import { addDoc, getDocs, query } from 'firebase/firestore';
 import { postRef } from './index';
 import { Post } from './post';
 
@@ -19,28 +19,12 @@ export async function pushPostToFireBase(post){
         console.error("Error adding document: ", e);
     }
 }
-/*
-export function queryPosts(name, grade, starRating, climbType) {
 
-    let gradeSearchRange = 1;
+export async function displayPosts(queryRef) {
 
-    // If searching for V10, include all climbs V10+
-    if (grade == 10) { 
-        gradeSearchRange = 10;
+    if (queryRef == null) {
+        queryRef = postRef;
     }
-
-    if (name != null && grade != null && starRating != null && climbType != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
-    } else if (name != null && grade != null && starRating != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating));
-    } else if (name != null && grade != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange));
-    } else {
-        return query(postRef, where("name", "==", name));
-    }
-}
-*/
-export async function displayPosts() {
 
     let postList = document.getElementById('post-list');
     if (postList.lastChild != null) {
@@ -49,11 +33,40 @@ export async function displayPosts() {
         }
     }
 
-    let dbPosts = await getDocs(postRef);
+    let dbPosts = await getDocs(queryRef);
 
     dbPosts.forEach((doc) => {
         let data = doc.data();
         let post = new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
         post.renderPost('placeholder-post', doc.id);
     });
+}
+
+export function queryPosts(grade, starRating, climbType) {
+
+    grade = parseInt(grade) === -1 ? null : parseInt(grade);
+    starRating = parseInt(starRating) === 0 ? null : parseInt(starRating);
+    climbType = parseInt(climbType) === 0 ? null : climbType;
+
+    let gradeSearchRange = 1;
+
+    // If searching for V10, include all climbs V10+
+    if (grade == 10) { 
+        gradeSearchRange = 10;
+    }
+
+    if (grade != null && starRating != null && climbType != null) {
+        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
+    } else if (grade != null && starRating != null) {
+        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating));
+    } else if (grade != null) {
+        return query(postRef, where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange));
+    } else {
+        return getDocs(postRef);
+    }
+}
+
+export function searchByFilters(formId) {
+    let form = document.getElementById('formId');
+    displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), 'Climb Type'));
 }
