@@ -19,20 +19,28 @@ export async function pushPostToFireBase(post){
         console.error("Error adding document: ", e);
     }
 }
-
+/*
 export function queryPosts(name, grade, starRating, climbType) {
+
+    let gradeSearchRange = 1;
+
+    // If searching for V10, include all climbs V10+
+    if (grade == 10) { 
+        gradeSearchRange = 10;
+    }
+
     if (name != null && grade != null && starRating != null && climbType != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + 1), where("starRating", "==", starRating), where("climbType", "==", climbType));
+        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
     } else if (name != null && grade != null && starRating != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + 1), where("starRating", "==", starRating));
+        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange), where("starRating", "==", starRating));
     } else if (name != null && grade != null) {
-        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + 1));
+        return query(postRef, where("name", "==", name), where("grade", ">=", grade), where("grade", "<=", grade + gradeSearchRange));
     } else {
         return query(postRef, where("name", "==", name));
     }
 }
-
-export async function displayPosts(query) {
+*/
+export async function displayPosts() {
 
     let postList = document.getElementById('post-list');
     if (postList.lastChild != null) {
@@ -41,7 +49,7 @@ export async function displayPosts(query) {
         }
     }
 
-    let dbPosts = await getDocs(query);
+    let dbPosts = await getDocs(postRef);
 
     dbPosts.forEach((doc) => {
         let data = doc.data();

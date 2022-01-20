@@ -31,33 +31,39 @@
         </nav>
 
         <!-- Page content-->
+        <div class="search-bar-container">
+            <form id="search-form">
+                <select name="Grade" id="cars">
+                    <option value="-1">All</option>
+                    <option value="0">V0</option>
+                    <option value="1">V1</option>
+                    <option value="2">V2</option>
+                    <option value="3">V3</option>
+                    <option value="4">V4</option>
+                    <option value="5">V5</option>
+                    <option value="6">V6</option>
+                    <option value="7">V7</option>
+                    <option value="8">V8</option>
+                    <option value="9">V9</option>
+                    <option value="10">V10+</option>
+                </select>
+                <select name="Climb Type" id="cars">
+                    <option value="0">All</option>
+                    <option value="1">Overhang</option>
+                    <option value="2">Slab</option>
+                    <option value="3">Mixed</option>
+                    <option value="4">Other</option>
+                </select>
+                <select name="Star Rating" id="cars">
+                    <option value="0">All</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                </select>
+                <button class="btn search-button" id="search-button">Search</button>
+            </form>
+        </div>
         <div class="post-content">
-            <div class="search-bar-container">
-                <form id="search-form">
-                    <input type="text">
-                    <button class="btn search-button" id="search-button">Search</button>
-                    <select name="Grade" id="cars">
-                        <option value="0">All</option>
-                        <option value="1">V1</option>
-                        <option value="2">V2</option>
-                        <option value="3">V3</option>
-                        <option value="4">V4</option>
-                    </select>
-                    <select name="Climb Type" id="cars">
-                        <option value="All">All</option>
-                        <option value="Overhang">Overhang</option>
-                        <option value="Slab">Slab</option>
-                        <option value="Mixed">Mixed</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <select name="Star Rating" id="cars">
-                        <option value="0">All</option>
-                        <option value="1">1 Star</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                    </select>
-                </form>
-            </div>
             <ul class="post-list" id="post-list">
             </ul>
             <ul class="hidden">

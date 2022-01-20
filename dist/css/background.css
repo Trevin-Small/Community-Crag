@@ -1,5 +1,5 @@
 .background {
-    background-color: var(--ivory-white);
+    background-color: var(--off-white);
     display: flex;
     flex-direction: column;
     justify-self: flex-start;
