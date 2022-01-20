@@ -92,7 +92,11 @@ export async function displayPosts(queryRef) {
     let postList = document.getElementById('post-list');
     if (postList.lastChild != null) {
         while (postList.lastChild && postList.lastChild.nodeName.localeCompare('DIV') == 1) {
-            postList.removeChild(postList.lastChild);
+            if (postList.lastChild.nodeName.localeCompare('SPAN') == 0) {
+                continue;
+            } else {
+                postList.removeChild(postList.lastChild);
+            }
         }
     }
 

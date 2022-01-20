@@ -138,7 +138,9 @@ export class Post {
                 starThree.classList.remove('checked');
             }
         }
-        document.getElementById('post-list').appendChild(clone);
+        let parent = document.getElementById('bottom-spacer').parentNode;
+        let referenceNode = document.getElementById('bottom-spacer');
+        parent.insertBefore(clone, referenceNode);
     }
 
     viewPost() {
