@@ -1,4 +1,4 @@
-import { addDoc, getDocs, query } from 'firebase/firestore';
+import { addDoc, getDocs, query, where } from 'firebase/firestore';
 import { postRef } from './index';
 import { Post } from './post';
 
@@ -66,7 +66,8 @@ export function queryPosts(grade, starRating, climbType) {
     }
 }
 
-export function searchByFilters(formId) {
-    let form = document.getElementById('formId');
-    displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), 'Climb Type'));
+export function searchByFilters(formId, e) {
+    e.preventDefault();
+    let form = new FormData(document.getElementById(formId));
+    displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
 }
