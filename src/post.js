@@ -99,7 +99,7 @@ export class Post {
 
         gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
 
-        if (this.starRating >= 1) {
+        if (this.starRating == 1) {
             let starOne = element.querySelector("#star-one");
             starOne.classList.add('checked');
         } else {
@@ -109,7 +109,7 @@ export class Post {
             }
         }
 
-        if (this.starRating >= 2) {
+        if (this.starRating == 2) {
             let starTwo = element.querySelector("#star-two");
             starTwo.classList.add('checked');
         } else {

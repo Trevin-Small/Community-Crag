@@ -3,10 +3,12 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 module.exports = {
     mode: 'development',
-    entry: ['./src/index.js', './src/mainFunctions.js', './src/listeners.js'],
+    entry: ['./src/index.js', './src/mainFunctions.js'],
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        library: 'communityCrag',
+        
     },
     watch: true,
     plugins: [

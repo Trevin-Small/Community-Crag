@@ -16,7 +16,6 @@
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/post-content.css" rel="stylesheet" />
         <link href="css/search-bar.css" rel="stylesheet" />
-        
     </head>
     <body class="background">
         <!-- Responsive navbar-->
@@ -33,14 +32,36 @@
 
         <!-- Page content-->
         <div class="post-content">
-            <div class="search-bar">
-                <input type="text">
-                <button class="btn search-button" id="search-button">Search</button>
+            <div class="search-bar-container">
+                <form id="search-form">
+                    <input type="text">
+                    <button class="btn search-button" id="search-button">Search</button>
+                    <select name="Grade" id="cars">
+                        <option value="0">All</option>
+                        <option value="1">V1</option>
+                        <option value="2">V2</option>
+                        <option value="3">V3</option>
+                        <option value="4">V4</option>
+                    </select>
+                    <select name="Climb Type" id="cars">
+                        <option value="All">All</option>
+                        <option value="Overhang">Overhang</option>
+                        <option value="Slab">Slab</option>
+                        <option value="Mixed">Mixed</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select name="Star Rating" id="cars">
+                        <option value="0">All</option>
+                        <option value="1">1 Star</option>
+                        <option value="2">2 Stars</option>
+                        <option value="3">3 Stars</option>
+                    </select>
+                </form>
             </div>
             <ul class="post-list" id="post-list">
             </ul>
             <ul class="hidden">
-                <li class="post-item" id="placeholder-post" onclick="postInfoPage(this.id);">
+                <li class="post-item" id="placeholder-post">
                     <div class="post-container">
                         <div class="post-img-container">
                             <img src="assets/wall.JPG" class="post-img">
@@ -71,5 +92,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Main JS-->
         <script src="https://communitycrag.com/bundle.js"></script>
+        <script>
+            communityCrag.displayPosts();
+        </script>
     </body>
 </html>
