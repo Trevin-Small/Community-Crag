@@ -29,3 +29,15 @@
     border-radius: 0.4em;
     margin: 0px;
 }
+.submit-auth {
+    background-color: white;
+    color: black;
+    box-sizing: border-box;
+    border: 3px solid black;
+    padding: 0.4rem 1rem 0.4rem 1rem;
+}
+.submit-auth:hover {
+    border: 2px solid var(--dark-gray);
+    margin: 1px;
+    box-shadow: none;
+}

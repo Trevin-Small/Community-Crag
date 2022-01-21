@@ -1,6 +1,7 @@
 export class Post {
-    constructor(name, grade, comment, starRating, climbType) {
+    constructor(name, image, comment, climbType, grade, starRating) {
         this.name = name;
+        this.image = image;
 
         if (grade - Math.floor(grade) == 0) {
             this.grade = grade + 0.5;
@@ -17,6 +18,10 @@ export class Post {
 
     getName() {
         return this.name;
+    }
+
+    getImage() {
+        return this.image;
     }
 
     getGrade() {
@@ -53,6 +58,10 @@ export class Post {
         this.name = name;
     }
 
+    setImage(image) {
+        this.image = image;
+    }
+
     setGrade(grade) {
         this.grade = grade + 0.5;
     }
@@ -82,15 +91,18 @@ export class Post {
         let clone = element.cloneNode(true);
         clone.id = docId;
         clone.querySelector('#post-container').setAttribute('id',docId);
+        
         let postName = clone.querySelector('#post-name');
         let hiddenPostName = clone.querySelector('#hidden-post-name');
         postName.innerHTML = this.name;
         hiddenPostName.innerHTML = this.name;
         let postGrade = clone.querySelector('#post-grade');
         postGrade.innerHTML = this.getGrade();
+        let image = clone.querySelector('#post-image');
+        image.src = this.getImage();
         let postComment = clone.querySelector('#post-comment');
 
-        const maxChars = (window.innerWidth / 700) * 75;
+        const maxChars = (window.innerWidth / 700) * 100;
         if (this.comment.length >= maxChars) {
             postComment.innerHTML = this.comment.slice(0, maxChars) + '...';
         } else {
@@ -138,15 +150,16 @@ export class Post {
                 starThree.classList.remove('checked');
             }
         }
-        let parent = document.getElementById('bottom-spacer').parentNode;
-        let referenceNode = document.getElementById('bottom-spacer');
-        parent.insertBefore(clone, referenceNode);
+        let parent = document.getElementById('search-container').parentNode;
+        parent.insertBefore(clone, null);
     }
 
     viewPost() {
         let element = document.getElementById('post-container');
         let postName = element.querySelector('#post-name');
         postName.innerHTML = this.name;
+        let image = element.querySelector('#post-image');
+        image.src = this.getImage();
         let postGrade = element.querySelector('#post-grade');
         postGrade.innerHTML = this.getGrade();
         let postComment = element.querySelector('#post-comment');
@@ -197,14 +210,15 @@ const postConverter = {
     toFirestore: (post) => {
         return {
             name: post.getName(),
+            image: post.getImage(),
             comment: post.getComment(),
+            climbType: post.getClimbType(),
             grade: post.getGrade(),
             starRating: post.getStarRating(),
-            climbType: post.getClimbType()
         };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
+        return new Post(data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
     }
-}
+};

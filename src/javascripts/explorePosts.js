@@ -1,24 +1,6 @@
-import { doc, addDoc, getDoc, getDocs, query, where } from 'firebase/firestore';
-import { db, postRef } from './index';
-import { Post, postConverter } from './post';
-
-export async function pushPostToFireBase(post){
-    try {
-        const docRef = await addDoc(postRef, {
-            name: post.getName(),
-            grade: post.getGrade(),
-            gradeCount: post.getGradeCount(),
-            comment: post.getComment(),
-            climbType: post.getClimbType(),
-            starRating: post.getStarRating(),
-            starRatingCount: post.getStarRatingCount(),
-            merge: true
-        });
-
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
-}
+import { getDocs, query, where } from 'firebase/firestore';
+import { postRef } from './index';
+import { Post } from './post';
 
 function queryPosts(grade, starRating, climbType) {
 
@@ -90,23 +72,22 @@ export async function displayPosts(queryRef) {
     }
 
     let postList = document.getElementById('post-list');
-    if (postList.lastChild != null) {
-        while (postList.lastChild && postList.lastChild.nodeName.localeCompare('DIV') == 1) {
-            if (postList.lastChild.nodeName.localeCompare('SPAN') == 0) {
-                continue;
-            } else {
-                postList.removeChild(postList.lastChild);
-            }
-        }
+    while (postList.lastChild != null && postList.lastChild.nodeName !== 'DIV') {
+        postList.removeChild(postList.lastChild);
     }
 
     let dbPosts = await getDocs(queryRef);
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.name, data.grade, data.comment, data.starRating, data.climbType);
+        let post = new Post(data.name, "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2Fwall.JPG?alt=media&token=07df40fe-d358-401e-b524-7efa3d56bd9d", data.comment, data.climbType, data.grade, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
+    let spacer = document.createElement('span');
+    spacer.style.marginBottom = '12vh';
+    let parent = document.getElementById('search-container').parentNode;
+    parent.insertBefore(spacer, null);
+
 }
 
 export function searchByFilters(formId, e) {
@@ -119,11 +100,3 @@ export async function openPost(postId) {
     window.location.href = "https://communitycrag.com/viewpost?" + postId;
 }
 
-export async function viewPost() {
-    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    const docRef = doc(db, 'community-posts', postId);
-    const postDoc = await getDoc(docRef);
-    const postData = postDoc.data();
-    let post = new Post(postData.name, postData.grade, postData.comment, postData.starRating, postData.climbType);
-    post.viewPost();
-}
