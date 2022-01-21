@@ -25,8 +25,10 @@
                 <img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;">
                 <a class="navbar-brand" href="https://communitycrag.com/">Community Crag</a>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
+                        <li class="nav-item" id="nav-log-in"><a class="nav-link" href="login.html">Login</a></li>
+                        <li class="nav-item" id="nav-sign-up"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
+                        <li class="nav-item" id="nav-log-out"><a class="nav-link" href="index.html" onclick="communityCrag.logOut();">Log Out</a></li>
+                        <li class="nav-item" id="nav-new-post"><a class="nav-link" href="createpost.html"><img src="./assets/plus.svg" style="height:100%;width:auto;"></a></li>
                     </ul>
             </div>
         </nav>
@@ -72,6 +74,8 @@
                                 <option value="1">1 ⭐</option>
                                 <option value="2">2 ⭐</option>
                                 <option value="3">3 ⭐</option>
+                                <option value="4">4 ⭐</option>
+                                <option value="5">5 ⭐</option>
                             </select>
                         </div>
                         <div class="select-container">
@@ -96,7 +100,11 @@
                                 <span class="fa fa-star star-icon" id="star-two"></span>
                                 <span class="fa fa-star star-icon" id="star-three"></span>
                             </div>
-                            <h5 id="climb-type"></h5>
+                            <div class="stars">
+                                <span class="fa fa-star star-icon" id="star-four"></span>
+                                <span class="fa fa-star star-icon" id="star-five"></span>
+                            </div>
+                            <h5 class="climb-type" id="climb-type"></h5>
                         </div>
                         <div class="post-text-container">
                             <div class="post-title">

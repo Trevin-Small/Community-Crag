@@ -37,7 +37,7 @@
     border-radius: 20px;
     background-color: var(--old-gold);
     margin-top: 3vh;
-    padding: 0px;
+    padding: 0.5rem 0 0.5rem 0;
 }
 .content-container {
     width: 90%;
@@ -48,8 +48,6 @@
     align-items: center;
     padding: 0px;
     margin: 0px;
-    margin-top: 20px;
-    margin-bottom: 20px;
 }
 .post-img-container {
     width: 100%;
@@ -89,8 +87,8 @@
 }
 .post-stats {
     height: auto;
-    width: 100%;
-    align-self: start;
+    width: 90%;
+    align-self: center;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -163,7 +161,7 @@
 }
 .comment {
     height: auto;
-    width: 92%;
+    width: 88%;
     overflow-wrap: break-word;
     margin-left: 5px;
     text-align: left;

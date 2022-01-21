@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Community Crag - Collaborative Climbing" />
         <meta name="author" content="Trevin Small" />
-        <title>Community Crag</title>
+        <title>Crag - View Post</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
         <!--Font awesome Stars-->
@@ -15,6 +15,7 @@
         <link href="css/background.css" rel="stylesheet" />
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/view-post.css" rel="stylesheet" />
+
         <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
@@ -24,8 +25,11 @@
                 <img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;">
                 <a class="navbar-brand" href="https://communitycrag.com/">Community Crag</a>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
-                        <li class="nav-item"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
+                        <li class="nav-item" style="display:block;"><a class="nav-link" href="index.html">Home</a></li>
+                        <li class="nav-item" id="nav-log-in" style="display:none;"><a class="nav-link" href="login.html">Login</a></li>
+                        <li class="nav-item" id="nav-sign-up" style="display:none;"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
+                        <li class="nav-item" id="nav-log-out" style="display:none;"><a class="nav-link" href="index.html" onclick="communityCrag.logOut();">Log Out</a></li>
+                        <li class="nav-item" id="nav-new-post" style="display:none;"><a class="nav-link" href="createpost.html"><img src="./assets/plus.svg" style="height:100%;width:auto;"></a></li>
                     </ul>
             </div>
         </nav>
@@ -43,21 +47,25 @@
                             <hr class="divider">
                         </div>
                     </div>
-                    <div class="comment">
-                        <div class="post-stats">
-                            <div class="grade"><h3 id="post-grade"></h3></div>
-                            <div class="stars">
-                                <span class="fa fa-star star-icon" id="star-one"></span>
-                                <span class="fa fa-star star-icon" id="star-two"></span>
-                                <span class="fa fa-star star-icon" id="star-three"></span>
-                            </div>
-                            <h5 class="climb-type" id="climb-type"></h5>
+                    <div class="post-stats">
+                        <div class="grade"><h3 id="post-grade"></h3></div>
+                        <div class="stars">
+                            <span class="fa fa-star star-icon" id="star-one"></span>
+                            <span class="fa fa-star star-icon" id="star-two"></span>
+                            <span class="fa fa-star star-icon" id="star-three"></span>
+                            <span class="fa fa-star star-icon" id="star-four"></span>
+                            <span class="fa fa-star star-icon" id="star-five"></span>
                         </div>
+                        <h5 class="climb-type" id="climb-type"></h5>
+                    </div>
+                    <div class="comment">
                         <p id="post-comment"></p>
                     </div>
                     <div class="post-img-container">
                         <img src="" class="post-img" id="post-image">
                     </div>
+                    <span style="margin-top:0.5rem;"></span>
+                    <p class="climb-type" id="setter-name"></p>
                 </div>
             </div>
             <div style="margin-top:20vh;"></div>

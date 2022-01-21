@@ -1,6 +1,6 @@
 import { getDocs, query, where } from 'firebase/firestore';
-import { postRef } from './index';
-import { Post } from './post';
+import { postRef } from './index.js';
+import { Post } from './post.js';
 
 function queryPosts(grade, starRating, climbType) {
 
@@ -80,7 +80,7 @@ export async function displayPosts(queryRef) {
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.name, "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2Fwall.JPG?alt=media&token=07df40fe-d358-401e-b524-7efa3d56bd9d", data.comment, data.climbType, data.grade, data.starRating,);
+        let post = new Post(data.setter, data.name, "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2Fwall.JPG?alt=media&token=07df40fe-d358-401e-b524-7efa3d56bd9d", data.comment, data.climbType, data.grade, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
     let spacer = document.createElement('span');
@@ -100,3 +100,31 @@ export async function openPost(postId) {
     window.location.href = "https://communitycrag.com/viewpost?" + postId;
 }
 
+export function updateNavBar(isSignedIn) {
+    let notSignedIn = "block";
+    let signedIn = "none";
+    if (isSignedIn) {
+        notSignedIn = "none";
+        signedIn = "block";
+    }
+    try {
+        document.getElementById('nav-log-in').style.display = notSignedIn;
+    } catch {
+        
+    }
+    try {
+        document.getElementById('nav-sign-up').style.display = notSignedIn;
+    } catch {
+        
+    }
+    try {
+        document.getElementById('nav-log-out').style.display = signedIn;
+    } catch {
+
+    }
+    try {
+        document.getElementById('nav-new-post').style.display = signedIn;
+    } catch {
+
+    }
+}

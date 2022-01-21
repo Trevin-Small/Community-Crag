@@ -14,7 +14,7 @@
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/auth.css" rel="stylesheet" />
         
-        
+        <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
         <!-- Responsive navbar-->
@@ -37,15 +37,13 @@
                     <form class="auth-form">
                         <div style="margin:0.25rem;"></div>
                         <b>Enter Your Purdue Email:</b>
-                        <input type="text" id="email" name="email" placeholder="email@purdue.edu">
+                        <input class="text-input" type="text" id="email" name="email" placeholder="email@purdue.edu">
                         <div style="margin:0.5rem;"></div>
                         <b>Enter Your Password:</b>
-                        <input type="text" id="username" name="name" placeholder="Password">
+                        <input class="text-input" type="password" id="pass" name="pass" placeholder="Password">
                         <div style="margin:0.75rem;"></div>
-                        <button class="btn submit-auth" type="login" id="submit-login">Login</button>
+                        <button class="btn submit-auth" type="button" id="submit-login" onclick="communityCrag.signIn(document.getElementById('email').value, document.getElementById('pass').value);">Login</button>
                         <div style="margin:0.75rem;"></div>
-                        <i style="text-align:center;width:75%;">The Purdue Community Crag</i>
-                        <div style="margin:0.25rem;"></div>
                     </form>
                 </div>
             </div>

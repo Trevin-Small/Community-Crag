@@ -1,5 +1,6 @@
 export class Post {
-    constructor(name, image, comment, climbType, grade, starRating) {
+    constructor(setter, name, image, comment, climbType, grade, starRating) {
+        this.setter = setter;
         this.name = name;
         this.image = image;
 
@@ -14,6 +15,10 @@ export class Post {
         this.climbType = climbType;
         this.gradeCount = 1;
         this.starRatingCount = 1;
+    }
+
+    getSetter() {
+        return this.setter;
     }
 
     getName() {
@@ -91,15 +96,11 @@ export class Post {
         let clone = element.cloneNode(true);
         clone.id = docId;
         clone.querySelector('#post-container').setAttribute('id',docId);
-        
-        let postName = clone.querySelector('#post-name');
-        let hiddenPostName = clone.querySelector('#hidden-post-name');
-        postName.innerHTML = this.name;
-        hiddenPostName.innerHTML = this.name;
-        let postGrade = clone.querySelector('#post-grade');
-        postGrade.innerHTML = this.getGrade();
-        let image = clone.querySelector('#post-image');
-        image.src = this.getImage();
+        clone.querySelector('#post-name').innerHTML = this.name;
+        clone.querySelector('#hidden-post-name').innerHTML = this.name;
+        clone.querySelector('#post-grade').innerHTML = this.getGrade();
+        clone.querySelector('#post-image').src = this.getImage();
+        clone.querySelector('#climb-type').innerHTML = this.climbType;
         let postComment = clone.querySelector('#post-comment');
 
         const maxChars = (window.innerWidth / 700) * 100;
@@ -109,8 +110,6 @@ export class Post {
             postComment.innerHTML = this.comment;
         }
 
-        let climbType = clone.querySelector('#climb-type');
-        climbType.innerHTML = this.climbType;
         let gradeCount = clone.querySelector('#count');
 
         if (this.gradeCount == 1) {
@@ -141,7 +140,7 @@ export class Post {
             }
         }
 
-        if (this.starRating == 3) {
+        if (this.starRating >= 3) {
             let starThree = clone.querySelector("#star-three");
                 starThree.classList.add('checked');
         } else {
@@ -150,25 +149,40 @@ export class Post {
                 starThree.classList.remove('checked');
             }
         }
+
+        if (this.starRating >= 4) {
+            let starFour = clone.querySelector("#star-four");
+                starFour.classList.add('checked');
+        } else {
+            let starFour = clone.querySelector("#star-four");
+            if (starFour.classList.contains('checked')) {
+                starFour.classList.remove('checked');
+            }
+        }
+
+        if (this.starRating >= 5) {
+            let starFive = clone.querySelector("#star-five");
+                starFive.classList.add('checked');
+        } else {
+            let starFive = clone.querySelector("#star-five");
+            if (starFive.classList.contains('checked')) {
+                starFive.classList.remove('checked');
+            }
+        }
+        
         let parent = document.getElementById('search-container').parentNode;
         parent.insertBefore(clone, null);
     }
 
     viewPost() {
         let element = document.getElementById('post-container');
-        let postName = element.querySelector('#post-name');
-        postName.innerHTML = this.name;
-        let image = element.querySelector('#post-image');
-        image.src = this.getImage();
-        let postGrade = element.querySelector('#post-grade');
-        postGrade.innerHTML = this.getGrade();
-        let postComment = element.querySelector('#post-comment');
-        postComment.innerHTML = this.comment;
-        let climbType = element.querySelector('#climb-type');
-        climbType.innerHTML = this.climbType;
-        let gradeCount = element.querySelector('#count');
-
-        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
+        element.querySelector('#post-name').innerHTML = this.name;
+        element.querySelector('#setter-name').innerHTML = "Set By " + this.setter;
+        element.querySelector('#post-image').src = this.getImage();
+        element.querySelector('#post-grade').innerHTML = this.getGrade();
+        element.querySelector('#post-comment').innerHTML = this.comment;
+        element.querySelector('#climb-type').innerHTML = this.climbType;
+        element.querySelector('#count').innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
 
         if (this.starRating >= 1) {
             let starOne = element.querySelector("#star-one");
@@ -190,13 +204,33 @@ export class Post {
             }
         }
 
-        if (this.starRating == 3) {
+        if (this.starRating >= 3) {
             let starThree = element.querySelector("#star-three");
                 starThree.classList.add('checked');
         } else {
             let starThree = element.querySelector("#star-three");
             if (starThree.classList.contains('checked')) {
                 starThree.classList.remove('checked');
+            }
+        }
+
+        if (this.starRating >= 4) {
+            let starFour = element.querySelector("#star-four");
+                starFour.classList.add('checked');
+        } else {
+            let starFour = element.querySelector("#star-four");
+            if (starFour.classList.contains('checked')) {
+                starFour.classList.remove('checked');
+            }
+        }
+
+        if (this.starRating >= 5) {
+            let starFive = element.querySelector("#star-five");
+                starFive.classList.add('checked');
+        } else {
+            let starFive = element.querySelector("#star-five");
+            if (starFive.classList.contains('checked')) {
+                starFive.classList.remove('checked');
             }
         }
     }
@@ -209,6 +243,7 @@ export class Post {
 const postConverter = {
     toFirestore: (post) => {
         return {
+            setter: post.getSetter(),
             name: post.getName(),
             image: post.getImage(),
             comment: post.getComment(),
@@ -219,6 +254,6 @@ const postConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Post(data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
+        return new Post(data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
     }
 };

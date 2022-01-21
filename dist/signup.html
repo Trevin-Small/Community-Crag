@@ -14,6 +14,7 @@
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/auth.css" rel="stylesheet" />
 
+        <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
         <!-- Responsive navbar-->
@@ -36,19 +37,18 @@
                     <form class="auth-form">
                         <div style="margin:0.25rem;"></div>
                         <b>Enter Your Purdue Email:</b>
-                        <input type="text" name="email" id="email" placeholder="email@purdue.edu">
+                        <input class="text-input" type="text" name="email" id="email" placeholder="email@purdue.edu">
                         <div style="margin:0.5rem;"></div>
-                        <b>Enter Your First Name:</b>
-                        <input type="text" id="username" name="name" placeholder="Username">
+                        <b>Enter Your Username:</b>
+                        <input class="text-input" type="text" id="username" name="name" placeholder="e.g. 'John Purdue'">
                         <div style="margin:0.5rem;"></div>
                         <b>Enter a new Password:</b>
-                        <input type="text" id="pass" name="pas" placeholder="New Password">
+                        <input class="text-input" type="password" id="pass" name="pas" placeholder="New Password">
                         <div style="margin:0.75rem;"></div>
-                        <button class="btn submit-auth" type="submit" id="submit-signup">Sign Up</button>
+                        <button class="btn submit-auth" type="button" id="submit-signup" onClick="communityCrag.signUp(document.getElementById('email').value, document.getElementById('username').value, document.getElementById('pass').value);">Sign Up</button>
                         <div style="margin:0.75rem;"></div>
                         <b>NOTE:</b>
                         <p style="text-align:center;width:75%;">You won't receive any emails from us. <br> Purdue emails are used for security purposes and to moderate users and their posts.</p>
-                        <i style="text-align:center;width:75%;">The Purdue Community Crag</i>
                     </form>
                 </div>
             </div>

@@ -77,17 +77,17 @@
 }
 .grade {
     margin-top: 5px;
+    margin-bottom: 5px;
 }
 .stars {
     height: 18%;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 0px;
 }
 .star-icon {
     font-size: calc(15px + 1vw);
     width: auto;
-    margin-right: 2px;
-    margin-left: 2px;
+    margin: 0 2px 0 2px;
+    padding: 0px;
 }
 .checked {
     color: orange;
@@ -110,6 +110,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+.climb-type {
+    margin: 5px 0px 0px 0px;
 }
 .grade-count {
     display: table-cell;

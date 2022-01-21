@@ -7,7 +7,7 @@
     align-items: center;
     overflow-y: scroll;
 }
-.auth-container {
+.main-container {
     width: 85vw;
     max-width: 500px;
     height: auto;
@@ -44,7 +44,7 @@ hr {
     border: 1px solid black;
     margin-top: 0px;
 }
-.auth-form {
+.create-form {
     width: 90%;
     height: auto;
     display: flex;
@@ -53,7 +53,7 @@ hr {
     align-items: center;
 }
 .text-input {
-  width: 70%;
+  width: 15rem;
   height: auto;
   box-sizing: border-box;
   border: 3px solid rgb(87, 87, 87);
@@ -64,5 +64,36 @@ hr {
   padding: 12px 0px 12px 10px;
 }
 .text-input:focus {
+    border: 3px solid black;
+}
+.select {
+    box-sizing: border-box;
+    padding: 0 1em 0 0;
+    margin: 0;
+    width: 15rem;
+    height: 2.5rem;
+    border: 1px solid #777;
+    border-radius: 0.4em;
+    padding: 0.25em 0.5em;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1.1;
+    background-color: #fff;
+    background-image: linear-gradient(to top, #f9f9f9, #fff 33%);
+    align-items: center;
+    grid-template-areas: "select";
+}
+.comment-input {
+    width: 95%;
+    height: 10rem;
+    box-sizing: border-box;
+    border: 3px solid rgb(87, 87, 87);
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: white;
+    background-repeat: no-repeat;
+    padding: 6px 0px 6px 10px;
+}
+.comment-input:focus {
     border: 3px solid black;
 }
