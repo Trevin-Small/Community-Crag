@@ -74,6 +74,7 @@
     border-radius:14px;
     border: 3px solid black;
     background-color: var(--off-white);
+    padding: 0px 5px 0px 5px;
 }
 .grade {
     margin-top: 5px;
@@ -142,7 +143,7 @@
         display: none;
     }
     .post-stats {
-        width: 35%;
+        width: 45%;
         height: 90%;
         margin: 0px;
     }
@@ -169,7 +170,7 @@
     }
     .post-stats {
         width: 15%;
-        min-width: 80px;
+        min-width: 85px;
         height: 90%;
     }
     .post-img-container {
