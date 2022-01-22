@@ -37,10 +37,15 @@
                 <div class="contents">
                     <h3>Create New Problem</h3>
                     <hr>
-                    <form class="create-form">
+                    <form class="create-form" autocomplete="off">
                         <div style="margin:0.25rem;"></div>
                         <b>Name Your Climb:</b>
-                        <input class="text-input" type="text" name="email" id="email" placeholder="e.g. 'Beanbag'">
+                        <input class="text-input" type="text" name="title" id="title" placeholder="e.g. 'Beanbag'">
+                        <div style="margin:0.75rem;"></div>
+                        <b>Upload an Image:</b>
+                        <label for="file-upload" class="custom-file-upload"><img id="check" class="photo-icon" style="display:none;" src="./assets/check.svg"><img id="invalid" class="photo-icon" style="display:none;" src="./assets/x.svg"><img id="camera" class="photo-icon" style="display:block;" src="./assets/camera.svg"> Choose Photo</label>
+                        <input id="file-upload" type="file" accept="image/*" oninput="communityCrag.fileUploaded(document.getElementById('file-upload').value)"/>
+                        <p class="centered-text"><i>Vertical Images only!</i><br> Please edit the photo before uploading and circle any holds used in this problem.</p>
                         <div style="margin:0.5rem;"></div>
                         <b>Select a Grade:</b>
                         <select class="select" name="Grade" id="grade-filter">

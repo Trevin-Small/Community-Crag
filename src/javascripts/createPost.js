@@ -18,3 +18,13 @@ export async function pushPostToFireBase(post){
         console.error("Error adding document: ", e);
     }
 }
+
+export function fileUploaded(value) {
+    if (value != null) {
+        document.getElementById('check').style.display='block';
+        document.getElementById('camera').style.display='none';
+    } else {
+        document.getElementById('check').style.display='none';
+        document.getElementById('camera').style.display='block';
+    }
+}

@@ -97,3 +97,28 @@ hr {
 .comment-input:focus {
     border: 3px solid black;
 }
+.centered-text {
+    text-align: center;
+    word-wrap: break-word;
+    width: 80%;
+}
+.photo-icon {
+    padding: 0 5px 0 0;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    width: auto;
+    border: 2px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    margin-bottom: 0.4rem;
+}

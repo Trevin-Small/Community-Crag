@@ -85,7 +85,6 @@
     margin: 0px;
 }
 .star-icon {
-    font-size: calc(15px + 1vw);
     width: auto;
     margin: 0 2px 0 2px;
     padding: 0px;
@@ -127,7 +126,7 @@
     padding: 0px;
 }
 .comment {
-    word-break: break-all;
+    word-wrap: break-word;
 }
 @media only screen and (max-width: 700px) {
     .grade-count {
@@ -155,6 +154,9 @@
     .post-container {
         justify-content: space-evenly;
     }
+    .star-icon {
+        font-size: calc(12px + 1.75vw);
+    }
 }
 @media only screen and (min-width: 700px) {
     .grade-count {
@@ -180,5 +182,8 @@
     }
     .post-container {
         justify-content: flex-start;
+    }
+    .star-icon {
+        font-size: calc(12px + 0.8vw);
     }
 }
