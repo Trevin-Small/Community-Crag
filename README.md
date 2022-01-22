@@ -5,6 +5,6 @@ Targeted at the Purdue University Climbing wall to improve the climbing experien
 
 Open source and free of charge. Keep climbing fun!  
 
-Built with HTML, CSS, Javascript, Webpack, and Firebase/Firestore for hosting & database.
+Built with HTML, CSS, Javascript, Webpack, Firebase/Firestore for site database and hosting, as well as Google cloud storage for image hosting.
 
 [Community Crag](https://communitycrag.com)
