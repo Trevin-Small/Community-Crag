@@ -5,13 +5,10 @@ export function inputErrorBorderHighlight(inputId) {
     field.style.borderWidth = '5px';
 }
 
-export function resetBorders(isTextInput, elementIds) {
-    const borderColor = "#777";
-    let borderWidth = "3px";
+export function resetBorders(borderAttributes, elementIds) {
+    const borderColor = borderAttributes[0];
+    const borderWidth = borderAttributes[1];
     elementIds.forEach((elementId) => {
-        if (!isTextInput) {
-            borderWidth = "1px";
-        }
         document.getElementById(elementId).style.borderColor = borderColor;
         document.getElementById(elementId).style.borderWidth = borderWidth;
     });
@@ -26,6 +23,8 @@ export function errorMessage(message, errorElementId) {
     } else {
         errorElement.innerHTML = message;
         errorElement.style.display = 'block';
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        document.getElementById('scroll').scrollTo(0, 0);
+        document.getElementById('scroll').scrollTop = 0; // For Safari
+        document.getElementById('scroll').scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
 }

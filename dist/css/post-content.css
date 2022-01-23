@@ -128,7 +128,7 @@
 .comment {
     word-wrap: break-word;
 }
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 850px) {
     .grade-count {
         visibility: hidden;
         display: none;
@@ -158,7 +158,7 @@
         font-size: calc(12px + 1.75vw);
     }
 }
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 850px) {
     .grade-count {
         visibility: visible;
         display: inline;
@@ -172,7 +172,7 @@
     }
     .post-stats {
         width: 15%;
-        min-width: 85px;
+        min-width: 110px;
         height: 90%;
     }
     .post-img-container {

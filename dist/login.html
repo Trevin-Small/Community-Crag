@@ -29,11 +29,12 @@
             </div>
         </nav>
         <!-- Page content-->
-        <div class="scroll">
+        <div class="scroll" id="scroll">
             <div class="auth-container">
                 <div class="contents">
                     <h3>Login</h3>
                     <hr>
+                    <div class="error-message" id="error-message" style="display:none;"></div>
                     <form class="auth-form">
                         <div style="margin:0.25rem;"></div>
                         <b>Enter Your Purdue Email:</b>
@@ -42,7 +43,7 @@
                         <b>Enter Your Password:</b>
                         <input class="text-input" type="password" id="pass" name="pass" placeholder="Password">
                         <div style="margin:0.75rem;"></div>
-                        <button class="btn submit-auth" type="button" id="submit-login" onclick="communityCrag.signIn(document.getElementById('email').value, document.getElementById('pass').value);">Login</button>
+                        <button class="btn submit-auth" type="button" id="submit-login" onclick="communityCrag.signIn();">Login</button>
                         <div style="margin:0.75rem;"></div>
                     </form>
                 </div>

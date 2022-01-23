@@ -29,11 +29,12 @@
             </div>
         </nav>
         <!-- Page content-->
-        <div class="scroll">
+        <div class="scroll" id="scroll">
             <div class="auth-container">
                 <div class="contents">
                     <h3>Sign Up</h3>
                     <hr>
+                    <div class="error-message" id="error-message" style="display:none;"></div>
                     <form class="auth-form">
                         <div style="margin:0.25rem;"></div>
                         <b>Enter Your Purdue Email:</b>
@@ -43,9 +44,9 @@
                         <input class="text-input" type="text" id="username" name="name" placeholder="e.g. 'John Purdue'">
                         <div style="margin:0.5rem;"></div>
                         <b>Enter a new Password:</b>
-                        <input class="text-input" type="password" id="pass" name="pas" placeholder="New Password">
+                        <input class="text-input" type="password" id="pass" name="pass" placeholder="New Password">
                         <div style="margin:0.75rem;"></div>
-                        <button class="btn submit-auth" type="button" id="submit-signup" onClick="communityCrag.signUp(document.getElementById('email').value, document.getElementById('username').value, document.getElementById('pass').value);">Sign Up</button>
+                        <button class="btn submit-auth" type="button" id="submit-signup" onClick="communityCrag.signUp();">Sign Up</button>
                         <div style="margin:0.75rem;"></div>
                         <b>NOTE:</b>
                         <p style="text-align:center;width:75%;">You won't receive any emails from us. <br> Purdue emails are used for security purposes and to moderate users and their posts.</p>

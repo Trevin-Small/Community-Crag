@@ -29,6 +29,10 @@ export class Post {
         return this.image;
     }
 
+    getNumericalGrade() {
+        return this.grade;
+    }
+
     getGrade() {
         if (this.grade - Math.floor(this.grade) >= 0.75) {
             return "V" + Math.floor(this.grade) + "+";
@@ -99,7 +103,7 @@ export class Post {
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();
-        clone.querySelector('#post-image').src = this.getImage();
+        clone.querySelector('#post-image').src = this.image;
         clone.querySelector('#climb-type').innerHTML = this.climbType;
         let postComment = clone.querySelector('#post-comment');
 
@@ -178,7 +182,7 @@ export class Post {
         let element = document.getElementById('post-container');
         element.querySelector('#post-name').innerHTML = this.name;
         element.querySelector('#setter-name').innerHTML = "Set By " + this.setter;
-        element.querySelector('#post-image').src = this.getImage();
+        element.querySelector('#post-image').src = this.image;
         element.querySelector('#post-grade').innerHTML = this.getGrade();
         element.querySelector('#post-comment').innerHTML = this.comment;
         element.querySelector('#climb-type').innerHTML = this.climbType;

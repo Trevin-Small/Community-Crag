@@ -80,7 +80,7 @@ export async function displayPosts(queryRef) {
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.setter, data.name, "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2Fwall.JPG?alt=media&token=07df40fe-d358-401e-b524-7efa3d56bd9d", data.comment, data.climbType, data.grade, data.starRating,);
+        let post = new Post(data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
     let spacer = document.createElement('span');
