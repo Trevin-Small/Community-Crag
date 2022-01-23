@@ -9,6 +9,8 @@ Targeted at the Purdue University Climbing wall to improve the climbing experien
 
 Open source and free of charge. Keep climbing fun!  
 
+Note: This website is mobile-first. While computer navigation is still supported, the website is best viewed on a mobile device.
+
 Built with HTML, CSS, Javascript, Webpack, Firebase/Firestore for site database and hosting, as well as Google cloud storage for image hosting.
 
 [Community Crag](https://communitycrag.com)
