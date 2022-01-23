@@ -1,6 +1,10 @@
 # Community-Crag
 A collaborative website that allows for climbers to share routes, suggest grades, and document their add-on problems with one another.  
 
+Basically, social media but for climbing gyms.
+
+All posts are 100% public, and can be viewed by anyone. However, creating posts requires users to sign in.
+
 Targeted at the Purdue University Climbing wall to improve the climbing experience for all students.  
 
 Open source and free of charge. Keep climbing fun!  
