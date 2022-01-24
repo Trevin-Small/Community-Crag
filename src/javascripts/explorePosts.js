@@ -90,10 +90,10 @@ export async function displayPosts(queryRef) {
 
 }
 
-export function searchByFilters(formId, e) {
+export async function searchByFilters(formId, e) {
     e.preventDefault();
     const form = new FormData(document.getElementById(formId));
-    displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+    await displayPosts(await queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
 }
 
 export async function openPost(postId) {

@@ -1,18 +1,19 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
-import { updateNavBar } from "./explorePosts";
+import { updateNavBar } from './explorePosts';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { db } from './index.js';
 
 const auth = getAuth();
-const username = null;
+var uID = null;
+var g_username = null;
 
 onAuthStateChanged(auth, (activeUser) => {
   if (activeUser) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
     updateNavBar(true);
-    try {
-      username = activeUser.displayName;
-    } catch {}
+    uID = activeUser.uid.toString();
     // ...
   } else {
     // User is signed out
@@ -21,6 +22,16 @@ onAuthStateChanged(auth, (activeUser) => {
   }
 });
 
+async function pushUserToFirebase(someUID, someUsername) {
+  try {
+    await setDoc(doc(db, 'purdue-users', someUID), {
+      username: someUsername
+    });
+  } catch (e) {
+    console.error("Error adding user document: ", e);
+  }
+}
+
 export async function signUp() {
 
     resetBorders(['#777', '3px'], ['email', 'username', 'pass']);
@@ -28,15 +39,15 @@ export async function signUp() {
 
     const errorId = 'error-message';
     const errorMessages = [
-        "Email domain must be '@purdue.edu'",
-        "Username cannot be over 15 characters!",
-        "Username cannot under 3 characters!",
-        "Password must be at least 6 characters!",
-        "Whitespace is not allowed in this field!",
-        "Field(s) cannot be left empty!",
-        "Invalid Email!",
-        "An account with this email already exists!",
-        "Password is too weak."
+        'Email domain must be "@purdue.edu"',
+        'Username cannot be over 15 characters!',
+        'Username cannot under 3 characters!',
+        'Password must be at least 6 characters!',
+        'Whitespace is not allowed in this field!',
+        'Field(s) cannot be left empty!',
+        'Invalid Email!',
+        'An account with this email already exists!',
+        'Password is too weak.'
     ]
 
     const email = document.getElementById('email').value;
@@ -98,12 +109,14 @@ export async function signUp() {
         inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[8], errorId);
         return;
-      } else {
-        updateProfile(getUsername(), {displayName: username});
-        signedInRedirect();
       }
+
     });
 
+    updateProfile(getUsername(), {displayName: username});
+    await pushUserToFirebase(uID, username);
+    g_username = username;
+    signedInRedirect();
 }
 
 export async function signIn() {
@@ -113,12 +126,12 @@ export async function signIn() {
 
   const errorId = 'error-message';
   const errorMessages = [
-      "Email domain must be '@purdue.edu'",
-      "Field(s) cannot be left empty!",
-      "Invalid Email.",
-      "This account has been disabled.",
-      "No account exists with this email.",
-      "Incorrect Password."
+      'Email domain must be "@purdue.edu"',
+      'Field(s) cannot be left empty!',
+      'Invalid Email.',
+      'This account has been disabled.',
+      'No account exists with this email.',
+      'Incorrect Password.'
   ];
 
   const email = document.getElementById('email').value;
@@ -165,11 +178,10 @@ export async function signIn() {
       inputErrorBorderHighlight('submit-login');
       errorMessage(errorMessages[5], errorId);
       return;
-    } else {
-      signedInRedirect();
     }
-
   });
+
+  signedInRedirect();
 
 }
 
@@ -177,8 +189,18 @@ export function logOut() {
   auth.signOut();
 }
 
-export function getUsername() {
-  return username;
+export async function getUsername() {
+  if (g_username != null) {
+    return g_username;
+  } else {
+    const userSnap = await getDoc(doc(db, 'purdue-users', uID));
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      return data.username.toString();
+    } else {
+      return null;
+    }
+  }
 }
 
 export function isSignedIn() {
@@ -191,8 +213,12 @@ export function isSignedIn() {
 }
 
 function signedInRedirect() {
-  const baseUrl = "https://communitycrag.com";
-  if (window.location.href === baseUrl + "/signup" || window.location.href === baseUrl + "/login") {
+  const baseUrl = 'https://communitycrag.com';
+  if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
     window.location.href = baseUrl;
   }
+}
+
+function printUsername() {
+  console.log('Username: ' + username);
 }

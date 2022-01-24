@@ -1,6 +1,6 @@
 export class Post {
-    constructor(setter, name, image, comment, climbType, grade, starRating) {
-        this.setter = setter;
+    constructor(setterName, name, image, comment, climbType, grade, starRating) {
+        this.setterName = setterName;
         this.name = name;
         this.image = image;
 
@@ -14,11 +14,10 @@ export class Post {
         this.starRating = starRating;
         this.climbType = climbType;
         this.gradeCount = 1;
-        this.starRatingCount = 1;
     }
 
-    getSetter() {
-        return this.setter;
+    getSetterName() {
+        return this.setterName;
     }
 
     getName() {
@@ -55,10 +54,6 @@ export class Post {
         return Math.round(this.starRating);
     }
 
-    getStarRatingCount() {
-        return this.starRatingCount;
-    }
-
     getClimbType() {
         return this.climbType;
     }
@@ -87,12 +82,6 @@ export class Post {
         this.gradeCount++; 
         let suggestionWeight = 1 / this.gradeCount;
         this.grade = ((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade);
-    }
-
-    suggestStarRating(suggestedRating) {
-        this.starRatingCount++; 
-        let suggestionWeight = 1 / this.starRatingCount;
-        this.starRating = ((this.starRatingCount - 1) * suggestionWeight * this.starRating) + (suggestionWeight * suggestedRating);
     }
 
     renderPostList(baseElementId, docId) {
@@ -181,7 +170,7 @@ export class Post {
     viewPost() {
         let element = document.getElementById('post-container');
         element.querySelector('#post-name').innerHTML = this.name;
-        element.querySelector('#setter-name').innerHTML = "Set By " + this.setter;
+        element.querySelector('#setter-name').innerHTML = "Set By " + this.setterName;
         element.querySelector('#post-image').src = this.image;
         element.querySelector('#post-grade').innerHTML = this.getGrade();
         element.querySelector('#post-comment').innerHTML = this.comment;
@@ -247,7 +236,7 @@ export class Post {
 const postConverter = {
     toFirestore: (post) => {
         return {
-            setter: post.getSetter(),
+            setterName: post.getSetter(),
             name: post.getName(),
             image: post.getImage(),
             comment: post.getComment(),
@@ -258,6 +247,6 @@ const postConverter = {
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Post(data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
+        return new Post(data.setterName, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
     }
 };

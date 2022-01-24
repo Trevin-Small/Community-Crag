@@ -12,14 +12,13 @@ export async function pushPostToFireBase(post){
     try {
         const docRef = await addDoc(postRef, {
             name: post.getName(),
+            setterName: post.getSetterName(),
             image: post.getImage(),
             grade: post.getNumericalGrade(),
             gradeCount: post.getGradeCount(),
             comment: post.getComment(),
             climbType: post.getClimbType(),
             starRating: post.getStarRating(),
-            starRatingCount: post.getStarRatingCount(),
-            merge: true
         });
 
     } catch (e) {
@@ -135,9 +134,10 @@ export async function submitPost() {
         imageUrl = url;
     });
 
-    console.log("Username: " + getUsername());
+    const setterName = await getUsername();
+    console.log("Username: " + setterName);
     // Create post object and push it to firestore
-    const newPost = new Post(getUsername(), name, imageUrl, comment, climbType, grade, starRating);
+    const newPost = new Post(setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
     await pushPostToFireBase(newPost);
     homeRedirect();
 }
