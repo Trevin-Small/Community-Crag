@@ -14,6 +14,7 @@ onAuthStateChanged(auth, (activeUser) => {
     // https://firebase.google.com/docs/reference/js/firebase.User
     updateNavBar(true);
     uID = activeUser.uid.toString();
+    getUsername(false);
     // ...
   } else {
     // User is signed out
@@ -187,19 +188,25 @@ export async function signIn() {
 
 export function logOut() {
   auth.signOut();
+  g_username = null;
+  uID = null;
 }
 
-export async function getUsername() {
+export async function getUsername(returnVal = true) {
+  let returnValue = null;
   if (g_username != null) {
-    return g_username;
+    returnValue = g_username;
   } else {
     const userSnap = await getDoc(doc(db, 'purdue-users', uID));
     if (userSnap.exists()) {
       const data = userSnap.data();
-      return data.username.toString();
+      returnValue = data.username.toString();
     } else {
-      return null;
+      returnValue = null;
     }
+  }
+  if (returnVal) {
+    return returnValue;
   }
 }
 
