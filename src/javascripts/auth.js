@@ -1,5 +1,5 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from 'firebase/auth';
-import { errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { infoMessage, errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
 import { updateNavBar } from './explorePosts';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './index.js';
@@ -12,13 +12,17 @@ onAuthStateChanged(auth, (activeUser) => {
   if (activeUser) {
     // User is signed in, see docs for a list of available properties
     // https://firebase.google.com/docs/reference/js/firebase.User
-    updateNavBar(true);
+    if (isEmailVerified()) {
+      updateNavBar(true);
+    }
     uID = activeUser.uid.toString();
-    getUsername(false);
+    updateUsername();
     // ...
   } else {
     // User is signed out
     updateNavBar(false);
+    g_username = null;
+    uID = null;
     // ...
   }
 });
@@ -50,6 +54,7 @@ export async function signUp() {
         'An account with this email already exists!',
         'Password is too weak.'
     ]
+    const emailVerificationMessage = "An email verification is on its way! Check your inbox for a message from us."
 
     const email = document.getElementById('email').value;
     const username = document.getElementById('username').value;
@@ -114,10 +119,14 @@ export async function signUp() {
 
     });
 
+    g_username = username;
     updateProfile(getUsername(), {displayName: username});
     await pushUserToFirebase(uID, username);
-    g_username = username;
-    signedInRedirect();
+    await sendEmailVerification(auth.currentUser);
+    infoMessage(emailVerificationMessage, 'info-message');
+    logOut();
+    //signedInRedirect();
+
 }
 
 export async function signIn() {
@@ -182,6 +191,14 @@ export async function signIn() {
     }
   });
 
+  console.log("Verified: " + await isEmailVerified());
+  const valid = await isValidUser();
+  if (valid == 0) {
+      errorMessage("Please verify your email before signing in.", errorId);
+      logOut();
+      return;
+  } 
+
   signedInRedirect();
 
 }
@@ -210,6 +227,14 @@ export async function getUsername(returnVal = true) {
   }
 }
 
+function updateUsername() {
+  getUsername(false);
+}
+
+export function getUID() {
+  return uID;
+}
+
 export function isSignedIn() {
   try {
     let username = getUsername();
@@ -219,13 +244,32 @@ export function isSignedIn() {
   return true;
 }
 
+export async function isEmailVerified() {
+  await auth.currentUser.reload();
+  try {
+    return auth.currentUser.emailVerified == true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export async function isValidUser() {
+  if ((await isEmailVerified()) == false) {
+    return 0;
+  }
+  if (g_username == null) {
+    return -1;
+  }
+  if (uID !== auth.currentUser.uid) {
+    return -1;
+  }
+  return 1;
+}
+
 function signedInRedirect() {
   const baseUrl = 'https://communitycrag.com';
   if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
     window.location.href = baseUrl;
   }
-}
-
-function printUsername() {
-  console.log('Username: ' + username);
 }

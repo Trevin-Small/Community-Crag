@@ -78,3 +78,15 @@ hr {
     align-items: center;
     text-align: center;
 }
+.info-message {
+    margin: 0.5rem 0 0.5rem 0;
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    background-color: #2e8a33;
+    border: 4px solid black;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

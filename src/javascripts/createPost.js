@@ -3,7 +3,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.js';
 import { postRef } from './index';
 import { Post } from './post.js';
-import { getUsername } from './auth.js';
+import { getUID, getUsername, isValidUser } from './auth.js';
 import { homeRedirect } from './sharedFunctions.js';
 
 const storage = getStorage();
@@ -11,8 +11,9 @@ const storage = getStorage();
 export async function pushPostToFireBase(post){
     try {
         const docRef = await addDoc(postRef, {
-            name: post.getName(),
+            uid: post.getUID(),
             setterName: post.getSetterName(),
+            name: post.getName(),
             image: post.getImage(),
             grade: post.getNumericalGrade(),
             gradeCount: post.getGradeCount(),
@@ -47,9 +48,14 @@ export async function submitPost() {
         "You must upload an image!"
     ]
 
-    const metadata = {
-        contentType: 'image/jpeg',
-    }
+    const valid = await isValidUser();
+    if (valid == -1) {
+        errorMessage("Something went wrong with your credentials. Please log out, close and reopen the tab, and log back in.", errorId);
+        return;
+    } else if (valid == 0) {
+        errorMessage("You cannot post until your email is verified.", errorId);
+        return;
+    } 
 
     resetBorders(['#777', '3px'], ['name', 'comment']);
     resetBorders(['#777', '1px'], ['grade', 'star-rating', 'climb-type']);
@@ -134,10 +140,11 @@ export async function submitPost() {
         imageUrl = url;
     });
 
+    const uid = getUID();
     const setterName = await getUsername();
     console.log("Username: " + setterName);
     // Create post object and push it to firestore
-    const newPost = new Post(setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
+    const newPost = new Post(uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
     await pushPostToFireBase(newPost);
     homeRedirect();
 }

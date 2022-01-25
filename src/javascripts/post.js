@@ -1,5 +1,6 @@
 export class Post {
-    constructor(setterName, name, image, comment, climbType, grade, starRating) {
+    constructor(uid, setterName, name, image, comment, climbType, grade, starRating) {
+        this.uid = uid;
         this.setterName = setterName;
         this.name = name;
         this.image = image;
@@ -14,6 +15,10 @@ export class Post {
         this.starRating = starRating;
         this.climbType = climbType;
         this.gradeCount = 1;
+    }
+
+    getUID() {
+        return this.uid;
     }
 
     getSetterName() {
@@ -233,6 +238,7 @@ export class Post {
     }
 }
 
+/*
 const postConverter = {
     toFirestore: (post) => {
         return {
@@ -249,4 +255,4 @@ const postConverter = {
         const data = snapshot.data(options);
         return new Post(data.setterName, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
     }
-};
+};*/

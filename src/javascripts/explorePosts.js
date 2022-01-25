@@ -80,7 +80,7 @@ export async function displayPosts(queryRef) {
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
+        let post = new Post(data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
     let spacer = document.createElement('span');

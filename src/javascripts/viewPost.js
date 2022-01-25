@@ -7,6 +7,6 @@ export async function viewPost() {
     const docRef = doc(db, 'community-posts', postId);
     const postDoc = await getDoc(docRef);
     const postData = postDoc.data();
-    let post = new Post(postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.starRating);
+    let post = new Post(postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.starRating);
     post.viewPost();
 }
