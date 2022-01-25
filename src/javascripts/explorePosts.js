@@ -80,7 +80,7 @@ export async function displayPosts(queryRef) {
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
+        let post = new Post(data.postTime, data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
     let spacer = document.createElement('span');
@@ -93,7 +93,7 @@ export async function displayPosts(queryRef) {
 export async function searchByFilters(formId, e) {
     e.preventDefault();
     const form = new FormData(document.getElementById(formId));
-    await displayPosts(await queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+    await displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
 }
 
 export async function openPost(postId) {

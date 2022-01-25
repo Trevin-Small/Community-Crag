@@ -1,5 +1,6 @@
 export class Post {
-    constructor(uid, setterName, name, image, comment, climbType, grade, starRating) {
+    constructor(postTime, uid, setterName, name, image, comment, climbType, grade, starRating) {
+        this.postTime = postTime;
         this.uid = uid;
         this.setterName = setterName;
         this.name = name;
@@ -15,6 +16,18 @@ export class Post {
         this.starRating = starRating;
         this.climbType = climbType;
         this.gradeCount = 1;
+    }
+
+    getNumericPostTime() {
+        return this.postTime;
+    }
+
+    getPostTime() {
+        const dateObject = new Date(this.postTime * 10000);
+        const month = dateObject.toLocaleString("en-US", {month: "numeric"}) // December
+        const day = dateObject.toLocaleString("en-US", {day: "numeric"}) // 9
+        const year = dateObject.toLocaleString("en-US", {year: "numeric"}) // 2019
+        return month + "/" + day + "/" + (year % 1000);
     }
 
     getUID() {
@@ -175,12 +188,16 @@ export class Post {
     viewPost() {
         let element = document.getElementById('post-container');
         element.querySelector('#post-name').innerHTML = this.name;
-        element.querySelector('#setter-name').innerHTML = "Set By " + this.setterName;
+        element.querySelector('#post-info').innerHTML = this.setterName + " - " + this.getPostTime();
         element.querySelector('#post-image').src = this.image;
         element.querySelector('#post-grade').innerHTML = this.getGrade();
         element.querySelector('#post-comment').innerHTML = this.comment;
         element.querySelector('#climb-type').innerHTML = this.climbType;
-        element.querySelector('#count').innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
+        if (this.gradeCount > 1) {
+            element.querySelector('#grade-count').innerHTML = (this.gradeCount - 1) + " Grade Suggestions";  
+        } else {
+            element.querySelector('#grade-count').style.display = 'none';
+        }
 
         if (this.starRating >= 1) {
             let starOne = element.querySelector("#star-one");

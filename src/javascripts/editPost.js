@@ -1,14 +1,23 @@
-import { addDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
-import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.js';
-import { postRef } from './index';
-import { Post } from './post.js';
-import { getUID, getUsername, isValidUser } from './auth.js';
-import { homeRedirect } from './sharedFunctions.js';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './index';
+import { Post } from './post';
+
+export async function viewPost() {
+    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
+    const docRef = doc(db, 'community-posts', postId);
+    const postDoc = await getDoc(docRef);
+    if (postDoc.exists()) {
+        const postData = postDoc.data();
+        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.starRating);
+        post.viewPost();
+    } else {
+        window.location.href = "https://communitycrag.com/postnotfound";
+    }
+}
 
 const storage = getStorage();
 
-export async function pushPostToFireBase(post){
+export async function pushEditToFireBase(post){
     try {
         const docRef = await addDoc(postRef, {
             postTime: post.getNumericPostTime(),
@@ -25,16 +34,6 @@ export async function pushPostToFireBase(post){
 
     } catch (e) {
         console.error("Error adding document: ", e);
-    }
-}
-
-export function fileUploaded(value) {
-    if (value != null) {
-        document.getElementById('check').style.display='block';
-        document.getElementById('camera').style.display='none';
-    } else {
-        document.getElementById('check').style.display='none';
-        document.getElementById('camera').style.display='block';
     }
 }
 

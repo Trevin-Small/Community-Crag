@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Crag - Create Post</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/bootstrap-styles.css" rel="stylesheet" />
+        <link href="css/background.css" rel="stylesheet" />
+        <link href="css/buttons.css" rel="stylesheet" />
+        <link href="css/createpost.css" rel="stylesheet" />
+        
+        <script src="https://communitycrag.com/bundle.js"></script>
+    </head>
+    <body class="background">
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;">
+                <a class="navbar-brand" href="https://communitycrag.com/">Community Crag</a>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item" style="display:block;"><a class="nav-link" href="index.html"><img src="./assets/home.svg" style="height:auto;width:100%;"></a></li>
+                        <li class="nav-item" id="nav-log-in" style="display:none;"><a class="nav-link" href="login.html">Login</a></li>
+                        <li class="nav-item" id="nav-sign-up" style="display:none;"><form action="./signup.html"><button class="btn sign-up" href="signup.html">Sign Up</button></form></li>
+                        <li class="nav-item" id="nav-log-out" style="display:none;"><a class="nav-link" href="index.html" onclick="communityCrag.logOut();"><img src="./assets/log-out.svg" style="height:100%;width:auto;"></a></li>
+
+                    </ul>
+            </div>
+        </nav>
+        <!-- Page content-->
+        <div class="scroll" id="scroll">
+            <div class="main-container">
+                <div class="contents">
+                    <h3 id="name">Editing "Some Climb"</h3>
+                    <hr>
+                    <div class="error-message" id="error-message" style="display:none;"></div>
+                    <form class="create-form" autocomplete="off">
+                        <div style="margin:0.25rem;"></div>
+                        <b>Name Your Climb:</b>
+                        <input class="text-input" type="text" name="title" id="name" placeholder="e.g. 'Beanbag'">
+                        <div style="margin:0.75rem;"></div>
+                        <b>Upload an Image:</b>
+                        <label for="file-upload" class="custom-file-upload"><img id="check" class="photo-icon" style="display:none;" src="./assets/check.svg"><img id="camera" class="photo-icon" style="display:block;" src="./assets/camera.svg"> Choose Photo</label>
+                        <input id="file-upload" type="file" accept="image/*" multiple="false" oninput="communityCrag.fileUploaded(document.getElementById('file-upload').value)"/>
+                        <p class="centered-text">Only upload an image if you wish to change the photo. Otherwise, ignore this field. <br> Please edit the photo before uploading and circle any holds used in this problem.</p>
+                        <div style="margin:0.5rem;"></div>
+                        <b>Select a Grade:</b>
+                        <select class="select" name="Grade" id="grade">
+                            <option value="-1">Select</option>
+                            <option value="0">V0</option>
+                            <option value="1">V1</option>
+                            <option value="2">V2</option>
+                            <option value="3">V3</option>
+                            <option value="4">V4</option>
+                            <option value="5">V5</option>
+                            <option value="6">V6</option>
+                            <option value="7">V7</option>
+                            <option value="8">V8</option>
+                            <option value="9">V9</option>
+                            <option value="10">V10</option>
+                            <option value="11">V11</option>
+                            <option value="12">V12</option>
+                            <option value="13">V13</option>
+                            <option value="14">V14</option>
+                            <option value="15">V15</option>
+                        </select>
+                        <div style="margin:0.5rem;"></div>
+                        <b>Select a Star Rating:</b>
+                        <select class="select" name="Star Rating" id="star-rating">
+                            <option value="0">Select</option>
+                            <option value="1">1 ⭐</option>
+                            <option value="2">2 ⭐</option>
+                            <option value="3">3 ⭐</option>
+                            <option value="4">4 ⭐</option>
+                            <option value="5">5 ⭐</option>
+                        </select>
+                        <div style="margin:0.5rem;"></div>
+                        <b>Select a Climb Type:</b>
+                        <select class="select" name="Climb Type" id="climb-type">
+                            <option value="0">Select</option>
+                            <option value="1">Overhang</option>
+                            <option value="2">Slab</option>
+                            <option value="3">Mixed</option>
+                            <option value="4">Vertical</option>
+                            <option value="5">Other</option>
+                        </select>
+                        <div style="margin:0.75rem;"></div>
+                        <b>Write a Short Description:</b>
+                        <textarea class="comment-input" name="comment" id="comment" placeholder="Describe holds to use, unique beta, or anything else worth mentioning..."></textarea>
+                        <div style="margin:0.5rem;"></div>
+                        <button class="btn submit-auth" type="button" id="submit-new-climb" onclick="communityCrag.editPost();">Post New Problem</button>
+                    </form>
+                </div>
+            </div>
+            <span style="margin-bottom:12vh;"></span>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            communityCrag.viewPostEdit();
+        </script>
+    </body>
+</html>

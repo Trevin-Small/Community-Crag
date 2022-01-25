@@ -8,7 +8,7 @@ export async function viewPost() {
     const postDoc = await getDoc(docRef);
     if (postDoc.exists()) {
         const postData = postDoc.data();
-        let post = new Post(postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.starRating);
+        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.starRating);
         post.viewPost();
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";

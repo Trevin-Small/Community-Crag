@@ -60,17 +60,23 @@ export async function signUp() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('pass').value;
 
-    if (email.split('@')[1] !== 'purdue.edu') {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-signup');
-      errorMessage(errorMessages[0], errorId);
-      return;
-    } else if (email.includes(' ')) {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-signup');
-      errorMessage(errorMessages[4], errorId);
-      return;
-    } else if (username.length > 15) {
+    const isException = isExceptionEmail(email);
+    console.log(isException);
+    if (!isException) {
+      if (email.split('@')[1] !== 'purdue.edu') {
+        inputErrorBorderHighlight('email');
+        inputErrorBorderHighlight('submit-signup');
+        errorMessage(errorMessages[0], errorId);
+        return;
+      } else if (email.includes(' ')) {
+        inputErrorBorderHighlight('email');
+        inputErrorBorderHighlight('submit-signup');
+        errorMessage(errorMessages[4], errorId);
+        return;
+      } 
+    }
+    
+    if (username.length > 15) {
       inputErrorBorderHighlight('username');
       inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[1], errorId);
@@ -147,17 +153,21 @@ export async function signIn() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('pass').value;
 
-  if (email.split('@')[1] !== 'purdue.edu') {
-    inputErrorBorderHighlight('email');
-    inputErrorBorderHighlight('submit-login');
-    errorMessage(errorMessages[0], errorId);
-    return;
-  } else if (/^\s*$/.test(email)) {
-    inputErrorBorderHighlight('email');
-    inputErrorBorderHighlight('submit-login');
-    errorMessage(errorMessages[1], errorId);
-    return;
-  } else if (/^\s*$/.test(password)) {
+  if (!isExceptionEmail(email)) {
+    if (/^\s*$/.test(email)) {
+      inputErrorBorderHighlight('email');
+      inputErrorBorderHighlight('submit-login');
+      errorMessage(errorMessages[1], errorId);
+      return;
+    } else if (email.split('@')[1] !== 'purdue.edu') {
+      inputErrorBorderHighlight('email');
+      inputErrorBorderHighlight('submit-login');
+      errorMessage(errorMessages[0], errorId);
+      return;
+    } 
+  }
+  
+  if (/^\s*$/.test(password)) {
     inputErrorBorderHighlight('pass');
     inputErrorBorderHighlight('submit-login');
     errorMessage(errorMessages[1], errorId);
@@ -209,6 +219,28 @@ export function logOut() {
   uID = null;
 }
 
+function isExceptionEmail(email) {
+  email = email.toLowerCase();
+  console.log(email);
+  const exceptions = [
+    "mattoxicwaste@gmail.com",
+    "abbyrobinson.429@gmail.com",
+    "carsonsmall2000@gmail.com",
+    "jason.small@outlook.com",
+    "jaysmallvegas@gmail.com",
+    "shalyn.small@gmail.com",
+    "trevincub03@gmail.com"
+  ]
+  let returnVal = false;
+  exceptions.forEach(function(exception) {
+    if (email === exception) {
+      console.log("Exception: " + exception);
+      returnVal = true;
+    }
+  });
+  return returnVal;
+}
+
 export async function getUsername(returnVal = true) {
   let returnValue = null;
   if (g_username != null) {
@@ -258,10 +290,7 @@ export async function isValidUser() {
   if ((await isEmailVerified()) == false) {
     return 0;
   }
-  if (g_username == null) {
-    return -1;
-  }
-  if (uID !== auth.currentUser.uid) {
+  if (getUsername() == null || auth.currentUser.uid == null) {
     return -1;
   }
   return 1;

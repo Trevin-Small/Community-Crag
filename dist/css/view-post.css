@@ -50,13 +50,12 @@
     margin: 0px;
 }
 .post-img-container {
-    width: 100%;
+    width: 90%;
     overflow: hidden;
     padding: 0px;
     object-fit: cover;
     height: auto;
-    margin: 0px;
-    margin-top: 15px;
+    margin: 5px 0px 10px 0px;
 }
 .post-img {
     width: 100%;
@@ -72,7 +71,7 @@
 .title-row-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     height: auto;
     width: 100%;
@@ -85,6 +84,12 @@
     height: auto;
     width: 100%;
 }
+.post-info {
+    justify-self: center;
+    text-align: center;
+    margin: 3px 0px 3px 0px;
+    padding: 0;
+}
 .post-stats {
     height: auto;
     width: 90%;
@@ -96,7 +101,7 @@
     border-radius:14px;
     border: 3px solid black;
     background-color: var(--off-white);
-    margin: 0.5rem 0 0.5rem 0;
+    margin: 5px 0 5px 0;
     padding: 0px;
 }
 .grade {
@@ -126,9 +131,7 @@
 }
 .post-text-container {
     height: auto;
-    width: 100%;
-    margin-left: 20px;
-    margin-right: 20px;
+    width: 90%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -140,8 +143,12 @@
     margin-top: 5px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: end;
+}
+.name {
+    margin: 0px;
+    padding: 0px;
 }
 .grade-count {
     display: flex;
@@ -156,14 +163,14 @@
     padding: 0px;
 }
 .divider {
-    margin: 5px 0px 5px 0px;
+    margin: 3px 0px 3px 0px;
     padding: 0px;
 }
 .comment {
     height: auto;
-    width: 88%;
+    width: 85%;
     overflow-wrap: break-word;
     margin-left: 5px;
-    text-align: left;
+    text-align: center;
     float: left;
 }
