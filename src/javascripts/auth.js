@@ -39,8 +39,7 @@ async function pushUserToFirebase(someUID, someUsername) {
 
 export async function signUp() {
 
-    resetBorders(['#777', '3px'], ['email', 'username', 'pass']);
-    resetBorders(['black', '3px'], ['submit-signup']);
+    resetBorders(['#777', '3px'], ['email', 'username', 'pass', 're-pass']);
 
     const errorId = 'error-message';
     const errorMessages = [
@@ -52,25 +51,25 @@ export async function signUp() {
         'Field(s) cannot be left empty!',
         'Invalid Email!',
         'An account with this email already exists!',
-        'Password is too weak.'
+        'Password is too weak.',
+        'Passwords must match!'
     ]
     const emailVerificationMessage = "An email verification is on its way! Check your inbox for a message from us."
 
     const email = document.getElementById('email').value;
     const username = document.getElementById('username').value;
     const password = document.getElementById('pass').value;
+    const retypePassword = document.getElementById('re-pass').value;
 
     const isException = isExceptionEmail(email);
     console.log(isException);
     if (!isException) {
       if (email.split('@')[1] !== 'purdue.edu') {
         inputErrorBorderHighlight('email');
-        inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[0], errorId);
         return;
       } else if (email.includes(' ')) {
         inputErrorBorderHighlight('email');
-        inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[4], errorId);
         return;
       } 
@@ -78,28 +77,28 @@ export async function signUp() {
     
     if (username.length > 15) {
       inputErrorBorderHighlight('username');
-      inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[1], errorId);
       return;
     } else if (username.length < 3) {
       inputErrorBorderHighlight('username');
-      inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[2], errorId);
       return;
     } else if (/^\s*$/.test(username)) {
       inputErrorBorderHighlight('username');
-      inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[5], errorId);
       return;
     } else if (password.length < 6) {
       inputErrorBorderHighlight('pass');
-      inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[3], errorId);
       return;
     } else if (password.includes(' ')) {
       inputErrorBorderHighlight('pass');
-      inputErrorBorderHighlight('submit-signup');
       errorMessage(errorMessages[4], errorId);
+      return;
+    } else if (retypePassword !== password) {
+      inputErrorBorderHighlight('pass');
+      inputErrorBorderHighlight('re-pass');
+      errorMessage(errorMessages[9], errorId);
       return;
     }
 
@@ -108,17 +107,14 @@ export async function signUp() {
       var errorCode = error.code;
       if (errorCode == 'auth/email-already-in-use') {
         inputErrorBorderHighlight('email');
-        inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[7], errorId);
         return;
       } else if (errorCode == 'auth/invalid-email') {
         inputErrorBorderHighlight('email');
-        inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[6], errorId);
         return;
       } else if (errorCode == 'auth/weak-password') {
         inputErrorBorderHighlight('email');
-        inputErrorBorderHighlight('submit-signup');
         errorMessage(errorMessages[8], errorId);
         return;
       }
