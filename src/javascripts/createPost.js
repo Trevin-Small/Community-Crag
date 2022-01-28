@@ -56,7 +56,7 @@ export async function submitPost() {
     } else if (valid == 0) {
         errorMessage("You cannot post until your email is verified.", errorId);
         return;
-    } 
+    }
 
     resetBorders(['#777', '3px'], ['name', 'comment']);
     resetBorders(['#777', '1px'], ['grade', 'star-rating', 'climb-type']);
@@ -145,7 +145,7 @@ export async function submitPost() {
     const setterName = await getUsername();
     console.log("Username: " + setterName);
     // Create post object and push it to firestore
-    const newPost = new Post(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
+    const newPost = new Post(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, 1, starRating);
     await pushPostToFireBase(newPost);
     homeRedirect();
 }

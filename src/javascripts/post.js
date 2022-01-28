@@ -1,5 +1,5 @@
 export class Post {
-    constructor(postTime, uid, setterName, name, image, comment, climbType, grade, starRating) {
+    constructor(postTime, uid, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
         this.postTime = postTime;
         this.uid = uid;
         this.setterName = setterName;
@@ -12,10 +12,10 @@ export class Post {
             this.grade = grade;
         }
 
+        this.gradeCount = gradeCount;
         this.comment = comment;
         this.starRating = starRating;
         this.climbType = climbType;
-        this.gradeCount = 1;
     }
 
     getNumericPostTime() {
@@ -97,9 +97,10 @@ export class Post {
     }
 
     suggestGrade(suggestedGrade) {
-        this.gradeCount++; 
+        this.gradeCount = this.gradeCount + 1;
         let suggestionWeight = 1 / this.gradeCount;
-        this.grade = ((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade);
+        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade)) * 1000 ) / 1000;
+        return this.grade;
     }
 
     renderPostList(baseElementId, docId) {
@@ -180,7 +181,7 @@ export class Post {
                 starFive.classList.remove('checked');
             }
         }
-        
+
         let parent = document.getElementById('search-container').parentNode;
         parent.insertBefore(clone, null);
     }

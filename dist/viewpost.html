@@ -48,15 +48,25 @@
                         </div>
                     </div>
                     <div class="post-stats">
-                        <div class="grade"><h3 id="post-grade"></h3></div>
-                        <div class="stars">
-                            <span class="fa fa-star star-icon" id="star-one"></span>
-                            <span class="fa fa-star star-icon" id="star-two"></span>
-                            <span class="fa fa-star star-icon" id="star-three"></span>
-                            <span class="fa fa-star star-icon" id="star-four"></span>
-                            <span class="fa fa-star star-icon" id="star-five"></span>
+                        <div class="stats-row-container">
+                            <div class="stats-column-container left">
+                                <div class="suggest-grade-button" id="delete-post-button" onclick="communityCrag.showDelete();"><img src="./assets/trash.svg" style="margin:0px;"></div>
+                            </div>
+                            <div class="stats-column-container">
+                                <div class="grade"><h3 id="post-grade"></h3></div>
+                                <div class="stars">
+                                    <span class="fa fa-star star-icon" id="star-one"></span>
+                                    <span class="fa fa-star star-icon" id="star-two"></span>
+                                    <span class="fa fa-star star-icon" id="star-three"></span>
+                                    <span class="fa fa-star star-icon" id="star-four"></span>
+                                    <span class="fa fa-star star-icon" id="star-five"></span>
+                                </div>
+                                <h5 class="climb-type" id="climb-type"></h5>
+                            </div>
+                            <div class="stats-column-container right">
+                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showSuggestGrade();"><img src="./assets/suggest-grade.png" class="suggest-grade-icon"></div>
+                            </div>
                         </div>
-                        <h5 class="climb-type" id="climb-type"></h5>
                     </div>
                     <div class="post-img-container">
                         <img src="" class="post-img" id="post-image">
@@ -68,6 +78,54 @@
             </div>
             <div style="margin-top:20vh;"></div>
         </div>
+
+        <div class="shadow-overlay" id="shadow"></div>
+
+        <div class="popup" id="suggest-grade">
+            <div class="stats-row-container">
+                <div class="stats-column-container left" style="width:20%;" ></div>
+                <div class="stats-column-container" style="width:60%;"><b>Suggest a Grade:</b></div>
+                <div class="stats-column-container right" style="width:20%;" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg" style="justify-self:flex-start;"></div>
+            </div>
+            <div style="margin:0.5rem;"></div>
+            <div class="stats-column-container" style="width: auto;">
+                <select class="select" name="Grade" id="grade">
+                    <option value="-1">Select</option>
+                    <option value="0">V0</option>
+                    <option value="1">V1</option>
+                    <option value="2">V2</option>
+                    <option value="3">V3</option>
+                    <option value="4">V4</option>
+                    <option value="5">V5</option>
+                    <option value="6">V6</option>
+                    <option value="7">V7</option>
+                    <option value="8">V8</option>
+                    <option value="9">V9</option>
+                    <option value="10">V10</option>
+                    <option value="11">V11</option>
+                    <option value="12">V12</option>
+                    <option value="13">V13</option>
+                    <option value="14">V14</option>
+                    <option value="15">V15</option>
+                </select>
+                <div style="margin:0.5rem;"></div>
+                <button type="button" style="width:60%;" class="btn" onclick="communityCrag.suggestGrade()">Suggest Grade</button>
+            </div>
+        </div>
+
+        <div class="popup" id="delete-post">
+            <div class="stats-row-container">
+                <div class="stats-column-container" style="width:20%;"></div>
+                <div class="stats-column-container" style="width:60%;"><b>Are You Sure You Want To Delete Your Post?</b></div>
+                <div class="stats-column-container right" style="width:20%;" onclick="communityCrag.hideDelete()"><img src="./assets/x.svg" style="justify-self:flex-start;"></div>
+            </div>
+            <div style="margin:0.5rem;"></div>
+            <div class="stats-row-container" style="width: auto;">
+                <button type="button" class="btn" onclick="communityCrag.hideDelete()">Cancel</button>
+                <button type="button" class="btn" onclick="communityCrag.deletePost()">Delete</button>
+            </div>
+        </div>
+
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Main JS-->

@@ -1,0 +1,24 @@
+<svg width="170" height="140" xmlns="http://www.w3.org/2000/svg">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <g id="svg_30">
+   <text font-style="normal" font-weight="bold" xml:space="preserve" text-anchor="start" font-family="'Assistant'" font-size="150" id="svg_21" y="121.78538" x="7.66065" stroke-width="0" stroke="#000" fill="#000000">V</text>
+   <g id="svg_29">
+    <g id="svg_23">
+     <line stroke="#000" stroke-width="17" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="64.37024" x2="131.27581" y1="17.0947" x1="131.27581" fill="none"/>
+     <g stroke="null" id="svg_14">
+      <line transform="rotate(45 143.191 28.6246)" stroke="#000" stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_3" y2="28.55373" x2="167.46919" y1="28.69625" x1="118.91311" fill="none"/>
+      <line transform="rotate(-45 118.377 29.8536)" stroke="#000" stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_13" y2="29.78225" x2="142.65439" y1="29.92477" x1="94.09831" fill="none"/>
+     </g>
+    </g>
+    <g transform="rotate(180 130.784 104)" id="svg_28">
+     <line stroke="#000" stroke-width="17" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_24" y2="130.48134" x2="131.27569" y1="83.2058" x1="131.27569" fill="none"/>
+     <g stroke="null" id="svg_27">
+      <line transform="rotate(45 143.191 94.7358)" stroke="#000" stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_25" y2="94.66483" x2="167.46907" y1="94.80735" x1="118.91299" fill="none"/>
+      <line transform="rotate(-45 118.377 95.9648)" stroke="#000" stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_26" y2="95.89335" x2="142.65427" y1="96.03587" x1="94.09819" fill="none"/>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+</svg>

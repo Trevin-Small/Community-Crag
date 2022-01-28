@@ -25,7 +25,7 @@ function queryPosts(grade, starRating, climbType) {
 
     // If searching for V10, include all climbs V10+
     let gradeSearchRange = 1;
-    if (grade == 10) { 
+    if (grade == 10) {
         gradeSearchRange = 10;
     }
 
@@ -49,15 +49,15 @@ function queryPosts(grade, starRating, climbType) {
     } else if (grade != null) {
 
         return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
-        
+
     } else if (climbType != null) {
 
         return query(postRef, where("climbType", "==", climbType));
-        
+
     } else if (starRating != null) {
 
         return query(postRef, where("starRating", "==", starRating));
-        
+
     } else {
 
         return null;
@@ -80,7 +80,7 @@ export async function displayPosts(queryRef) {
 
     dbPosts.forEach((doc) => {
         const data = doc.data();
-        let post = new Post(data.postTime, data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating,);
+        let post = new Post(data.postTime, data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.gradeCount, data.starRating,);
         post.renderPostList('placeholder-post', doc.id);
     });
     let spacer = document.createElement('span');
@@ -98,33 +98,4 @@ export async function searchByFilters(formId, e) {
 
 export async function openPost(postId) {
     window.location.href = "https://communitycrag.com/viewpost?" + postId;
-}
-
-export function updateNavBar(isSignedIn) {
-    let notSignedIn = "block";
-    let signedIn = "none";
-    if (isSignedIn) {
-        notSignedIn = "none";
-        signedIn = "block";
-    }
-    try {
-        document.getElementById('nav-log-in').style.display = notSignedIn;
-    } catch {
-        
-    }
-    try {
-        document.getElementById('nav-sign-up').style.display = notSignedIn;
-    } catch {
-        
-    }
-    try {
-        document.getElementById('nav-log-out').style.display = signedIn;
-    } catch {
-
-    }
-    try {
-        document.getElementById('nav-new-post').style.display = signedIn;
-    } catch {
-
-    }
 }

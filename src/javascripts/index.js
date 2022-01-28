@@ -16,7 +16,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const storage = getStorage();
+export const postCollectionName = 'community-posts';
+export const usersCollectionName = 'purdue-users';
 export const db = getFirestore(app);
-export const postRef = collection(db, 'community-posts');
-export const userRef = collection(db, 'purdue-users');
+export const postRef = collection(db, postCollectionName);
+export const userRef = collection(db, usersCollectionName);
 export const imageRef = ref(storage, 'purdue');

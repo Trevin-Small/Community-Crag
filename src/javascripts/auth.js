@@ -1,6 +1,5 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification } from 'firebase/auth';
 import { infoMessage, errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
-import { updateNavBar } from './explorePosts';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './index.js';
 
@@ -72,9 +71,9 @@ export async function signUp() {
         inputErrorBorderHighlight('email');
         errorMessage(errorMessages[4], errorId);
         return;
-      } 
+      }
     }
-    
+
     if (username.length > 15) {
       inputErrorBorderHighlight('username');
       errorMessage(errorMessages[1], errorId);
@@ -160,9 +159,9 @@ export async function signIn() {
       inputErrorBorderHighlight('submit-login');
       errorMessage(errorMessages[0], errorId);
       return;
-    } 
+    }
   }
-  
+
   if (/^\s*$/.test(password)) {
     inputErrorBorderHighlight('pass');
     inputErrorBorderHighlight('submit-login');
@@ -203,7 +202,7 @@ export async function signIn() {
       errorMessage("Please verify your email before signing in.", errorId);
       logOut();
       return;
-  } 
+  }
 
   signedInRedirect();
 
@@ -297,4 +296,30 @@ function signedInRedirect() {
   if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
     window.location.href = baseUrl;
   }
+}
+
+function updateNavBar(isSignedIn) {
+  let notSignedIn = "block";
+  let signedIn = "none";
+  let signedInFlex = 'none';
+  if (isSignedIn) {
+      notSignedIn = "none";
+      signedIn = "block";
+      signedInFlex = 'flex';
+  }
+  try {
+      document.getElementById('nav-log-in').style.display = notSignedIn;
+  } catch {}
+  try {
+      document.getElementById('nav-sign-up').style.display = notSignedIn;
+  } catch {}
+  try {
+      document.getElementById('nav-log-out').style.display = signedIn;
+  } catch {}
+  try {
+      document.getElementById('nav-new-post').style.display = signedIn;
+  } catch {}
+  try {
+    document.getElementById('nav-new-post').style.display = signedIn;
+  } catch {}
 }
