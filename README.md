@@ -1,4 +1,4 @@
-# Community-Crag
+# [Community-Crag](https://communitycrag.com)
 A collaborative website that allows for climbers to share routes, suggest grades, and document their add-on problems with one another.  
 
 Basically, social media but for climbing gyms.
