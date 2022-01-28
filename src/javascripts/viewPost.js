@@ -97,6 +97,11 @@ export function hideDelete() {
 }
 
 export async function deletePost() {
+
+    // -------------*IMPORTANT*---------------
+    // TODO: Remove image from cloud bucket!!!
+    // ---------------------------------------
+
     hideDelete();
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
     const docRef = doc(db, postCollectionName, postId);
