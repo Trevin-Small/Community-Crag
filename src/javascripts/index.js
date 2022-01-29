@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore';
-import { getStorage, ref } from "firebase/storage";
+import { getStorage } from "firebase/storage";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -15,10 +15,10 @@ const firebaseConfig = {
   };
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage();
+export const storage = getStorage();
 export const postCollectionName = 'community-posts';
 export const usersCollectionName = 'purdue-users';
+export const imageStorageName = 'purdue/';
 export const db = getFirestore(app);
 export const postRef = collection(db, postCollectionName);
 export const userRef = collection(db, usersCollectionName);
-export const imageRef = ref(storage, 'purdue');

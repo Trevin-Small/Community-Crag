@@ -1,5 +1,6 @@
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
-import { db, postCollectionName } from './index';
+import { ref, deleteObject } from 'firebase/storage';
+import { db, postCollectionName, imageStorageName, storage } from './index';
 import { isSignedIn, getUID } from './auth.js';
 import { Post } from './post';
 
@@ -98,13 +99,13 @@ export function hideDelete() {
 
 export async function deletePost() {
 
-    // -------------*IMPORTANT*---------------
-    // TODO: Remove image from cloud bucket!!!
-    // ---------------------------------------
-
     hideDelete();
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
     const docRef = doc(db, postCollectionName, postId);
+    const postDoc = await getDoc(docRef);
+    const postData = postDoc.data();
+    const imageRef = ref(storage, postData.image);
+    await deleteObject(imageRef);
     await deleteDoc(docRef);
     window.location.href = "https://communitycrag.com";
 }

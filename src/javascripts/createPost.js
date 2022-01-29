@@ -1,12 +1,10 @@
 import { addDoc } from 'firebase/firestore';
-import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.js';
-import { postRef } from './index';
+import { postRef, storage } from './index';
 import { Post } from './post.js';
 import { getUID, getUsername, isValidUser } from './auth.js';
 import { homeRedirect } from './sharedFunctions.js';
-
-const storage = getStorage();
 
 export async function pushPostToFireBase(post){
     try {
