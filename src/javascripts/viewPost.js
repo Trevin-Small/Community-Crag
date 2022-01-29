@@ -1,7 +1,8 @@
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
-import { db, postCollectionName, imageStorageName, storage } from './index';
+import { db, postCollectionName, storage } from './index';
 import { isSignedIn, getUID } from './auth.js';
+import { homeRedirect } from './sharedFunctions';
 import { Post } from './post';
 
 export async function viewPost() {
@@ -23,8 +24,6 @@ function showButtons(post) {
     if (isSignedIn()) {
         document.getElementById('suggest-grade-button').style.display = displayType;
     }
-    console.log(post.getUID());
-    console.log(getUID());
     if (post.getUID() === getUID()) {
         document.getElementById('delete-post-button').style.display = displayType;
     }
@@ -107,5 +106,5 @@ export async function deletePost() {
     const imageRef = ref(storage, postData.image);
     await deleteObject(imageRef);
     await deleteDoc(docRef);
-    window.location.href = "https://communitycrag.com";
+    homeRedirect();
 }
