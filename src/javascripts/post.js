@@ -8,9 +8,9 @@ import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/fires
 */
 
 export class Post {
-    constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
+    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
         this.postTime = postTime;
-        this.postId = postId;
+        this.postID = postID;
         this.setterUID = setterUID;
         this.setterName = setterName;
         this.name = name;
@@ -41,7 +41,7 @@ export class Post {
     }
 
     getPostID() {
-        return this.postId;
+        return this.postID;
     }
 
     getSetterUID() {
@@ -141,11 +141,11 @@ export class Post {
         return this.grade;
     }
 
-    renderPostList(baseElementId, postId) {
+    renderPostList(baseElementId, postID) {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
-        clone.id = postId;
-        clone.querySelector('#post-container').setAttribute('id',postId);
+        clone.id = postID;
+        clone.querySelector('#post-container').setAttribute('id',postID);
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();
@@ -295,10 +295,19 @@ export class Post {
 } /* class Post() */
 
 /*
+ * A sort of wrapper for constructor so its easier to modify the post class without changing
+ * the functions that get data from the db and convert it to post objects
+*/
+
+export function constructPostObject(postData) {
+    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setter, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating)
+} /* constructPostObject() */
+
+/*
  * Javascript doesnt support overloading, so this is basically an alternate "constructor"
 */
 
-export function newPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
+export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
     return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating)
 } /* newPostObject() */
 
@@ -312,7 +321,7 @@ export async function getMultiplePosts(queryRef) {
 
     dbPosts.forEach((postDoc) => {
         const postData = postDoc.data();
-        let post = new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setter, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating,);
+        let post = constructPostObject(postDoc.data());
         postArray.push(post);
     });
     return postArray;
@@ -326,7 +335,7 @@ export async function getPost(postRef) {
     const postDoc = await getDoc(postRef);
     if (postDoc.exists()) {
         const postData = postDoc.data();
-        return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+        return constructPostObject(postDoc.data());
     }
     return null;
 } /* getPost() */
