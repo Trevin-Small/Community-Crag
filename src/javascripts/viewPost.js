@@ -22,7 +22,7 @@ async function showButtons(post) {
     if (signedIn) {
         document.getElementById('suggest-grade-button').style.display = displayType;
     }
-    if (post.getUID() === getUID()) {
+    if (post.getSetterUID() === getUID()) {
         document.getElementById('delete-post-button').style.display = displayType;
     }
 }
@@ -47,6 +47,8 @@ export async function suggestGrade() {
     const postReference = doc(db, postCollectionName, postId);
     let post = await getPost(postReference);
 
+    hideSuggestGrade();
+
     if (post != null) {
         post.suggestGrade(isSuggestingHarder);
         await setPost(postReference, post);
@@ -54,8 +56,6 @@ export async function suggestGrade() {
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";
     }
-
-    hideSuggestGrade();
 }
 
 export function showDelete() {

@@ -1,10 +1,10 @@
-import { collection, doc, getDoc, addDoc, setDoc } from 'firebase/firestore';
-import { ref } from 'firebase/storage';
+import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/firestore';
 
 export class Post {
-    constructor(postTime, uid, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
+    constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
         this.postTime = postTime;
-        this.uid = uid;
+        this.postId = postId;
+        this.setterUID = setterUID;
         this.setterName = setterName;
         this.name = name;
         this.image = image;
@@ -33,8 +33,12 @@ export class Post {
         return month + "/" + day + "/" + (year % 1000);
     }
 
-    getUID() {
-        return this.uid;
+    getPostID() {
+        return this.postId;
+    }
+
+    getSetterUID() {
+        return this.setterUID;
     }
 
     getSetterName() {
@@ -130,11 +134,11 @@ export class Post {
         return this.grade;
     }
 
-    renderPostList(baseElementId, docId) {
+    renderPostList(baseElementId, postId) {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
-        clone.id = docId;
-        clone.querySelector('#post-container').setAttribute('id',docId);
+        clone.id = postId;
+        clone.querySelector('#post-container').setAttribute('id',postId);
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();
@@ -157,7 +161,7 @@ export class Post {
             gradeCount.style.visibility = 'visible';
         }
 
-        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";  
+        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";
 
         if (this.starRating >= 1) {
             let starOne = clone.querySelector("#star-one");
@@ -222,7 +226,7 @@ export class Post {
         element.querySelector('#post-comment').innerHTML = this.comment;
         element.querySelector('#climb-type').innerHTML = this.climbType;
         if (this.gradeCount > 1) {
-            element.querySelector('#grade-count').innerHTML = (this.gradeCount - 1) + " Grade Suggestions";  
+            element.querySelector('#grade-count').innerHTML = (this.gradeCount - 1) + " Grade Suggestions";
         } else {
             element.querySelector('#grade-count').style.display = 'none';
         }
@@ -283,25 +287,27 @@ export class Post {
     }
 }
 
-export async function viewPost() {
-    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    const docRef = doc(db, postCollectionName, postId);
-    const postDoc = await getDoc(docRef);
-    if (postDoc.exists()) {
+export function newPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
+    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating)
+}
+
+export async function getMultiplePosts(queryRef) {
+    let postArray = [];
+    let dbPosts = await getDocs(queryRef);
+
+    dbPosts.forEach((postDoc) => {
         const postData = postDoc.data();
-        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
-        post.viewPost();
-        showButtons(post);
-    } else {
-        window.location.href = "https://communitycrag.com/postnotfound";
-    }
+        let post = new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setter, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating,);
+        postArray.push(post);
+    });
+    return postArray;
 }
 
 export async function getPost(postRef) {
     const postDoc = await getDoc(postRef);
     if (postDoc.exists()) {
         const postData = postDoc.data();
-        return new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+        return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
     }
     return null;
 }
@@ -318,7 +324,7 @@ export async function setPost(reference, post, isNewPost = false){
 
     const data =  {
         postTime: post.getNumericPostTime(),
-        uid: post.getUID(),
+        setterUID: post.getSetterUID(),
         setterName: post.getSetterName(),
         name: post.getName(),
         image: post.getImage(),

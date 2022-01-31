@@ -1,6 +1,6 @@
-import { getDocs, query, where } from 'firebase/firestore';
+import { query, where } from 'firebase/firestore';
 import { postCollection } from './index.js';
-import { Post } from './post.js';
+import { Post, getMultiplePosts } from './post.js';
 
 function queryPosts(grade, starRating, climbType) {
 
@@ -71,18 +71,16 @@ export async function displayPosts(queryRef) {
         queryRef = postCollection;
     }
 
-    let postList = document.getElementById('post-list');
-    while (postList.lastChild != null && postList.lastChild.nodeName !== 'DIV') {
-        postList.removeChild(postList.lastChild);
+    let postListContainer = document.getElementById('post-list');
+    while (postListContainer.lastChild != null && postListContainer.lastChild.nodeName !== 'DIV') {
+        postListContainer.removeChild(postListContainer.lastChild);
     }
 
-    let dbPosts = await getDocs(queryRef);
-
-    dbPosts.forEach((doc) => {
-        const data = doc.data();
-        let post = new Post(data.postTime, data.uid, data.setter, data.name, data.image, data.comment, data.climbType, data.grade, data.gradeCount, data.starRating,);
-        post.renderPostList('placeholder-post', doc.id);
+    let postArray = await getMultiplePosts(queryRef);
+    postArray.forEach((post) => {
+        post.renderPostList('placeholder-post', post.getPostID());
     });
+
     let spacer = document.createElement('span');
     spacer.style.marginBottom = '12vh';
     let parent = document.getElementById('search-container').parentNode;

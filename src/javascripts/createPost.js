@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.js';
 import { postCollection, storage } from './index';
-import { Post, setPost } from './post.js';
+import { newPostObject, setPost } from './post.js';
 import { getUID, getUsername, isValidUser } from './auth.js';
 import { homeRedirect } from './sharedFunctions.js';
 
@@ -122,7 +122,7 @@ export async function submitPost() {
     const setterName = await getUsername();
     console.log("Username: " + setterName);
     // Create post object and push it to firestore
-    const newPost = new Post(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, 1, starRating);
+    const newPost = newPostObject(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
     await setPost(postCollection, newPost, true);
     homeRedirect();
 }
