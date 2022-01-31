@@ -53,6 +53,7 @@ export async function suggestGrade() {
         post.suggestGrade(isSuggestingHarder);
         await setPost(postReference, post);
         post.viewPost();
+        document.getElementById('suggest-grade-submit').disabled = false;
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";
     }

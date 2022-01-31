@@ -299,7 +299,8 @@ export class Post {
  * the functions that get data from the db and convert it to post objects
 */
 
-export function constructPostObject(postData) {
+export function constructPostObject(postDoc) {
+    const postData = postDoc.data();
     return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setter, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating)
 } /* constructPostObject() */
 
@@ -320,8 +321,7 @@ export async function getMultiplePosts(queryRef) {
     let dbPosts = await getDocs(queryRef);
 
     dbPosts.forEach((postDoc) => {
-        const postData = postDoc.data();
-        let post = constructPostObject(postDoc.data());
+        let post = constructPostObject(postDoc);
         postArray.push(post);
     });
     return postArray;
@@ -334,8 +334,7 @@ export async function getMultiplePosts(queryRef) {
 export async function getPost(postRef) {
     const postDoc = await getDoc(postRef);
     if (postDoc.exists()) {
-        const postData = postDoc.data();
-        return constructPostObject(postDoc.data());
+        return constructPostObject(postDoc);
     }
     return null;
 } /* getPost() */
@@ -359,27 +358,30 @@ export async function setPost(reference, post, isNewPost = false){
         return;
     }
 
-    const data =  {
-        postTime: post.getNumericPostTime(),
-        setterUID: post.getSetterUID(),
-        setterName: post.getSetterName(),
-        name: post.getName(),
-        image: post.getImage(),
-        grade: post.getNumericalGrade(),
-        gradeCount: post.getGradeCount(),
-        comment: post.getComment(),
-        climbType: post.getClimbType(),
-        starRating: post.getStarRating(),
-    };
-
     if (isNewPost) {
         try {
+            const data =  {
+                postTime: post.getNumericPostTime(),
+                setterUID: post.getSetterUID(),
+                setterName: post.getSetterName(),
+                name: post.getName(),
+                image: post.getImage(),
+                grade: post.getNumericalGrade(),
+                gradeCount: post.getGradeCount(),
+                comment: post.getComment(),
+                climbType: post.getClimbType(),
+                starRating: post.getStarRating(),
+            };
             await addDoc(reference, data);
         } catch (e) {
             console.error("Error adding document: ", e);
         }
     } else {
         try {
+            const data =  {
+                grade: post.getNumericalGrade(),
+                gradeCount: post.getGradeCount()
+            };
             await setDoc(reference, data, {merge: true});
         } catch (e) {
             console.error("Error editing document: ", e);

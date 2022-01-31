@@ -89,9 +89,9 @@ export async function displayPosts(queryRef) {
 }
 
 export async function searchByFilters(formId, e) {
-    e.preventDefault();
     const form = new FormData(document.getElementById(formId));
     await displayPosts(queryPosts(form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+    document.getElementById('search-button').disabled = false;
 }
 
 export async function openPost(postId) {
