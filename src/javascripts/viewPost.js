@@ -19,9 +19,10 @@ export async function viewPost() {
     }
 }
 
-function showButtons(post) {
+async function showButtons(post) {
     const displayType = 'flex';
-    if (isSignedIn()) {
+    const signedIn = await isSignedIn();
+    if (signedIn) {
         document.getElementById('suggest-grade-button').style.display = displayType;
     }
     if (post.getUID() === getUID()) {
@@ -32,24 +33,21 @@ function showButtons(post) {
 export function showSuggestGrade() {
     document.getElementById('shadow').style.display = 'block';
     document.getElementById('shadow').style.visibility = 'visible';
-    document.getElementById('suggest-grade').style.display = 'flex';
-    document.getElementById('suggest-grade').style.visibility = 'visible';
+    document.getElementById('suggest-grade-popup').style.display = 'flex';
+    document.getElementById('suggest-grade-popup').style.visibility = 'visible';
 }
 
 export function hideSuggestGrade() {
     document.getElementById('shadow').style.display = 'none';
     document.getElementById('shadow').style.visibility = 'hidden';
-    document.getElementById('suggest-grade').style.display = 'none';
-    document.getElementById('suggest-grade').style.visibility = 'hidden';
+    document.getElementById('suggest-grade-popup').style.display = 'none';
+    document.getElementById('suggest-grade-popup').style.visibility = 'hidden';
 }
 
 export async function suggestGrade() {
-    const suggestedGrade = parseInt(document.getElementById('grade').value) + 0.5;
-    console.log(suggestedGrade);
-    if (suggestedGrade < 0) {
-        hideSuggestGrade();
-        return;
-    }
+    const isSuggestingHarder = document.getElementById('suggestion-choice').checked;
+    console.log(isSuggestingHarder);
+
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
     console.log("Post ID: ", postId);
     const docRef = doc(db, postCollectionName, postId);
@@ -58,7 +56,7 @@ export async function suggestGrade() {
     if (postDoc.exists()) {
         const postData = postDoc.data();
         let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
-        post.suggestGrade(suggestedGrade);
+        post.suggestGrade(isSuggestingHarder);
 
         await setDoc(docRef, {
             postTime: post.getNumericPostTime(),

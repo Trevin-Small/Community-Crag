@@ -236,36 +236,31 @@ function isExceptionEmail(email) {
   return returnVal;
 }
 
-export async function getUsername(returnVal = true) {
-  let returnValue = null;
-  if (g_username != null) {
-    returnValue = g_username;
-  } else {
+export async function getUsername() {
+  try {
     const userSnap = await getDoc(doc(db, 'purdue-users', uID));
     if (userSnap.exists()) {
       const data = userSnap.data();
-      returnValue = data.username.toString();
+      return data.username.toString();
     } else {
-      returnValue = null;
+      return null;
     }
-  }
-  if (returnVal) {
-    return returnValue;
+  } catch {
+    return null;
   }
 }
 
 function updateUsername() {
-  getUsername(false);
+  g_username = getUsername();
 }
 
 export function getUID() {
   return uID;
 }
 
-export function isSignedIn() {
-  try {
-    let username = getUsername();
-  } catch {
+export async function isSignedIn() {
+  const username = await getUsername();
+  if (username == null) {
     return false;
   }
   return true;

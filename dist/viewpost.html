@@ -15,6 +15,7 @@
         <link href="css/background.css" rel="stylesheet" />
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/view-post.css" rel="stylesheet" />
+        <link href="css/slider.css" rel="stylesheet" />
         <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
@@ -81,35 +82,26 @@
 
         <div class="shadow-overlay" id="shadow"></div>
 
-        <div class="popup" id="suggest-grade">
-            <div class="stats-row-container">
-                <div class="stats-column-container left" style="width:20%;" ></div>
-                <div class="stats-column-container" style="width:60%;"><b>Suggest a Grade:</b></div>
-                <div class="stats-column-container right" style="width:20%;" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg" style="justify-self:flex-start;"></div>
+        <div class="popup" id="suggest-grade-popup">
+            <div class="popup-row-container">
+                <div class="popup-column-container"><b>Suggest a Grade:</b></div>
             </div>
-            <div style="margin:0.5rem;"></div>
-            <div class="stats-column-container" style="width: auto;">
-                <select class="select" name="Grade" id="grade">
-                    <option value="-1">Select</option>
-                    <option value="0">V0</option>
-                    <option value="1">V1</option>
-                    <option value="2">V2</option>
-                    <option value="3">V3</option>
-                    <option value="4">V4</option>
-                    <option value="5">V5</option>
-                    <option value="6">V6</option>
-                    <option value="7">V7</option>
-                    <option value="8">V8</option>
-                    <option value="9">V9</option>
-                    <option value="10">V10</option>
-                    <option value="11">V11</option>
-                    <option value="12">V12</option>
-                    <option value="13">V13</option>
-                    <option value="14">V14</option>
-                    <option value="15">V15</option>
-                </select>
+            <div class="popup-row-container" style="position:absolute;top:0px;justify-content:flex-end;">
+                <div class="popup-column-container right" style="justify-content:center;padding:0.5rem;" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg"></div>
+            </div>
+            <div class="popup-column-container" style="width:100%;">
+                <div class="popup-row-container">
+                    <b><i>Easier</i></b>
+                    <div class="switch-container">
+                        <label class="switch">
+                            <input id="suggestion-choice" type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <b><i>Harder</i></b>
+                </div>
                 <div style="margin:0.5rem;"></div>
-                <button type="button" style="width:60%;" class="btn" onclick="communityCrag.suggestGrade()">Suggest Grade</button>
+                <button type="button" style="width:60%;" class="btn popup-btn" onclick="communityCrag.suggestGrade()">Suggest Grade</button>
             </div>
         </div>
 

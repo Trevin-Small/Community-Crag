@@ -1,7 +1,7 @@
 .btn {
     width: auto;
     height: auto;
-    background-color: var(--old-gold); /* Green */
+    background-color: #ffa100;/*var(--old-gold); *//* Green */
     color: white;
     text-align: center;
     text-decoration: none;
@@ -12,6 +12,7 @@
     border-radius: 8px;
     transition-duration: 0.4s;
     cursor: pointer;
+    white-space: normal;
 }
 .btn:hover {
     background-color: white; 
@@ -40,4 +41,13 @@
     border: 2px solid var(--dark-gray);
     margin: 1px;
     box-shadow: none;
+}
+.popup-btn {
+    margin: 0px;
+    box-sizing: border-box;
+    border: 3px solid black;
+    border-radius: 14px;
+}
+.popup-btn:hover {
+    border: 3px solid black;
 }

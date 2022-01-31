@@ -51,6 +51,13 @@ export class Post {
     }
 
     getGrade() {
+
+        /* Prevent showing + and - grades on V0 & V1 */
+
+        if (this.grade < 2) {
+            return "V" + parseInt(Math.floor(this.grade));
+        }
+
         if (this.grade - Math.floor(this.grade) >= 0.75) {
             return "V" + Math.floor(this.grade) + "+";
         } else if (this.grade - Math.floor(this.grade) <= 0.25) {
@@ -96,11 +103,36 @@ export class Post {
         this.gradeCount = 1;
     }
 
-    suggestGrade(suggestedGrade) {
+    suggestGrade(isSuggestingHarder) {
+
+        /* Disallow downvoting grades lower than 0 and higher than 15 */
+
+        if (this.getNumericalGrade < 1) {
+            this.grade = 0.5;
+            return;
+        } else if (this.getNumericalGrade() >= 15.25) {
+            this.grade = 15.5;
+            return;
+        }
+
+        let voteWeight = 1;
+
+        if (!isSuggestingHarder) {
+            voteWeight = -1;
+        }
+
+        this.gradeCount = this.gradeCount + 1;
+        let suggestionWeight = 1 / this.gradeCount;
+        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (voteWeight + this.grade))) * 1000 ) / 1000;
+        return this.grade;
+
+        /* Old code for when grading was open to any grade suggestion -> just a weighted average */
+        /*
         this.gradeCount = this.gradeCount + 1;
         let suggestionWeight = 1 / this.gradeCount;
         this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade)) * 1000 ) / 1000;
         return this.grade;
+        */
     }
 
     renderPostList(baseElementId, docId) {
