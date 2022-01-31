@@ -1,17 +1,14 @@
-import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, postCollectionName, storage } from './index';
 import { isSignedIn, getUID } from './auth.js';
 import { homeRedirect } from './sharedFunctions';
-import { Post } from './post';
+import { getPost, setPost } from './post';
 
 export async function viewPost() {
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    const docRef = doc(db, postCollectionName, postId);
-    const postDoc = await getDoc(docRef);
-    if (postDoc.exists()) {
-        const postData = postDoc.data();
-        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+    let post = await getPost(doc(db, postCollectionName, postId));
+    if (post != null) {
         post.viewPost();
         showButtons(post);
     } else {
@@ -46,33 +43,14 @@ export function hideSuggestGrade() {
 
 export async function suggestGrade() {
     const isSuggestingHarder = document.getElementById('suggestion-choice').checked;
-    console.log(isSuggestingHarder);
-
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    console.log("Post ID: ", postId);
-    const docRef = doc(db, postCollectionName, postId);
+    const postReference = doc(db, postCollectionName, postId);
+    let post = await getPost(postReference);
 
-    const postDoc = await getDoc(docRef);
-    if (postDoc.exists()) {
-        const postData = postDoc.data();
-        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+    if (post != null) {
         post.suggestGrade(isSuggestingHarder);
-
-        await setDoc(docRef, {
-            postTime: post.getNumericPostTime(),
-            uid: post.getUID(),
-            setterName: post.getSetterName(),
-            name: post.getName(),
-            image: post.getImage(),
-            grade: post.getNumericalGrade(),
-            gradeCount: post.getGradeCount(),
-            comment: post.getComment(),
-            climbType: post.getClimbType(),
-            starRating: post.getStarRating(),
-        });
-
+        await setPost(postReference, post);
         post.viewPost();
-
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";
     }
@@ -95,14 +73,12 @@ export function hideDelete() {
 }
 
 export async function deletePost() {
-
     hideDelete();
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    const docRef = doc(db, postCollectionName, postId);
-    const postDoc = await getDoc(docRef);
-    const postData = postDoc.data();
-    const imageRef = ref(storage, postData.image);
+    const postReference = doc(db, postCollectionName, postId);
+    const post = await getPost(postReference);
+    const imageRef = ref(storage, post.getImage());
     await deleteObject(imageRef);
-    await deleteDoc(docRef);
+    await deleteDoc(postReference);
     homeRedirect();
 }

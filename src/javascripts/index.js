@@ -20,5 +20,5 @@ export const postCollectionName = 'community-posts';
 export const usersCollectionName = 'purdue-users';
 export const imageStorageName = 'purdue/';
 export const db = getFirestore(app);
-export const postRef = collection(db, postCollectionName);
-export const userRef = collection(db, usersCollectionName);
+export const postCollection = collection(db, postCollectionName);
+export const userCollection = collection(db, usersCollectionName);

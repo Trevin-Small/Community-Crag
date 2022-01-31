@@ -1,5 +1,5 @@
 import { getDocs, query, where } from 'firebase/firestore';
-import { postRef } from './index.js';
+import { postCollection } from './index.js';
 import { Post } from './post.js';
 
 function queryPosts(grade, starRating, climbType) {
@@ -32,31 +32,31 @@ function queryPosts(grade, starRating, climbType) {
     // All possible Query Combinations
     if (grade != null && starRating != null && climbType != null) {
 
-        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
+        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
 
     } else if (grade != null && starRating != null) {
 
-        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
+        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
 
     } else if (grade != null && climbType != null) {
 
-        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
+        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
 
     } else if (starRating != null && climbType != null) {
 
-        return query(postRef, where("starRating", "==", starRating), where("climbType", "==", climbType));
+        return query(postCollection, where("starRating", "==", starRating), where("climbType", "==", climbType));
 
     } else if (grade != null) {
 
-        return query(postRef, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
+        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
 
     } else if (climbType != null) {
 
-        return query(postRef, where("climbType", "==", climbType));
+        return query(postCollection, where("climbType", "==", climbType));
 
     } else if (starRating != null) {
 
-        return query(postRef, where("starRating", "==", starRating));
+        return query(postCollection, where("starRating", "==", starRating));
 
     } else {
 
@@ -68,7 +68,7 @@ function queryPosts(grade, starRating, climbType) {
 export async function displayPosts(queryRef) {
 
     if (queryRef == null) {
-        queryRef = postRef;
+        queryRef = postCollection;
     }
 
     let postList = document.getElementById('post-list');

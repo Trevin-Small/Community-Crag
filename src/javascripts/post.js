@@ -1,3 +1,6 @@
+import { collection, doc, getDoc, addDoc, setDoc } from 'firebase/firestore';
+import { ref } from 'firebase/storage';
+
 export class Post {
     constructor(postTime, uid, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
         this.postTime = postTime;
@@ -125,14 +128,6 @@ export class Post {
         let suggestionWeight = 1 / this.gradeCount;
         this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (voteWeight + this.grade))) * 1000 ) / 1000;
         return this.grade;
-
-        /* Old code for when grading was open to any grade suggestion -> just a weighted average */
-        /*
-        this.gradeCount = this.gradeCount + 1;
-        let suggestionWeight = 1 / this.gradeCount;
-        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * suggestedGrade)) * 1000 ) / 1000;
-        return this.grade;
-        */
     }
 
     renderPostList(baseElementId, docId) {
@@ -288,21 +283,63 @@ export class Post {
     }
 }
 
-/*
-const postConverter = {
-    toFirestore: (post) => {
-        return {
-            setterName: post.getSetter(),
-            name: post.getName(),
-            image: post.getImage(),
-            comment: post.getComment(),
-            climbType: post.getClimbType(),
-            grade: post.getGrade(),
-            starRating: post.getStarRating(),
-        };
-    },
-    fromFirestore: (snapshot, options) => {
-        const data = snapshot.data(options);
-        return new Post(data.setterName, data.name, data.image, data.comment, data.climbType, data.grade, data.starRating);
+export async function viewPost() {
+    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
+    const docRef = doc(db, postCollectionName, postId);
+    const postDoc = await getDoc(docRef);
+    if (postDoc.exists()) {
+        const postData = postDoc.data();
+        let post = new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+        post.viewPost();
+        showButtons(post);
+    } else {
+        window.location.href = "https://communitycrag.com/postnotfound";
     }
-};*/
+}
+
+export async function getPost(postRef) {
+    const postDoc = await getDoc(postRef);
+    if (postDoc.exists()) {
+        const postData = postDoc.data();
+        return new Post(postData.postTime, postData.uid, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
+    }
+    return null;
+}
+
+export async function setPost(reference, post, isNewPost = false){
+
+    if (!isNewPost && reference instanceof collection) {
+        console.log("Error: Trying to edit a post with only a collection reference.");
+        return;
+    } else if (isNewPost && reference instanceof doc) {
+        console.log("Error: Cannot specify document reference when creating a post. Posts are created with random ID's.");
+        return;
+    }
+
+    const data =  {
+        postTime: post.getNumericPostTime(),
+        uid: post.getUID(),
+        setterName: post.getSetterName(),
+        name: post.getName(),
+        image: post.getImage(),
+        grade: post.getNumericalGrade(),
+        gradeCount: post.getGradeCount(),
+        comment: post.getComment(),
+        climbType: post.getClimbType(),
+        starRating: post.getStarRating(),
+    };
+
+    if (isNewPost) {
+        try {
+            await addDoc(reference, data);
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+    } else {
+        try {
+            await setDoc(reference, data, {merge: true});
+        } catch (e) {
+            console.error("Error editing document: ", e);
+        }
+    }
+}
