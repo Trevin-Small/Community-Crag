@@ -8,7 +8,7 @@ import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/fires
 */
 
 export class Post {
-    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
+    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, hasSuggestedGrade) {
         this.postTime = postTime;
         this.postID = postID;
         this.setterUID = setterUID;
@@ -26,6 +26,7 @@ export class Post {
         this.comment = comment;
         this.starRating = starRating;
         this.climbType = climbType;
+        this.hasSuggestedGrade = hasSuggestedGrade;
     }
 
     getNumericPostTime() {
@@ -97,6 +98,14 @@ export class Post {
         return this.climbType;
     }
 
+    getHasSuggestedGrade(uid) {
+        if (uid in this.hasSuggestedGrade) {
+            return this.hasSuggestedGrade[uid];
+        } else {
+            return 0;
+        }
+    }
+
     setName(name) {
         this.name = name;
     }
@@ -117,7 +126,11 @@ export class Post {
         this.gradeCount = 1;
     }
 
-    suggestGrade(isSuggestingHarder) {
+    setHasSuggestedGrade(hasSuggestedGrade) {
+        this.hasSuggestedGrade = hasSuggestedGrade;
+    }
+
+    suggestGrade(isSuggestingHarder, uid) {
 
         /* Disallow downvoting grades lower than 0 and higher than 15 */
 
@@ -138,6 +151,11 @@ export class Post {
         this.gradeCount = this.gradeCount + 1;
         let suggestionWeight = 1 / this.gradeCount;
         this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (voteWeight + this.grade))) * 1000 ) / 1000;
+
+        const suggestion = isSuggestingHarder == true ? 1 : -1;
+
+        this.hasSuggestedGrade[uid] = suggestion;
+
         return this.grade;
     }
 
@@ -225,6 +243,9 @@ export class Post {
     }
 
     viewPost() {
+
+        document.getElementById('page-title').innerHTML = "Crag | " + this.name;
+
         let element = document.getElementById('post-container');
         element.querySelector('#post-name').innerHTML = this.name;
         element.querySelector('#post-info').innerHTML = this.setterName + " - " + this.getPostTime();
@@ -301,7 +322,8 @@ export class Post {
 
 export function constructPostObject(postDoc) {
     const postData = postDoc.data();
-    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setter, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating)
+    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment,
+                    postData.climbType, postData.grade, postData.gradeCount, postData.starRating, postData.userList);
 } /* constructPostObject() */
 
 /*
@@ -309,7 +331,7 @@ export function constructPostObject(postDoc) {
 */
 
 export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
-    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating)
+    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating, []);
 } /* newPostObject() */
 
 /*
@@ -371,6 +393,7 @@ export async function setPost(reference, post, isNewPost = false){
                 comment: post.getComment(),
                 climbType: post.getClimbType(),
                 starRating: post.getStarRating(),
+                userList: post.getHasSuggestedGrade()
             };
             await addDoc(reference, data);
         } catch (e) {

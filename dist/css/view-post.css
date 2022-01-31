@@ -119,16 +119,17 @@
     justify-content: center;
     align-items: center;
     padding: 0px;
+    margin: 0;
 }
 .suggest-grade-button {
     position: relative;
     right: 0px;
-    height: 40px;
-    width: 40px;
-    padding: 8px;
+    height: 2.4rem;
+    width: 2.4rem;
+    padding: 5px;
     border: 3px solid black;
     border-radius: 8px;
-    margin: 0 1em 0 1em;
+    margin: 0 0.75em 0 0.75em;
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -237,15 +238,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 0 32px 0 32px;
+    padding: 0;
+    margin: 0.5rem;
 }
 .right {
+    align-items: flex-end;
     justify-self: flex-end;
-    padding: 0.5em 0.5em 0 0;
 }
 .left {
+    align-items: flex-start;
     justify-self: flex-start;
-    padding: 0.5em 0 0 0.5em;
 }
 .popup {
     position: fixed;
@@ -254,7 +256,7 @@
     transform: translate(-50%, -50%);
     width: auto;
     height: auto;
-    padding: 12px;
+    padding: 0.5rem;
     border: 3px solid black;
     border-radius: 14px;
     display: none;

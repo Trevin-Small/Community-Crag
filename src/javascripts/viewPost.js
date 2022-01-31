@@ -17,13 +17,32 @@ export async function viewPost() {
 }
 
 async function showButtons(post) {
-    const displayType = 'flex';
+    const flex = 'flex';
+    const none = 'none';
     const signedIn = await isSignedIn();
+
     if (signedIn) {
-        document.getElementById('suggest-grade-button').style.display = displayType;
+        document.getElementById('suggest-grade-button').style.display = flex;
+
+        const suggestion = post.getHasSuggestedGrade(getUID());
+
+        if (suggestion == 0) {
+            document.getElementById('not-suggested-icon').style.display = flex;
+            document.getElementById('up-grade-icon').style.display = none;
+            document.getElementById('down-grade-icon').style.display = none;
+        } else if (suggestion == 1) {
+            document.getElementById('not-suggested-icon').style.display = none;
+            document.getElementById('up-grade-icon').style.display = flex;
+            document.getElementById('down-grade-icon').style.display = none;
+        } else {
+            document.getElementById('not-suggested-icon').style.display = none;
+            document.getElementById('up-grade-icon').style.display = none;
+            document.getElementById('down-grade-icon').style.display = flex;
+        }
     }
+
     if (post.getSetterUID() === getUID()) {
-        document.getElementById('delete-post-button').style.display = displayType;
+        document.getElementById('delete-post-button').style.display = flex;
     }
 }
 
@@ -50,10 +69,17 @@ export async function suggestGrade() {
     hideSuggestGrade();
 
     if (post != null) {
-        post.suggestGrade(isSuggestingHarder);
-        await setPost(postReference, post);
-        post.viewPost();
+
+        const suggestion = post.getHasSuggestedGrade(getUID());
+
+        if (suggestion == 0) {
+            post.suggestGrade(isSuggestingHarder);
+            await setPost(postReference, post);
+            post.viewPost();
+        }
+
         document.getElementById('suggest-grade-submit').disabled = false;
+
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";
     }

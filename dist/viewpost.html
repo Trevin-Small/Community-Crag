@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Community Crag - Collaborative Climbing" />
         <meta name="author" content="Trevin Small" />
-        <title>Crag - View Post</title>
+        <title id="page-title">Crag |</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
         <!--Font awesome Stars-->
@@ -65,7 +65,7 @@
                                 <h5 class="climb-type" id="climb-type"></h5>
                             </div>
                             <div class="stats-column-container right">
-                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showSuggestGrade();"><img src="./assets/suggest-grade.png" class="suggest-grade-icon"></div>
+                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showSuggestGrade();"><img id="not-suggested-icon" style="display:none;" src="./assets/suggest-grade.png" class="suggest-grade-icon"><img id="up-grade-icon" style="display:none;" src="./assets/up-grade.svg" class="suggest-grade-icon"><img id="down-grade-icon" style="display:none;" src="./assets/down-grade.svg" class="suggest-grade-icon"></div>
                             </div>
                         </div>
                     </div>
@@ -86,8 +86,8 @@
             <div class="popup-row-container">
                 <div class="popup-column-container"><b>Suggest a Grade:</b></div>
             </div>
-            <div class="popup-row-container" style="position:absolute;top:0px;justify-content:flex-end;">
-                <div class="popup-column-container right" style="justify-content:center;padding:0.5rem;" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg"></div>
+            <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
+                <div class="popup-column-container right" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg"></div>
             </div>
             <div class="popup-column-container" style="width:100%;">
                 <div class="popup-row-container">
@@ -107,9 +107,11 @@
 
         <div class="popup" id="delete-post">
             <div class="popup-row-container">
-                <div class="popup-column-container"><b>Are You Sure You Want To Delete Your Post?</b></div>
+                <div class="popup-column-container" style="width:1.25rem;"></div>
+                <div class="popup-column-container"><b>Are You Sure You Want<br>To Delete Your Post?</b></div>
+                <div class="popup-column-container" style="width:1.25rem;"></div>
             </div>
-            <div class="popup-row-container" style="position:absolute;top:0px;justify-content:flex-end;">
+            <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
                 <div class="popup-column-container right" onclick="communityCrag.hideDelete()"><img src="./assets/x.svg"></div>
             </div>
             <div style="margin:0.5rem;"></div>
