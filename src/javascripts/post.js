@@ -1,5 +1,12 @@
 import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/firestore';
 
+/*
+ * Post object that encapsulates all important information about a user's post.
+ * Provides methods for getting and setting values, as well as useful methods
+ * like the render function which creates HTML elements to display its data
+ * on the home query page.
+*/
+
 export class Post {
     constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating) {
         this.postTime = postTime;
@@ -285,11 +292,19 @@ export class Post {
     toString() {
         return "Name: " + this.name + "\nGrade: " + this.grade + "\nStar Rating: " + this.starRating + "\nComment: " + this.comment;
     }
-}
+} /* class Post() */
+
+/*
+ * Javascript doesnt support overloading, so this is basically an alternate "constructor"
+*/
 
 export function newPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
     return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating)
-}
+} /* newPostObject() */
+
+/*
+ * Get multiple posts based on query params
+*/
 
 export async function getMultiplePosts(queryRef) {
     let postArray = [];
@@ -301,7 +316,11 @@ export async function getMultiplePosts(queryRef) {
         postArray.push(post);
     });
     return postArray;
-}
+} /* getMultiplePosts() */
+
+/*
+ * Get a single post with a doc(db, collection, id) reference
+*/
 
 export async function getPost(postRef) {
     const postDoc = await getDoc(postRef);
@@ -310,9 +329,18 @@ export async function getPost(postRef) {
         return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment, postData.climbType, postData.grade, postData.gradeCount, postData.starRating);
     }
     return null;
-}
+} /* getPost() */
+
+/*
+ * Add or edit a post to the db based on the passed reference and boolean.
+*/
 
 export async function setPost(reference, post, isNewPost = false){
+
+    /*
+     * Make sure that the reference type (collection or document)
+     * matches the passed boolean specifying editing
+    */
 
     if (!isNewPost && reference instanceof collection) {
         console.log("Error: Trying to edit a post with only a collection reference.");
@@ -348,4 +376,4 @@ export async function setPost(reference, post, isNewPost = false){
             console.error("Error editing document: ", e);
         }
     }
-}
+} /* setPost() */
