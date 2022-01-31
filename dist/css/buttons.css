@@ -1,7 +1,7 @@
 .btn {
     width: auto;
     height: auto;
-    background-color: #ffa100;/*var(--old-gold); *//* Green */
+    background-color: #ffa100;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -9,6 +9,7 @@
     font-size: 16px;
     padding: 6px 8px 6px 8px;
     margin-left: 5px;
+    border: 3px solid #ffa100;
     border-radius: 8px;
     transition-duration: 0.4s;
     cursor: pointer;
@@ -45,9 +46,28 @@
 .popup-btn {
     margin: 0px;
     box-sizing: border-box;
-    border: 3px solid black;
-    border-radius: 14px;
+    border: 3px solid #ffa100;
 }
 .popup-btn:hover {
+    border: 3px solid black;
+}
+.delete-btn {
+    margin: 0px;
+    box-sizing: border-box;
+    background-color: #fc3c22;
+    border: 3px solid #fc3c22;
+}
+.delete-btn:hover {
+    color: black;
+    background-color: white;
+    border: 3px solid black;
+}
+.cancel-btn {
+    background-color: darkgray;
+    border: 3px solid darkgray;
+}
+.cancel-btn:hover {
+    color: black;
+    background-color: white;
     border: 3px solid black;
 }
