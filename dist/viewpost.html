@@ -84,7 +84,7 @@
 
         <div class="popup" id="suggest-grade-popup">
             <div class="popup-row-container">
-                <div class="popup-column-container"><b>Suggest a Grade:</b></div>
+                <div class="popup-column-container"><b>Suggest Difficulty:</b></div>
             </div>
             <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
                 <div class="popup-column-container right" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg"></div>
@@ -101,7 +101,7 @@
                     <b><i>Harder</i></b>
                 </div>
                 <div style="margin:0.5rem;"></div>
-                <button type="button" style="width:60%;" id="suggest-grade-submit" class="btn popup-btn" onclick="this.disabled=true;communityCrag.suggestGrade()">Suggest Grade</button>
+                <button type="button" style="width:60%;" id="suggest-grade-submit" class="btn popup-btn" onclick="this.disabled=true;communityCrag.suggestGrade()">Submit</button>
             </div>
         </div>
 
@@ -117,6 +117,7 @@
             <div style="margin:0.5rem;"></div>
             <div class="popup-row-container" style="width: auto;">
                 <button type="button" class="btn cancel-btn" onclick="communityCrag.hideDelete()">Cancel</button>
+                <div style="width:1.25rem;"></div>
                 <button type="button" class="btn delete-btn" onclick="communityCrag.deletePost()">Delete</button>
             </div>
         </div>

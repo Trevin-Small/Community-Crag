@@ -8,7 +8,7 @@ import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/fires
 */
 
 export class Post {
-    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, hasSuggestedGrade) {
+    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
         this.postTime = postTime;
         this.postID = postID;
         this.setterUID = setterUID;
@@ -26,7 +26,7 @@ export class Post {
         this.comment = comment;
         this.starRating = starRating;
         this.climbType = climbType;
-        this.hasSuggestedGrade = hasSuggestedGrade;
+        this.userSuggestionList = userSuggestionList;
     }
 
     getNumericPostTime() {
@@ -98,9 +98,13 @@ export class Post {
         return this.climbType;
     }
 
-    getHasSuggestedGrade(uid) {
-        if (uid in this.hasSuggestedGrade) {
-            return this.hasSuggestedGrade[uid];
+    getUserSuggestionList() {
+        return this.userSuggestionList;
+    }
+
+    getUserSuggestion(uid) {
+        if (uid in this.userSuggestionList) {
+            return this.userSuggestionList[uid];
         } else {
             return 0;
         }
@@ -126,12 +130,16 @@ export class Post {
         this.gradeCount = 1;
     }
 
-    setHasSuggestedGrade(hasSuggestedGrade) {
-        this.hasSuggestedGrade = hasSuggestedGrade;
+    setUserSuggestion(suggestion, uid) {
+        this.userSuggestionList[uid] = suggestion;
     }
 
-    suggestGrade(isSuggestingHarder, uid) {
+    setUserSuggestionList(userSuggestionList) {
+        this.userSuggestionList = userSuggestionList;
+    }
 
+    suggestGrade(suggestionNum, uid) {
+        this.setUserSuggestion(suggestionNum, uid);
         /* Disallow downvoting grades lower than 0 and higher than 15 */
 
         if (this.getNumericalGrade < 1) {
@@ -142,19 +150,9 @@ export class Post {
             return;
         }
 
-        let voteWeight = 1;
-
-        if (!isSuggestingHarder) {
-            voteWeight = -1;
-        }
-
         this.gradeCount = this.gradeCount + 1;
         let suggestionWeight = 1 / this.gradeCount;
-        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (voteWeight + this.grade))) * 1000 ) / 1000;
-
-        const suggestion = isSuggestingHarder == true ? 1 : -1;
-
-        this.hasSuggestedGrade[uid] = suggestion;
+        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (suggestionNum + this.grade))) * 1000 ) / 1000;
 
         return this.grade;
     }
@@ -186,7 +184,7 @@ export class Post {
             gradeCount.style.visibility = 'visible';
         }
 
-        gradeCount.innerHTML = (this.gradeCount - 1) + " Suggested Grades";
+        gradeCount.innerHTML = (this.gradeCount - 1) + " Grade Suggestions";
 
         if (this.starRating >= 1) {
             let starOne = clone.querySelector("#star-one");
@@ -331,7 +329,7 @@ export function constructPostObject(postDoc) {
 */
 
 export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
-    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating, []);
+    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating, {});
 } /* newPostObject() */
 
 /*
@@ -393,7 +391,7 @@ export async function setPost(reference, post, isNewPost = false){
                 comment: post.getComment(),
                 climbType: post.getClimbType(),
                 starRating: post.getStarRating(),
-                userList: post.getHasSuggestedGrade()
+                userList: post.getUserSuggestionList()
             };
             await addDoc(reference, data);
         } catch (e) {
@@ -403,7 +401,8 @@ export async function setPost(reference, post, isNewPost = false){
         try {
             const data =  {
                 grade: post.getNumericalGrade(),
-                gradeCount: post.getGradeCount()
+                gradeCount: post.getGradeCount(),
+                userList: post.getUserSuggestionList()
             };
             await setDoc(reference, data, {merge: true});
         } catch (e) {

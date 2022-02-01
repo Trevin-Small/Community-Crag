@@ -5,9 +5,12 @@ import { isSignedIn, getUID } from './auth.js';
 import { homeRedirect } from './sharedFunctions';
 import { getPost, setPost } from './post';
 
-export async function viewPost() {
-    const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-    let post = await getPost(doc(db, postCollectionName, postId));
+export async function viewPost(postObject = null) {
+    let post = postObject;
+    if (post == null) {
+        const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
+        post = await getPost(doc(db, postCollectionName, postId));
+    }
     if (post != null) {
         post.viewPost();
         showButtons(post);
@@ -24,7 +27,7 @@ async function showButtons(post) {
     if (signedIn) {
         document.getElementById('suggest-grade-button').style.display = flex;
 
-        const suggestion = post.getHasSuggestedGrade(getUID());
+        const suggestion = post.getUserSuggestion(getUID());
 
         if (suggestion == 0) {
             document.getElementById('not-suggested-icon').style.display = flex;
@@ -61,27 +64,35 @@ export function hideSuggestGrade() {
 }
 
 export async function suggestGrade() {
+    document.getElementById('suggest-grade-submit').disabled = true;
+    document.getElementById('suggest-grade-button').setAttribute('onclick','');
     const isSuggestingHarder = document.getElementById('suggestion-choice').checked;
     const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
     const postReference = doc(db, postCollectionName, postId);
-    let post = await getPost(postReference);
 
-    hideSuggestGrade();
+    try {
+        let post = await getPost(postReference);
 
-    if (post != null) {
+        hideSuggestGrade();
 
-        const suggestion = post.getHasSuggestedGrade(getUID());
+        if (post != null) {
 
-        if (suggestion == 0) {
-            post.suggestGrade(isSuggestingHarder);
-            await setPost(postReference, post);
-            post.viewPost();
+            const userSuggestionState = post.getUserSuggestion(getUID());
+
+            // If user has never previously voted
+            if (userSuggestionState == 0) {
+                const suggestionNum = isSuggestingHarder == true ? 1 : -1;
+                post.suggestGrade(suggestionNum, getUID());
+                await setPost(postReference, post);
+                viewPost(post);
+            }
+
+        } else {
+            window.location.href = "https://communitycrag.com/postnotfound";
         }
-
+    } catch {
         document.getElementById('suggest-grade-submit').disabled = false;
-
-    } else {
-        window.location.href = "https://communitycrag.com/postnotfound";
+        document.getElementById('suggest-grade-button').setAttribute('onclick','communityCrag.showSuggestGrade();');
     }
 }
 

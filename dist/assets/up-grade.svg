@@ -1,16 +1,16 @@
 <svg width="140" height="140" xmlns="http://www.w3.org/2000/svg">
  <g id="Layer_1">
   <title>Layer 1</title>
-  <text fill="#000000" stroke="#000" stroke-width="0" x="6.32928" y="106.09813" id="svg_4" font-size="108" font-family="Helvetica Neue" text-anchor="start" xml:space="preserve" font-weight="bold">V</text>
-  <g transform="rotate(180 104.304 67.1537)" id="svg_5" fill="none" stroke="#ff0000" stroke-width="17" filter="url(#svg_5_blur)">
-   <line stroke-width="17" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="107.62298" x2="104.39506" y1="32.02847" x1="104.39506" fill="#00bf00" stroke="#00bf00"/>
-   <line stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_3" y2="57.54765" x2="130.04398" y1="26.68451" x1="98.99913" fill="#00bf00" stroke="#00bf00"/>
-   <line stroke-width="15" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_13" y2="26.77818" x2="109.42799" y1="57.82303" x1="78.56485" fill="#00bf00" stroke="#00bf00"/>
+  <text font-weight="bold" xml:space="preserve" text-anchor="start" font-family="Helvetica Neue" font-size="108" id="svg_4" y="107.76477" x="5.91262" stroke-width="0" stroke="#000" fill="#000000">V</text>
+  <g filter="url(#svg_5_blur)" stroke-width="17" stroke="#ff0000" fill="none" id="svg_5">
+   <line stroke="#ff0000" fill="#ff0000" x1="104.81172" y1="34.94509" x2="104.81172" y2="110.5396" id="svg_1" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="17"/>
+   <line stroke="#ff0000" fill="#ff0000" x1="99.41579" y1="29.60113" x2="130.46064" y2="60.46427" id="svg_3" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="15"/>
+   <line stroke="#ff0000" fill="#ff0000" x1="78.98151" y1="60.73965" x2="109.84465" y2="29.6948" id="svg_13" stroke-linejoin="undefined" stroke-linecap="undefined" stroke-width="15"/>
   </g>
  </g>
  <defs>
   <filter id="svg_5_blur">
-   <feGaussianBlur in="SourceGraphic" stdDeviation="0"/>
+   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
   </filter>
  </defs>
 </svg>

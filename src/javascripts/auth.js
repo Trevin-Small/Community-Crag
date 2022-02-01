@@ -61,7 +61,6 @@ export async function signUp() {
     const retypePassword = document.getElementById('re-pass').value;
 
     const isException = isExceptionEmail(email);
-    console.log(isException);
     if (!isException) {
       if (email.split('@')[1] !== 'purdue.edu') {
         inputErrorBorderHighlight('email');
@@ -216,10 +215,9 @@ export function logOut() {
 
 function isExceptionEmail(email) {
   email = email.toLowerCase();
-  console.log(email);
   const exceptions = [
     "mattoxicwaste@gmail.com",
-    "abbyrobinson.429@gmail.com",
+    "abbyrobinson429@gmail.com",
     "carsonsmall2000@gmail.com",
     "jason.small@outlook.com",
     "jaysmallvegas@gmail.com",
@@ -229,7 +227,6 @@ function isExceptionEmail(email) {
   let returnVal = false;
   exceptions.forEach(function(exception) {
     if (email === exception) {
-      console.log("Exception: " + exception);
       returnVal = true;
     }
   });
