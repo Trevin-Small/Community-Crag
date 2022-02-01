@@ -104,25 +104,31 @@ export async function submitPost() {
             break;
     }
 
-    // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
-    const date = new Date();
-    const postTime = date.getTime();
-    const storageRef = ref(storage, 'purdue/' + postTime);
-    let imageUrl = null;
+    document.getElementById('submit-new-climb').disabled = true;
 
-    // Upload image to firebase storage
-    await uploadBytes(storageRef, image[0]);
+    try {
+        // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
+        const date = new Date();
+        const postTime = date.getTime();
+        const storageRef = ref(storage, 'purdue/' + postTime);
+        let imageUrl = null;
 
-    // Get the url of the image
-    await getDownloadURL(storageRef).then((url) => {
-        imageUrl = url;
-    });
+        // Upload image to firebase storage
+        await uploadBytes(storageRef, image[0]);
 
-    const uid = getUID();
-    const setterName = await getUsername();
-    console.log("Username: " + setterName);
-    // Create post object and push it to firestore
-    const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
-    await setPost(postCollection, newPost, true);
-    homeRedirect();
+        // Get the url of the image
+        await getDownloadURL(storageRef).then((url) => {
+            imageUrl = url;
+        });
+
+        const uid = getUID();
+        const setterName = await getUsername();
+        console.log("Username: " + setterName);
+        // Create post object and push it to firestore
+        const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
+        await setPost(postCollection, newPost, true);
+        homeRedirect();
+    } catch {
+        document.getElementById('submit-new-climb').disabled = false;
+    }
 }
