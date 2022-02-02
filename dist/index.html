@@ -124,10 +124,9 @@
         <script>
             communityCrag.displayPosts(null);
 
-            window.onbeforeunload = function(e) {
-                console.log("Refreshing...");
+            window.addEventListener('beforeunload', function(e) {
                 communityCrag.updatePreviousURL(window.location.href);
-            };
+            });
         </script>
     </body>
 </html>

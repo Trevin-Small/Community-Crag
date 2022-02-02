@@ -50,7 +50,9 @@
       <button type="button" id="home" onclick="window.location.href='https://communitycrag.com/login'">Return To Login Page</button>
     </div>
     <script>
-      communityCrag.updatePreviousURL(window.location.href);
+        window.addEventListener('beforeunload', function(e) {
+            communityCrag.updatePreviousURL(window.location.href);
+        });
     </script>
   </body>
 </html>

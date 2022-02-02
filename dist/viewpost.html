@@ -126,8 +126,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Main JS-->
         <script>
-            communityCrag.updatePreviousURL(window.location.href);
             communityCrag.viewPost();
+            window.addEventListener('beforeunload', function(e) {
+                communityCrag.updatePreviousURL(window.location.href);
+            });
         </script>
     </body>
 </html>
