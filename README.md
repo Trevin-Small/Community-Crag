@@ -1,24 +1,27 @@
 # [Community-Crag](https://communitycrag.com)
-A collaborative website that allows for climbers to share routes, suggest grades, and document their add-on problems with one another.  
+**A collaborative website that allows climbers to share add on problems and suggest grades on climbs.  
+Basically, a form of social media for climbing gyms.**
 
-Basically, social media but for climbing gyms.
+![Community Crag Home](https://github.com/Trevin-Small/Community-Crag/blob/main/dist/assets/ccrag.png)
 
-![Community Crag Home](https://github.com/Trevin-Small/Community-Crag/blob/main/dist/assets/CCrag.png)
-
-All posts are 100% public, and can be viewed by anyone. However, creating posts requires users to sign in.
-
-Targeted at the Purdue University Climbing wall to improve the climbing experience for all students.  
-
-Open source and free of charge. Keep climbing fun!  
+All posts are public, and can be viewed by any visitor. However, creating posts and suggesting grades requires users to sign in. (With a Purdue email). 
 
 ### Note: 
 This website is mobile-first. While computer navigation is still supported, the website is best viewed on a mobile device.
+<br>
+<br>
+## About the website:
+#### Open source, free to use, and no ads. Fork it, use it at your gym or for something besides climbing!
+- This website is built with Vanilla javascript, and uses Firebase/Firestore for site hosting, user authentication, and database storage. 
+- Further, it also uses the Google cloud storage API to store and fetch images that users upload.
 
-Built with HTML, CSS, Javascript, Webpack, Firebase/Firestore for site database and hosting, as well as Google cloud storage for image hosting.
+The javacsript is minified and bundled with webpack (Though only in dev mode. If you want better efficieny, build the project in production mode).
 
-[Community Crag](https://communitycrag.com)
+Targeted at the Purdue University Climbing wall to improve the climbing experience for all students. 
 
+## Special thanks to:
+### Michael Marr
+- csi.js -> enabling client side .html file includes. [Check out the project](https://github.com/LexmarkWeb/csi.js)
 
-### Special thanks to:
-Michael Marr - csi.js -> enabling client side .html includes  
-[Check out the project](https://github.com/LexmarkWeb/csi.js)
+### Liam Schenk & Elliot Cram
+- They came up with the idea for this website!
