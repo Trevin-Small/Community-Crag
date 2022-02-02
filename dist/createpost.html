@@ -38,7 +38,7 @@
                     <h3>Create New Problem</h3>
                     <hr>
                     <div class="error-message" id="error-message" style="display:none;"></div>
-                    <form class="create-form" autocomplete="off">
+                    <form class="create-form" autocomplete="off" onsubmit="event.preventDefault();">
                         <div style="margin:0.25rem;"></div>
                         <b>Name Your Climb:</b>
                         <input class="text-input" type="text" name="title" id="name" placeholder="e.g. 'Beanbag'">

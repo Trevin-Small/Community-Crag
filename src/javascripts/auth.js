@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './index.js';
 import { Errors } from './errors.js';
@@ -196,7 +196,7 @@ export async function signIn() {
   console.log("Verified: " + await isEmailVerified());
   const valid = await isValidUser();
   if (valid == 0) {
-      Errors.errorMessage("Please verify your email before signing in.", errorId);
+      Errors.errorMessage("You received an email from us. Please complete the verification before signing in.", errorId);
       logOut();
       return;
   }
@@ -223,6 +223,42 @@ function isExceptionEmail(email) {
     }
   });
   return returnVal;
+}
+
+export async function sendPasswordReset() {
+
+  document.getElementById('submit-reset').disabled = true;
+
+  const email = document.getElementById('email').value;
+  const infoId = "info-message";
+  const errorId = "error-message";
+
+  let actionCodeSettings = {
+    url: 'https://communitycrag.com/login'
+  };
+
+  await sendPasswordResetEmail(auth, email, actionCodeSettings).then(function(){
+    Errors.infoMessage("A password reset email is on its way! It may take a few minutes to deliver.", infoId);
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    if (errorCode === 'auth/invalid-email') {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-reset');
+      Errors.errorMessage("Invalid email.", errorId);
+      return;
+    } else if (errorCode === "auth/user-not-found") {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-reset');
+      Errors.errorMessage("An account does not exist for the given email.", errorId);
+    } else {
+      console.log(error);
+      console.log("Error code: " + errorCode);
+      Errors.inputErrorBorderHighlight('submit-reset');
+      Errors.errorMessage("Oops! An internal error was encountered.", errorId);
+    }
+    document.getElementById('submit-reset').disabled = false;
+  });
 }
 
 export async function getUsername() {
