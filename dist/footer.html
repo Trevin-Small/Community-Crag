@@ -2,40 +2,36 @@
 <style>
     .footer-container{
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: flex-start;
         align-items: center;
-        min-height: 10vh;
+        width: auto;
         height: auto;
+        min-height: 10vh;
         margin: 0;
-        margin-bottom: 10px;
+        margin-top: 10px;
+        padding: 1px;
     }
     .no-margin {
         margin: 0;
-        padding: 0;
-    }
-    .footer-column {
-        flex-direction: column;
-        width: auto;
-        height: auto;
+        padding: 1px;
     }
     .footer-row {
+        display: flex;
         flex-direction: row;
+        align-items: center;
         width: auto;
         height: auto;
     }
     .footer-item {
-        opacity: 0.9;
-        padding: 0 1rem 0 1rem;
+        padding: 0 1.25rem 0 1.25rem;
         margin: 0;
         color: rgb(17, 17, 17);
     }
 </style>
 <div class="footer-container">
-    <div class="footer-column no-margin">
-        <div class="footer-row no-margin">
-            <a class="footer-item" href="https://github.com/Trevin-Small/Community-Crag"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
-            <a class="footer-item" href="mailto:contact@trevinsmall.com"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
-        </div>
+    <div class="footer-row no-margin">
+        <a class="footer-item" href="https://github.com/Trevin-Small/Community-Crag"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
+        <a class="footer-item" href="mailto:contact@trevinsmall.com"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
     </div>
 </div>
