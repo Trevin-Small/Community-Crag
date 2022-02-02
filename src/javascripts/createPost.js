@@ -123,14 +123,20 @@ export async function submitPost() {
         });
 
         const uid = CacheDB.getUID();
-        const setterName = await getUsername();
-        console.log("Username: " + setterName);
+        let setterName = CacheDB.getUsername();
+
+        if (setterName == null) {
+            setterName = await getUsername();
+            CacheDB.setUserame(setterName);
+        }
+
         // Create post object and push it to firestore
-        const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
+        const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
         await setPost(postCollection, newPost, true);
         await getAllPosts(null, true);
         homeRedirect();
-    } catch {
+    } catch(e) {
+        console.log(e);
         document.getElementById('submit-new-climb').disabled = false;
     }
 }

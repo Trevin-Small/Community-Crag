@@ -14,14 +14,13 @@ onAuthStateChanged(auth, (activeUser) => {
       updateNavBar(true);
     }
 
-    CacheDB.markSignedIn();
-    CacheDB.setUID(activeUser.uid);
+    CacheDB.signIn(activeUser.uid);
 
   } else {
 
     // User is signed out
     updateNavBar(false);
-    CacheDB.clearUID();
+    CacheDB.signOut();
 
   }
 });
@@ -206,10 +205,6 @@ export async function signIn() {
 
 }
 
-export function logOut() {
-  auth.signOut();
-}
-
 function isExceptionEmail(email) {
   email = email.toLowerCase();
   const exceptions = [
@@ -231,27 +226,28 @@ function isExceptionEmail(email) {
 }
 
 export async function getUsername() {
-  if (CacheDB.getUsername() != null) {
-
-  } else {
-    try {
-      const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        const username = data.username.toString();
-        CacheDB.setUsername(username);
-        return username;
-      } else {
-        return null;
-      }
-    } catch {
+  try {
+    const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      const username = data.username.toString();
+      console.log("Username from firebase: " + username);
+      return username;
+    } else {
       return null;
     }
+  } catch {
+    return null;
   }
 }
 
 export async function isSignedIn() {
   return CacheDB.getIsSignedIn();
+}
+
+export function logOut() {
+  auth.signOut();
+  CacheDB.signOut();
 }
 
 export async function isEmailVerified() {

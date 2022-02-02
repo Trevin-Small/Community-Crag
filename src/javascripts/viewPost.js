@@ -35,6 +35,7 @@ export async function viewPost(postObject = null) {
 async function showButtons(post) {
     const flex = 'flex';
     const none = 'none';
+    const adminUID = "HdsKN00bCnTn9dmFkYtLLiMnOA42";
     const signedIn = await isSignedIn();
 
     if (signedIn) {
@@ -57,7 +58,7 @@ async function showButtons(post) {
         }
     }
 
-    if (post.getSetterUID() === CacheDB.getUID()) {
+    if (post.getSetterUID() === CacheDB.getUID() || CacheDB.getUID() == adminUID) {
         document.getElementById('delete-post-button').style.display = flex;
     }
 }

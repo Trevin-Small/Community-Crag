@@ -33,12 +33,12 @@ export class CacheDB {
         this.storage.setItem(this.uid, uid);
     }
 
-    static clearUID() {
-        this.storage.removeItem(this.uid);
-    }
-
     static getUID() {
         return this.storage.getItem(this.uid);
+    }
+
+    static clearUID() {
+        this.storage.removeItem(this.uid);
     }
 
     static setUserame(username) {
@@ -47,6 +47,17 @@ export class CacheDB {
 
     static getUsername() {
         return this.storage.getItem(this.username);
+    }
+
+    static signIn(uid) {
+        this.setUID(uid);
+        this.markSignedIn();
+    }
+
+    static signOut() {
+        this.storage.removeItem(this.username);
+        this.clearUID();
+        this.markSignedOut();
     }
 
     static updatePreviousURL(url) {
