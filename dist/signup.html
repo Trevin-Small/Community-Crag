@@ -13,7 +13,7 @@
         <link href="css/background.css" rel="stylesheet" />
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/auth.css" rel="stylesheet" />
-
+        <script src="./csi.js"></script>
         <script src="https://communitycrag.com/bundle.js"></script>
     </head>
     <body class="background">
@@ -48,16 +48,16 @@
                         <input class="text-input" type="password" id="pass" name="pass" placeholder="New Password">
                         <div style="margin:0.75rem;"></div>
                         <b>Re-type Your Password:</b>
-                        <input class="text-input" type="password" id="re-pass" name="pass" placeholder="New Password">
+                        <input class="text-input" type="password" id="re-pass" name="pass" placeholder="Re-type Password">
                         <div style="margin:0.75rem;"></div>
                         <button class="btn submit-auth" type="button" id="submit-signup" onClick="communityCrag.signUp();">Sign Up</button>
                         <div style="margin:0.75rem;"></div>
                         <b>NOTE:</b>
-                        <p style="text-align:center;width:75%;">You won't receive any emails from us <br> (Besides the verification email) <br> Purdue emails are used for security purposes and to moderate users and their posts.</p>
+                        <p style="text-align:center;width:75%;">You won't receive any emails from us (Besides the verification email) <br> Purdue emails are used for security purposes and to moderate users and their posts.</p>
                     </form>
                 </div>
             </div>
-            <span style="margin-bottom:12vh;"></span>
+            <div data-include="./footer.html"></div>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
