@@ -8,15 +8,10 @@ export function homeRedirect() {
 }
 
 export async function getAllPosts(queryRef, forceUpdate = false) {
-    console.log(queryRef);
     if (queryRef == null) {
         queryRef = postCollection;
 
-        console.log("Is new session: " + isNewSession());
-        const refreshed = refreshedHomePage();
-        console.log("Refreshed: " + refreshed);
-
-        if (isNewSession() || refreshed || forceUpdate) {
+        if (isNewSession() || refreshedHomePage() || forceUpdate) {
             console.log("Fetching from db...");
             let postArray = await getMultiplePosts(queryRef);
             CacheDB.cacheAllPosts(postArray);
@@ -42,9 +37,5 @@ function refreshedHomePage() {
 }
 
 function isNewSession() {
-    const prevURL = CacheDB.getPreviousURL();
-    if (prevURL == null && CacheDB.getAllCachedPosts().length == 0) {
-        return true;
-    }
-    return false;
+    return CacheDB.getAllCachedPosts().length == 0;
 }

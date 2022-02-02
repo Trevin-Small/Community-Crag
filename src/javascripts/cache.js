@@ -5,7 +5,9 @@ export class CacheDB {
     static dbName = 'post-data';
     static signedIn = 'signed-in'
     static uid = 'uid';
+    static username = 'username';
     static prevURL = 'prev-URL';
+    static nonPostKeys = [this.signedIn, this.uid, this.username, this.prevURL];
     static storage = window.sessionStorage;
 
     static cacheAllPosts(posts) {
@@ -39,6 +41,14 @@ export class CacheDB {
         return this.storage.getItem(this.uid);
     }
 
+    static setUserame(username) {
+        this.storage.setItem(this.username, username);
+    }
+
+    static getUsername() {
+        return this.storage.getItem(this.username);
+    }
+
     static updatePreviousURL(url) {
         this.storage.setItem(this.prevURL, url);
     }
@@ -62,6 +72,9 @@ export class CacheDB {
 
     static getCachedPost(postId) {
         const storageVal = this.storage.getItem(postId);
+        if (storageVal == null) {
+            return null;
+        }
         const postObject = JSON.parse(storageVal);
         return this.objectToPost(postObject);
     }
@@ -71,7 +84,7 @@ export class CacheDB {
         let postList = [];
 
         postIds.forEach((postId) => {
-            if (postId.localeCompare(this.prevURL) != 0 && postId.localeCompare(this.signedIn) != 0 && postId.localeCompare(this.uid) != 0) {
+            if (this.nonPostKeys.indexOf(postId) == -1) {
                 postList.push(this.getCachedPost(postId));
             }
         });

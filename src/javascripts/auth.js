@@ -231,16 +231,22 @@ function isExceptionEmail(email) {
 }
 
 export async function getUsername() {
-  try {
-    const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
-    if (userSnap.exists()) {
-      const data = userSnap.data();
-      return data.username.toString();
-    } else {
+  if (CacheDB.getUsername() != null) {
+
+  } else {
+    try {
+      const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const username = data.username.toString();
+        CacheDB.setUsername(username);
+        return username;
+      } else {
+        return null;
+      }
+    } catch {
       return null;
     }
-  } catch {
-    return null;
   }
 }
 

@@ -14,13 +14,10 @@ export async function viewPost(postObject = null) {
 
         const cachedPost = CacheDB.getCachedPost(postId);
 
-        console.log("UID: " + CacheDB.getUID());
-        console.log("Suggestions: " + cachedPost.getUserSuggestionList());
-
-        if (cachedPost != null) {
+        if (cachedPost != null) { // If the post is already cached
             console.log("Displaying cached post...");
             post = cachedPost;
-        } else {
+        } else { // If a user visits a link directly without visiting the home page, the post wont be cached -> Fetch it instead.
             console.log("Displaying db fetched post...");
             post = await getPost(doc(db, postCollectionName, postId));
         }
@@ -41,7 +38,6 @@ async function showButtons(post) {
     const signedIn = await isSignedIn();
 
     if (signedIn) {
-        console.log("User is signed in.");
         document.getElementById('suggest-grade-button').style.display = flex;
 
         const suggestion = post.getUserSuggestion(CacheDB.getUID());
