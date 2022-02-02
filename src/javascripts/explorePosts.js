@@ -78,11 +78,6 @@ export async function displayPosts(queryRef) {
         post.renderPostList('placeholder-post', post.getPostId());
     });
 
-    let spacer = document.createElement('span');
-    spacer.style.marginBottom = '12vh';
-    let parent = document.getElementById('search-container').parentNode;
-    parent.insertBefore(spacer, null);
-
 }
 
 export async function searchByFilters(formId, e) {
