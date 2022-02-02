@@ -1,25 +1,32 @@
 import { doc, deleteDoc } from 'firebase/firestore';
 import { ref, deleteObject } from 'firebase/storage';
 import { db, postCollectionName, storage } from './index';
-import { isSignedIn, getUID } from './auth.js';
+import { isSignedIn } from './auth.js';
 import { homeRedirect } from './sharedFunctions';
 import { getPost, setPost } from './post';
 import { CacheDB } from './cache';
 
 export async function viewPost(postObject = null) {
     let post = postObject;
+
     if (post == null) {
         const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
 
         const cachedPost = CacheDB.getCachedPost(postId);
 
+        console.log("UID: " + CacheDB.getUID());
+        console.log("Suggestions: " + cachedPost.getUserSuggestionList());
+
         if (cachedPost != null) {
+            console.log("Displaying cached post...");
             post = cachedPost;
         } else {
+            console.log("Displaying db fetched post...");
             post = await getPost(doc(db, postCollectionName, postId));
         }
 
     }
+
     if (post != null) {
         post.viewPost();
         showButtons(post);
@@ -34,9 +41,10 @@ async function showButtons(post) {
     const signedIn = await isSignedIn();
 
     if (signedIn) {
+        console.log("User is signed in.");
         document.getElementById('suggest-grade-button').style.display = flex;
 
-        const suggestion = post.getUserSuggestion(getUID());
+        const suggestion = post.getUserSuggestion(CacheDB.getUID());
 
         if (suggestion == 0) {
             document.getElementById('not-suggested-icon').style.display = flex;
@@ -53,7 +61,7 @@ async function showButtons(post) {
         }
     }
 
-    if (post.getSetterUID() === getUID()) {
+    if (post.getSetterUID() === CacheDB.getUID()) {
         document.getElementById('delete-post-button').style.display = flex;
     }
 }
@@ -86,12 +94,13 @@ export async function suggestGrade() {
 
         if (post != null) {
 
-            const userSuggestionState = post.getUserSuggestion(getUID());
+            const userSuggestionState = post.getUserSuggestion(CacheDB.getUID());
 
             // If user has never previously voted
             if (userSuggestionState == 0) {
                 const suggestionNum = isSuggestingHarder == true ? 1 : -1;
-                post.suggestGrade(suggestionNum, getUID());
+                post.suggestGrade(suggestionNum, CacheDB.getUID());
+                CacheDB.cachePost(post);
                 await setPost(postReference, post);
                 viewPost(post);
             }
@@ -125,6 +134,7 @@ export async function deletePost() {
     const postReference = doc(db, postCollectionName, postId);
     const post = await getPost(postReference);
     const imageRef = ref(storage, post.getImage());
+    CacheDB.removePost(postId);
     await deleteObject(imageRef);
     await deleteDoc(postReference);
     homeRedirect();

@@ -91,17 +91,9 @@ export async function getAllPosts(queryRef) {
         queryRef = postCollection;
     }
 
-    const posts = CacheDB.getAllCachedPosts();
-
     const prevURL = CacheDB.getPreviousURL();
-    if (prevURL != null) {
-        if (prevURL.localeCompare(window.location.href) == 0) {
-            console.log("Fetching from db...");
-            let postArray = await getMultiplePosts(queryRef);
-            CacheDB.cacheAllPosts(postArray);
-            return postArray;
-        }
-    } else if (posts.length == 0 || prevURL == null) {
+
+    if (prevURL == null || (prevURL.localeCompare(window.location.href) == 0)) {
         console.log("Fetching from db...");
         let postArray = await getMultiplePosts(queryRef);
         CacheDB.cacheAllPosts(postArray);
@@ -109,7 +101,7 @@ export async function getAllPosts(queryRef) {
     }
 
     console.log("Rendering cached data.");
-    return posts;
+    return CacheDB.getAllCachedPosts();
 }
 
 export async function searchByFilters(formId, e) {

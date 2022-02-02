@@ -2,27 +2,27 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, on
 import { infoMessage, errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './index.js';
+import { CacheDB } from './cache.js';
 
 const auth = getAuth();
-var uID = null;
-var g_username = null;
 
 onAuthStateChanged(auth, (activeUser) => {
   if (activeUser) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/firebase.User
+
+    // User is signed in
     if (isEmailVerified()) {
       updateNavBar(true);
     }
-    uID = activeUser.uid.toString();
-    updateUsername();
-    // ...
+
+    CacheDB.markSignedIn();
+    CacheDB.setUID(activeUser.uid);
+
   } else {
+
     // User is signed out
     updateNavBar(false);
-    g_username = null;
-    uID = null;
-    // ...
+    CacheDB.clearUID();
+
   }
 });
 
@@ -119,9 +119,8 @@ export async function signUp() {
 
     });
 
-    g_username = username;
     updateProfile(getUsername(), {displayName: username});
-    await pushUserToFirebase(uID, username);
+    await pushUserToFirebase(CacheDB.getUID(), username);
     await sendEmailVerification(auth.currentUser);
     infoMessage(emailVerificationMessage, 'info-message');
     logOut();
@@ -209,8 +208,6 @@ export async function signIn() {
 
 export function logOut() {
   auth.signOut();
-  g_username = null;
-  uID = null;
 }
 
 function isExceptionEmail(email) {
@@ -235,7 +232,7 @@ function isExceptionEmail(email) {
 
 export async function getUsername() {
   try {
-    const userSnap = await getDoc(doc(db, 'purdue-users', uID));
+    const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
     if (userSnap.exists()) {
       const data = userSnap.data();
       return data.username.toString();
@@ -247,20 +244,8 @@ export async function getUsername() {
   }
 }
 
-function updateUsername() {
-  g_username = getUsername();
-}
-
-export function getUID() {
-  return uID;
-}
-
 export async function isSignedIn() {
-  const username = await getUsername();
-  if (username == null) {
-    return false;
-  }
-  return true;
+  return CacheDB.getIsSignedIn();
 }
 
 export async function isEmailVerified() {

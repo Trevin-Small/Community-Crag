@@ -3,6 +3,8 @@ import { Post } from "./post.js";
 export class CacheDB {
 
     static dbName = 'post-data';
+    static signedIn = 'signed-in'
+    static uid = 'uid';
     static prevURL = 'prev-URL';
     static storage = window.sessionStorage;
 
@@ -15,6 +17,30 @@ export class CacheDB {
         this.updatePreviousURL(window.location.href);
     }
 
+    static markSignedIn() {
+        this.storage.setItem(this.signedIn, 'true');
+    }
+
+    static markSignedOut() {
+        this.storage.setItem(this.signedIn, 'false');
+    }
+
+    static getIsSignedIn() {
+        return this.storage.getItem(this.signedIn) === 'true';
+    }
+
+    static setUID(uid) {
+        this.storage.setItem(this.uid, uid);
+    }
+
+    static clearUID() {
+        this.storage.removeItem(this.uid);
+    }
+
+    static getUID() {
+        return this.storage.getItem(this.uid);
+    }
+
     static updatePreviousURL(url) {
         this.storage.setItem(this.prevURL, url);
     }
@@ -25,8 +51,7 @@ export class CacheDB {
 
     // Define the addData() function
     static cachePost(post) {
-        const postObject = this.postToObject(post);
-        this.storage.setItem(post.getPostId(), JSON.stringify(postObject));
+        this.storage.setItem(post.getPostId(), JSON.stringify(this.postToObject(post)));
     }
 
     static removePost(postId) {
@@ -44,7 +69,7 @@ export class CacheDB {
         let postList = [];
 
         postIds.forEach((postId) => {
-            if (postId.localeCompare(this.prevURL) != 0) {
+            if (postId.localeCompare(this.prevURL) != 0 && postId.localeCompare(this.signedIn) != 0 && postId.localeCompare(this.uid) != 0) {
                 postList.push(this.getCachedPost(postId));
             }
         });
@@ -62,6 +87,13 @@ export class CacheDB {
     }
 
     static postToObject (post) {
+        let suggestionsString = "";
+        let suggestions = post.getUserSuggestionList();
+        let keys = Object.keys(suggestions);
+        keys.forEach((key) => {
+            suggestionsString += key + "=" + suggestions[key] + " ";
+        })
+
         return {
             postTime: post.getNumericPostTime(),
             postId: post.getPostId(),
@@ -74,13 +106,24 @@ export class CacheDB {
             comment: post.getComment(),
             climbType: post.getClimbType(),
             starRating: post.getStarRating(),
-            userList: post.getUserSuggestionList()
+            userList: suggestionsString
         };
     }
 
     static objectToPost (object) {
+        let suggestionsString = object.userList;
+        let keyValuePairs = suggestionsString.split(" ");
+        let suggestionList = {};
+
+        keyValuePairs.forEach((keyValue) => {
+            if (keyValue.localeCompare("") != 0) {
+                let pair = keyValue.split('=');
+                suggestionList[pair[0]] = pair[1];
+            }
+        });
+
         return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.comment,
-                        object.climbType, object.grade, object.gradeCount, object.starRating, object.userList);
+                        object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
     }
 }
 
