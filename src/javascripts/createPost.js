@@ -1,9 +1,9 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.js';
 import { postCollection, storage } from './index';
 import { createNewPostObject, setPost } from './post.js';
 import { getUsername, isValidUser } from './auth.js';
 import { getAllPosts, homeRedirect } from './sharedFunctions.js';
+import { Errors } from './errors.js';
 import { CacheDB } from './cache.js';
 
 export function fileUploaded(value) {
@@ -29,16 +29,16 @@ export async function submitPost() {
 
     const valid = await isValidUser();
     if (valid == -1) {
-        errorMessage("Something went wrong with your credentials. Please log out, close and reopen the tab, and log back in.", errorId);
+        Errors.errorMessage("Something went wrong with your credentials. Please log out, close and reopen the tab, and log back in.", errorId);
         return;
     } else if (valid == 0) {
-        errorMessage("You cannot post until your email is verified.", errorId);
+        Errors.errorMessage("You cannot post until your email is verified.", errorId);
         return;
     }
 
-    resetBorders(['#777', '3px'], ['name', 'comment']);
-    resetBorders(['#777', '1px'], ['grade', 'star-rating', 'climb-type']);
-    resetBorders(['black', '3px'], ['submit-new-climb']);
+    Errors.resetBorders(['#777', '3px'], ['name', 'comment']);
+    Errors.resetBorders(['#777', '1px'], ['grade', 'star-rating', 'climb-type']);
+    Errors.resetBorders(['black', '3px'], ['submit-new-climb']);
 
     const name = document.getElementById('name').value;
     const comment = document.getElementById('comment').value;
@@ -49,40 +49,40 @@ export async function submitPost() {
 
     // Invalid Input Handling
     if (name.length > 20 || name.length == 0 || /^\s*$/.test(name)) {
-        inputErrorBorderHighlight('name');
-        inputErrorBorderHighlight('submit-new-climb');
+        Errors.inputErrorBorderHighlight('name');
+        Errors.inputErrorBorderHighlight('submit-new-climb');
         if (name.length > 20) {
-            errorMessage(errorMessages[0], errorId);
+            Errors.errorMessage(errorMessages[0], errorId);
         } else {
-            errorMessage(errorMessages[3], errorId);
+            Errors.errorMessage(errorMessages[3], errorId);
         }
         return;
     } else if (image.length == 0) {
-        inputErrorBorderHighlight('submit-new-climb');
-        errorMessage(errorMessages[4], errorId);
+        Errors.inputErrorBorderHighlight('submit-new-climb');
+        Errors.errorMessage(errorMessages[4], errorId);
         return;
     } else if (grade == -1) {
-        inputErrorBorderHighlight('grade');
-        inputErrorBorderHighlight('submit-new-climb');
-        errorMessage(errorMessages[3], errorId);
+        Errors.inputErrorBorderHighlight('grade');
+        Errors.inputErrorBorderHighlight('submit-new-climb');
+        Errors.errorMessage(errorMessages[3], errorId);
         return;
     } else if (starRating == 0) {
-        inputErrorBorderHighlight('star-rating');
-        inputErrorBorderHighlight('submit-new-climb');
-        errorMessage(errorMessages[3], errorId);
+        Errors.inputErrorBorderHighlight('star-rating');
+        Errors.inputErrorBorderHighlight('submit-new-climb');
+        Errors.errorMessage(errorMessages[3], errorId);
         return;
     } else if (parseInt(document.getElementById('climb-type').value) == 0) {
-        inputErrorBorderHighlight('climb-type');
-        inputErrorBorderHighlight('submit-new-climb');
-        errorMessage(errorMessages[3], errorId);
+        Errors.inputErrorBorderHighlight('climb-type');
+        Errors.inputErrorBorderHighlight('submit-new-climb');
+        Errors.errorMessage(errorMessages[3], errorId);
         return;
     } else if (comment.length > 1200 || comment.length == 0 || /^\s*$/.test(comment)) {
-        inputErrorBorderHighlight('comment');
-        inputErrorBorderHighlight('submit-new-climb');
+        Errors.inputErrorBorderHighlight('comment');
+        Errors.inputErrorBorderHighlight('submit-new-climb');
         if (comment.length > 1200) {
-            errorMessage(errorMessages[1], errorId);
+            Errors.errorMessage(errorMessages[1], errorId);
         } else {
-            errorMessage(errorMessages[3], errorId);
+            Errors.errorMessage(errorMessages[3], errorId);
         }
         return;
     }

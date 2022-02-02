@@ -37,7 +37,7 @@
         <div class="post-content">
             <ul class="post-list" id="post-list">
                 <div class="search-bar-container" id="search-container">
-                    <form class="search-form" id="search-form">
+                    <form class="search-form" id="search-form" onsubmit="event.preventDefault()">
                         <div class="select-container">
                             <b class="select-text">Grade:</b>
                             <select class="select" name="Grade" id="grade-filter">
@@ -123,7 +123,11 @@
         <!-- Main JS-->
         <script>
             communityCrag.displayPosts(null);
-            communityCrag.updatePreviousURL(window.location.href);
+
+            window.onbeforeunload = function(e) {
+                console.log("Refreshing...");
+                communityCrag.updatePreviousURL(window.location.href);
+            };
         </script>
     </body>
 </html>

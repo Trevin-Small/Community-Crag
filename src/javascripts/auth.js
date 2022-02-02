@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification } from 'firebase/auth';
-import { infoMessage, errorMessage, resetBorders, inputErrorBorderHighlight } from './errors.js';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from './index.js';
+import { Errors } from './errors.js';
 import { CacheDB } from './cache.js';
 
 const auth = getAuth();
@@ -38,7 +38,7 @@ async function pushUserToFirebase(someUID, someUsername) {
 
 export async function signUp() {
 
-    resetBorders(['#777', '3px'], ['email', 'username', 'pass', 're-pass']);
+    Errors.resetBorders(['#777', '3px'], ['email', 'username', 'pass', 're-pass']);
 
     const errorId = 'error-message';
     const errorMessages = [
@@ -63,40 +63,40 @@ export async function signUp() {
     const isException = isExceptionEmail(email);
     if (!isException) {
       if (email.split('@')[1] !== 'purdue.edu') {
-        inputErrorBorderHighlight('email');
-        errorMessage(errorMessages[0], errorId);
+        Errors.inputErrorBorderHighlight('email');
+        Errors.errorMessage(errorMessages[0], errorId);
         return;
       } else if (email.includes(' ')) {
-        inputErrorBorderHighlight('email');
-        errorMessage(errorMessages[4], errorId);
+        Errors.inputErrorBorderHighlight('email');
+        Errors.errorMessage(errorMessages[4], errorId);
         return;
       }
     }
 
     if (username.length > 15) {
-      inputErrorBorderHighlight('username');
-      errorMessage(errorMessages[1], errorId);
+      Errors.inputErrorBorderHighlight('username');
+      Errors.errorMessage(errorMessages[1], errorId);
       return;
     } else if (username.length < 3) {
-      inputErrorBorderHighlight('username');
-      errorMessage(errorMessages[2], errorId);
+      Errors.inputErrorBorderHighlight('username');
+      Errors.errorMessage(errorMessages[2], errorId);
       return;
     } else if (/^\s*$/.test(username)) {
-      inputErrorBorderHighlight('username');
-      errorMessage(errorMessages[5], errorId);
+      Errors.inputErrorBorderHighlight('username');
+      Errors.errorMessage(errorMessages[5], errorId);
       return;
     } else if (password.length < 6) {
-      inputErrorBorderHighlight('pass');
-      errorMessage(errorMessages[3], errorId);
+      Errors.inputErrorBorderHighlight('pass');
+      Errors.errorMessage(errorMessages[3], errorId);
       return;
     } else if (password.includes(' ')) {
-      inputErrorBorderHighlight('pass');
-      errorMessage(errorMessages[4], errorId);
+      Errors.inputErrorBorderHighlight('pass');
+      Errors.errorMessage(errorMessages[4], errorId);
       return;
     } else if (retypePassword !== password) {
-      inputErrorBorderHighlight('pass');
-      inputErrorBorderHighlight('re-pass');
-      errorMessage(errorMessages[9], errorId);
+      Errors.inputErrorBorderHighlight('pass');
+      Errors.inputErrorBorderHighlight('re-pass');
+      Errors.errorMessage(errorMessages[9], errorId);
       return;
     }
 
@@ -104,16 +104,16 @@ export async function signUp() {
       // Handle Errors here.
       var errorCode = error.code;
       if (errorCode == 'auth/email-already-in-use') {
-        inputErrorBorderHighlight('email');
-        errorMessage(errorMessages[7], errorId);
+        Errors.inputErrorBorderHighlight('email');
+        Errors.errorMessage(errorMessages[7], errorId);
         return;
       } else if (errorCode == 'auth/invalid-email') {
-        inputErrorBorderHighlight('email');
-        errorMessage(errorMessages[6], errorId);
+        Errors.inputErrorBorderHighlight('email');
+        Errors.errorMessage(errorMessages[6], errorId);
         return;
       } else if (errorCode == 'auth/weak-password') {
-        inputErrorBorderHighlight('email');
-        errorMessage(errorMessages[8], errorId);
+        Errors.inputErrorBorderHighlight('email');
+        Errors.errorMessage(errorMessages[8], errorId);
         return;
       }
 
@@ -122,7 +122,7 @@ export async function signUp() {
     updateProfile(getUsername(), {displayName: username});
     await pushUserToFirebase(CacheDB.getUID(), username);
     await sendEmailVerification(auth.currentUser);
-    infoMessage(emailVerificationMessage, 'info-message');
+    Errors.infoMessage(emailVerificationMessage, 'info-message');
     logOut();
     //signedInRedirect();
 
@@ -130,8 +130,8 @@ export async function signUp() {
 
 export async function signIn() {
 
-  resetBorders(['#777', '3px'], ['email', 'pass']);
-  resetBorders(['black', '3px'], ['submit-login']);
+  Errors.resetBorders(['#777', '3px'], ['email', 'pass']);
+  Errors.resetBorders(['black', '3px'], ['submit-login']);
 
   const errorId = 'error-message';
   const errorMessages = [
@@ -148,22 +148,22 @@ export async function signIn() {
 
   if (!isExceptionEmail(email)) {
     if (/^\s*$/.test(email)) {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[1], errorId);
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[1], errorId);
       return;
     } else if (email.split('@')[1] !== 'purdue.edu') {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[0], errorId);
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[0], errorId);
       return;
     }
   }
 
   if (/^\s*$/.test(password)) {
-    inputErrorBorderHighlight('pass');
-    inputErrorBorderHighlight('submit-login');
-    errorMessage(errorMessages[1], errorId);
+    Errors.inputErrorBorderHighlight('pass');
+    Errors.inputErrorBorderHighlight('submit-login');
+    Errors.errorMessage(errorMessages[1], errorId);
     return;
   }
 
@@ -171,25 +171,25 @@ export async function signIn() {
     // Handle Errors here.
     var errorCode = error.code;
     if (errorCode === 'auth/invalid-email') {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[2], errorId);
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[2], errorId);
       return;
     } else if (errorCode === 'auth/user-disabled') {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('pass');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[3], errorId);
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('pass');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[3], errorId);
       return;
     } else if (errorCode === 'auth/user-not-found') {
-      inputErrorBorderHighlight('email');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[4], errorId);
+      Errors.inputErrorBorderHighlight('email');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[4], errorId);
       return;
     } else if (errorCode === 'auth/wrong-password') {
-      inputErrorBorderHighlight('pass');
-      inputErrorBorderHighlight('submit-login');
-      errorMessage(errorMessages[5], errorId);
+      Errors.inputErrorBorderHighlight('pass');
+      Errors.inputErrorBorderHighlight('submit-login');
+      Errors.errorMessage(errorMessages[5], errorId);
       return;
     }
   });
@@ -197,7 +197,7 @@ export async function signIn() {
   console.log("Verified: " + await isEmailVerified());
   const valid = await isValidUser();
   if (valid == 0) {
-      errorMessage("Please verify your email before signing in.", errorId);
+      Errors.errorMessage("Please verify your email before signing in.", errorId);
       logOut();
       return;
   }

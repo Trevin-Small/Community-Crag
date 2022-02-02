@@ -8,19 +8,43 @@ export function homeRedirect() {
 }
 
 export async function getAllPosts(queryRef, forceUpdate = false) {
+    console.log(queryRef);
     if (queryRef == null) {
         queryRef = postCollection;
-    }
 
-    const prevURL = CacheDB.getPreviousURL();
+        console.log("Is new session: " + isNewSession());
+        const refreshed = refreshedHomePage();
+        console.log("Refreshed: " + refreshed);
 
-    if (prevURL == null || (prevURL.localeCompare(window.location.href) == 0) || forceUpdate) {
+        if (isNewSession() || refreshed || forceUpdate) {
+            console.log("Fetching from db...");
+            let postArray = await getMultiplePosts(queryRef);
+            CacheDB.cacheAllPosts(postArray);
+            return postArray;
+        }
+
+    } else {
         console.log("Fetching from db...");
-        let postArray = await getMultiplePosts(queryRef);
-        CacheDB.cacheAllPosts(postArray);
-        return postArray;
+        return await getMultiplePosts(queryRef);
     }
 
     console.log("Rendering cached data.");
     return CacheDB.getAllCachedPosts();
+}
+
+function refreshedHomePage() {
+    const prevURL = CacheDB.getPreviousURL();
+    if (prevURL != null && prevURL.localeCompare(window.location.href) == 0) {
+        CacheDB.clearPreviousURL();
+        return true;
+    }
+    return false;
+}
+
+function isNewSession() {
+    const prevURL = CacheDB.getPreviousURL();
+    if (prevURL == null && CacheDB.getAllCachedPosts().length == 0) {
+        return true;
+    }
+    return false;
 }

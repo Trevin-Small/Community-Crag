@@ -13,8 +13,6 @@ export class CacheDB {
         posts.forEach((post) => {
             this.cachePost(post);
         });
-
-        this.updatePreviousURL(window.location.href);
     }
 
     static markSignedIn() {
@@ -47,6 +45,10 @@ export class CacheDB {
 
     static getPreviousURL() {
         return this.storage.getItem(this.prevURL);
+    }
+
+    static clearPreviousURL() {
+        this.storage.removeItem(this.prevURL);
     }
 
     // Define the addData() function
