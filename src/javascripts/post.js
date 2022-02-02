@@ -8,9 +8,9 @@ import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/fires
 */
 
 export class Post {
-    constructor(postTime, postID, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
+    constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
         this.postTime = postTime;
-        this.postID = postID;
+        this.postId = postId;
         this.setterUID = setterUID;
         this.setterName = setterName;
         this.name = name;
@@ -41,8 +41,8 @@ export class Post {
         return month + "/" + day + "/" + (year % 1000);
     }
 
-    getPostID() {
-        return this.postID;
+    getPostId() {
+        return this.postId;
     }
 
     getSetterUID() {
@@ -157,11 +157,11 @@ export class Post {
         return this.grade;
     }
 
-    renderPostList(baseElementId, postID) {
+    renderPostList(baseElementId, postId) {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
-        clone.id = postID;
-        clone.querySelector('#post-container').setAttribute('id',postID);
+        clone.id = postId;
+        clone.querySelector('#post-container').setAttribute('id',postId);
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();

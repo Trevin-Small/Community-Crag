@@ -2,6 +2,7 @@ import { displayPosts, searchByFilters, openPost } from './javascripts/explorePo
 import { fileUploaded, submitPost } from './javascripts/createPost.js';
 import { viewPost, showSuggestGrade, hideSuggestGrade, suggestGrade, showDelete, hideDelete, deletePost } from './javascripts/viewPost.js';
 import { signIn, signUp, logOut } from './javascripts/auth.js';
+import { updatePreviousURL } from './javascripts/cache.js';
 
 //<------------------------->
 //  ElOhEl  ( ͡° ͜ʖ ͡°)  ElOhEl
@@ -23,5 +24,6 @@ export {
     signIn,
     signUp,
     logOut,
-    submitPost
+    submitPost,
+    updatePreviousURL
 };

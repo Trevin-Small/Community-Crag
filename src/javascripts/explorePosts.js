@@ -1,6 +1,7 @@
 import { query, where } from 'firebase/firestore';
 import { postCollection } from './index.js';
-import { Post, getMultiplePosts } from './post.js';
+import { getMultiplePosts } from './post.js';
+import { CacheDB } from './cache.js';
 
 function queryPosts(grade, starRating, climbType) {
 
@@ -67,18 +68,22 @@ function queryPosts(grade, starRating, climbType) {
 
 export async function displayPosts(queryRef) {
 
-    if (queryRef == null) {
-        queryRef = postCollection;
-    }
-
     let postListContainer = document.getElementById('post-list');
     while (postListContainer.lastChild != null && postListContainer.lastChild.nodeName !== 'DIV') {
         postListContainer.removeChild(postListContainer.lastChild);
     }
 
-    let postArray = await getMultiplePosts(queryRef);
+    let postArray = CacheDB.getAllCachedPosts(queryRef);
+    if (postArray.length == 0) {
+        console.log("No cached posts. Fetching data and caching...");
+        postArray = await getAllPosts(queryRef);
+        console.log("Newly cached data: " + postArray);
+    } else {
+        console.log("Rendering cached posts.");
+    }
+
     postArray.forEach((post) => {
-        post.renderPostList('placeholder-post', post.getPostID());
+        post.renderPostList('placeholder-post', post.getPostId());
     });
 
     let spacer = document.createElement('span');
@@ -86,6 +91,21 @@ export async function displayPosts(queryRef) {
     let parent = document.getElementById('search-container').parentNode;
     parent.insertBefore(spacer, null);
 
+}
+
+export async function getAllPosts(queryRef) {
+    if (queryRef == null) {
+        queryRef = postCollection;
+    }
+
+    const prevURL = CacheDB.getPreviousURL();
+    const posts = CacheDB.getAllCachedPosts();
+    if (prevURL == null || posts.length == 0 || prevURL.localeCompare(window.location.href) == 0) {
+        let postArray = await getMultiplePosts(queryRef);
+        CacheDB.cacheAllPosts(postArray);
+        return postArray;
+    }
+    return posts;
 }
 
 export async function searchByFilters(formId, e) {

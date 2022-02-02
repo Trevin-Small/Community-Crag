@@ -4,12 +4,21 @@ import { db, postCollectionName, storage } from './index';
 import { isSignedIn, getUID } from './auth.js';
 import { homeRedirect } from './sharedFunctions';
 import { getPost, setPost } from './post';
+import { CacheDB } from './cache';
 
 export async function viewPost(postObject = null) {
     let post = postObject;
     if (post == null) {
         const postId = window.location.href.split("?")[1].replace(/%20/g, " ");
-        post = await getPost(doc(db, postCollectionName, postId));
+
+        const cachedPost = CacheDB.getCachedPost(postId);
+
+        if (cachedPost != null) {
+            post = cachedPost;
+        } else {
+            post = await getPost(doc(db, postCollectionName, postId));
+        }
+
     }
     if (post != null) {
         post.viewPost();
