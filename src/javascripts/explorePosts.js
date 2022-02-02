@@ -73,14 +73,7 @@ export async function displayPosts(queryRef) {
         postListContainer.removeChild(postListContainer.lastChild);
     }
 
-    let postArray = CacheDB.getAllCachedPosts(queryRef);
-    if (postArray.length == 0) {
-        console.log("No cached posts. Fetching data and caching...");
-        postArray = await getAllPosts(queryRef);
-        console.log("Newly cached data: " + postArray);
-    } else {
-        console.log("Rendering cached posts.");
-    }
+    let postArray = await getAllPosts(queryRef);
 
     postArray.forEach((post) => {
         post.renderPostList('placeholder-post', post.getPostId());
@@ -98,13 +91,24 @@ export async function getAllPosts(queryRef) {
         queryRef = postCollection;
     }
 
-    const prevURL = CacheDB.getPreviousURL();
     const posts = CacheDB.getAllCachedPosts();
-    if (prevURL == null || posts.length == 0 || prevURL.localeCompare(window.location.href) == 0) {
+
+    const prevURL = CacheDB.getPreviousURL();
+    if (prevURL != null) {
+        if (prevURL.localeCompare(window.location.href) == 0) {
+            console.log("Fetching from db...");
+            let postArray = await getMultiplePosts(queryRef);
+            CacheDB.cacheAllPosts(postArray);
+            return postArray;
+        }
+    } else if (posts.length == 0 || prevURL == null) {
+        console.log("Fetching from db...");
         let postArray = await getMultiplePosts(queryRef);
         CacheDB.cacheAllPosts(postArray);
         return postArray;
     }
+
+    console.log("Rendering cached data.");
     return posts;
 }
 
