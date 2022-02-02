@@ -1,7 +1,6 @@
 import { query, where } from 'firebase/firestore';
 import { postCollection } from './index.js';
-import { getMultiplePosts } from './post.js';
-import { CacheDB } from './cache.js';
+import { getAllPosts } from './sharedFunctions.js';
 
 function queryPosts(grade, starRating, climbType) {
 
@@ -84,24 +83,6 @@ export async function displayPosts(queryRef) {
     let parent = document.getElementById('search-container').parentNode;
     parent.insertBefore(spacer, null);
 
-}
-
-export async function getAllPosts(queryRef) {
-    if (queryRef == null) {
-        queryRef = postCollection;
-    }
-
-    const prevURL = CacheDB.getPreviousURL();
-
-    if (prevURL == null || (prevURL.localeCompare(window.location.href) == 0)) {
-        console.log("Fetching from db...");
-        let postArray = await getMultiplePosts(queryRef);
-        CacheDB.cacheAllPosts(postArray);
-        return postArray;
-    }
-
-    console.log("Rendering cached data.");
-    return CacheDB.getAllCachedPosts();
 }
 
 export async function searchByFilters(formId, e) {

@@ -3,7 +3,7 @@ import { errorMessage, inputErrorBorderHighlight, resetBorders } from './errors.
 import { postCollection, storage } from './index';
 import { createNewPostObject, setPost } from './post.js';
 import { getUsername, isValidUser } from './auth.js';
-import { homeRedirect } from './sharedFunctions.js';
+import { getAllPosts, homeRedirect } from './sharedFunctions.js';
 import { CacheDB } from './cache.js';
 
 export function fileUploaded(value) {
@@ -128,7 +128,7 @@ export async function submitPost() {
         // Create post object and push it to firestore
         const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName.toString(), name, imageUrl, comment, climbType, grade, starRating);
         await setPost(postCollection, newPost, true);
-        CacheDB.cachePost(newPost);
+        await getAllPosts(null, true);
         homeRedirect();
     } catch {
         document.getElementById('submit-new-climb').disabled = false;
