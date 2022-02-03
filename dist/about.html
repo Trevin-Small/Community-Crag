@@ -23,6 +23,11 @@
                 align-items:center;
                 margin: 1rem 0 0 1rem;
             }
+            .button-row {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
             .about-heading {
                 width: 35%;
                 padding: 0.25rem;
@@ -30,7 +35,7 @@
                 border-width: 3px 3px 0px 3px;
                 border-color: black;
                 border-style: solid;
-                background-color: white;
+                background-color: lightgray;
                 text-align: center;
             }
             .heading-line {
@@ -96,9 +101,17 @@
                                 <p>Targeted at the Purdue bouldering wall, the Community Crag really shines in small gyms where making add-ons is common.</p>
                             </li>
                         </ul>
+                    </div>
 
-                        <div style="padding-top:60px;"></div>
+                        <div style="padding-top:25px;"></div>
+                        <button class="btn submit-auth" style="background-color:ivory;" onclick="window.location.href='https://communitycrag.com/'">
+                            <div class="button-row">
+                                <img alt="Community Crag Logo" src="assets/logo-black.svg" style="height:1.5rem;width:auto;margin:0.5rem;"><b>View Posted Problems</b>
+                            </div>
+                        </button>
+                        <div style="padding-top:50px;"></div>
 
+                    <div style="align-self:flex-start;">
                         <div class="about-heading">
                             <b>Note:</b>
                         </div>
