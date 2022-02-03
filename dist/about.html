@@ -23,6 +23,21 @@
                 align-items:center;
                 margin: 1rem 0 0 1rem;
             }
+            .about-heading {
+                width: 35%;
+                padding: 0.25rem;
+                border-radius: 12px 12px 0 0;
+                border-width: 3px 3px 0px 3px;
+                border-color: black;
+                border-style: solid;
+                background-color: white;
+                text-align: center;
+            }
+            .heading-line {
+                width:75%;
+                opacity: 1;
+                padding-top:1px;
+            }
         </style>
     </head>
     <body class="background">
@@ -46,45 +61,54 @@
                 </div>
                 <div class="contents" style="margin-top: 0;">
                     <hr style="height:3px;background-color:black;opacity:0.6;width:102%;">
+                    <div style="padding-top:10px;"></div>
                     <div style="align-self:flex-start;">
-                        <b>What is it?</b>
-                        <hr style="width:50%;">
+                        <div class="about-heading">
+                            <b>What is it?</b>
+                        </div>
+                        <hr class="heading-line">
                         <ul>
                             <li>
-                                <p>The Community Crag is <i>the Social Media of Climbing Gyms</i>, providing a place for climbers to share problems with one another.</p>
+                                <p><i>The Social Media of Climbing Gyms</i>, a place for climbers to <b>share problems with one another.</b></p>
                             </li>
                         </ul>
-                        <b>What does it do?</b>
-                        <hr style="width:50%;">
+                        <div class="about-heading">
+                            <b>What does it do?</b>
+                        </div>
+                        <hr class="heading-line">
                         <ul>
                             <li>
-                                <p>Community Crag allows you to share problems with other climbers!</p>
+                                <p>Helps climbers <b>find projects to work on!</b></p>
                             </li>
                             <li>
-                                <p>Looking for something specific? <b>Search by grade, star rating, and climb type.</b></p>
+                                <p><b>Search by grade, star rating, and climb type.</b></p>
                             </li>
                             <li>
-                                <p>Don't like a grade? Submit a suggestion, and Community Crag will <b>average the grade suggestions of all users</b> to ensure every problem has an accurate grade.</p>
+                                <p>Don't like a grade? CCrag <b>averages the grade suggestions of all users</b></p>
                             </li>
                         </ul>
-                        <b>Why?</b>
-                        <hr style="width:50%;">
+                        <div class="about-heading">
+                            <b>Why?</b>
+                        </div>
+                        <hr class="heading-line">
                         <ul>
                             <li>
                                 <p>Targeted at the Purdue bouldering wall, the Community Crag really shines in small gyms where making add-ons is common.</p>
                             </li>
+                        </ul>
+
+                        <div style="padding-top:60px;"></div>
+
+                        <div class="about-heading">
+                            <b>Note:</b>
+                        </div>
+                        <hr class="heading-line">
+                        <ul>
                             <li>
-                                <p>We hope that with this website, the climbing experience can be improved, and that nobody will be left without challenging projects to work on.</p>
+                                <p>The Community Crag is not affiliated with or supported by Purdue University in any way.</p>
                             </li>
                         </ul>
                     </div>
-
-                    <div style="padding-top:20px;"></div>
-
-                    <i>Note:</i>
-                    <hr style="width:50%;">
-                    <p style="text-align:center;">The Community Crag is not affiliated with or supported by Purdue University in any way.</p>
-
                 </div>
             </div>
             <div data-include="./footer.html"></div>
