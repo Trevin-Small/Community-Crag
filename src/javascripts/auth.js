@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from './index.js';
+import { db, usersCollectionName } from './index.js';
 import { Errors } from './errors.js';
 import { CacheDB } from './cache.js';
 
@@ -27,7 +27,7 @@ onAuthStateChanged(auth, (activeUser) => {
 
 async function pushUserToFirebase(someUID, someUsername) {
   try {
-    await setDoc(doc(db, 'purdue-users', someUID), {
+    await setDoc(doc(db, usersCollectionName, someUID), {
       username: someUsername
     });
   } catch (e) {
@@ -119,7 +119,7 @@ export async function signUp() {
     });
 
     updateProfile(getUsername(), {displayName: username});
-    await pushUserToFirebase(CacheDB.getUID(), username);
+    await pushUserToFirebase(getUID(), username);
     await sendEmailVerification(auth.currentUser);
     Errors.infoMessage(emailVerificationMessage, 'info-message');
     logOut();
@@ -263,7 +263,7 @@ export async function sendPasswordReset() {
 
 export async function getUsername() {
   try {
-    const userSnap = await getDoc(doc(db, 'purdue-users', CacheDB.getUID()));
+    const userSnap = await getDoc(doc(db, usersCollectionName, getUID()));
     if (userSnap.exists()) {
       const data = userSnap.data();
       const username = data.username.toString();
@@ -304,6 +304,27 @@ export async function isValidUser() {
     return -1;
   }
   return 1;
+}
+
+export async function isAdmin() {
+  let isAdminUser = false;
+  console.log("UID: " + getUID());
+  try {
+    isAdminUser = await getDoc(doc(db, usersCollectionName, getUID()));
+    isAdminUser = isAdminUser.data().isAdmin;
+    console.log(isAdminUser);
+  } catch {}
+  return isAdminUser;
+}
+
+function getUID() {
+  let uid = CacheDB.getUID();
+  if (uid != null) {
+    return uid;
+  }
+  uid = auth.currentUser.uid;
+  CacheDB.setUID(uid);
+  return uid;
 }
 
 function signedInRedirect() {

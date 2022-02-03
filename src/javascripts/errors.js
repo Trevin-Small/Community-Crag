@@ -30,9 +30,7 @@ export class Errors {
         } else {
             errorElement.innerHTML = message;
             errorElement.style.display = 'block';
-            document.getElementById('scroll').scrollTo(0, 0);
-            document.getElementById('scroll').scrollTop = 0; // For Safari
-            document.getElementById('scroll').scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            this.scrollToTop();
         }
     }
 
@@ -44,9 +42,13 @@ export class Errors {
         } else {
             infoElement.innerHTML = message;
             infoElement.style.display = 'block';
-            document.getElementById('scroll').scrollTo(0, 0);
-            document.getElementById('scroll').scrollTop = 0; // For Safari
-            document.getElementById('scroll').scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            this.scrollToTop();
         }
+    }
+
+    static scrollToTop() {
+        document.getElementById('scroll').scrollTo(0, 0);
+        document.getElementById('scroll').scrollTop = 0; // For Safari
+        document.getElementById('scroll').scrollTop = 0; // For Chrome, Firefox, IE and Opera
     }
 }

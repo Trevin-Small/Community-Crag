@@ -2,66 +2,77 @@ import { query, where } from 'firebase/firestore';
 import { postCollection } from './index.js';
 import { getAllPosts } from './sharedFunctions.js';
 
-function queryPosts(grade, starRating, climbType) {
+export function queryPosts(grade, starRating, climbType, time = null) {
 
-    grade = parseInt(grade);
-    grade = grade == -1 ? null : parseInt(grade);
-    starRating = parseInt(starRating);
-    starRating = starRating == 0 ? null : starRating;
-
-    if (climbType == 1) {
-        climbType = "Overhang";
-    } else if (climbType == 2) {
-        climbType = "Slab";
-    } else if (climbType == 3) {
-        climbType = "Mixed";
-    } else if (climbType == 4) {
-        climbType = "Vertical";
-    } else if (climbType == 5) {
-        climbType = "Other";
-    } else {
-        climbType = null;
-    }
-
-    // If searching for V10, include all climbs V10+
-    let gradeSearchRange = 1;
-    if (grade == 10) {
-        gradeSearchRange = 10;
-    }
-
-    // All possible Query Combinations
     if (grade != null && starRating != null && climbType != null) {
 
-        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
+        grade = parseInt(grade);
+        grade = grade == -1 ? null : grade;
+        starRating = parseInt(starRating);
+        starRating = starRating == 0 ? null : starRating;
 
-    } else if (grade != null && starRating != null) {
+        if (climbType == 1) {
+            climbType = "Overhang";
+        } else if (climbType == 2) {
+            climbType = "Slab";
+        } else if (climbType == 3) {
+            climbType = "Mixed";
+        } else if (climbType == 4) {
+            climbType = "Vertical";
+        } else if (climbType == 5) {
+            climbType = "Other";
+        } else {
+            climbType = null;
+        }
 
-        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
+        // If searching for V10, include all climbs V10+
+        let gradeSearchRange = 1;
+        if (grade == 10) {
+            gradeSearchRange = 10;
+        }
 
-    } else if (grade != null && climbType != null) {
+        // All possible Query Combinations
+        if (grade != null && starRating != null && climbType != null) {
+            console.log("1");
+            return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
 
-        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
+        } else if (grade != null && starRating != null) {
+            console.log("2");
+            return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
 
-    } else if (starRating != null && climbType != null) {
+        } else if (grade != null && climbType != null) {
+            console.log("3");
+            return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
 
-        return query(postCollection, where("starRating", "==", starRating), where("climbType", "==", climbType));
+        } else if (starRating != null && climbType != null) {
+            console.log("4");
+            return query(postCollection, where("starRating", "==", starRating), where("climbType", "==", climbType));
 
-    } else if (grade != null) {
+        } else if (grade != null) {
+            console.log("5");
+            return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
 
-        return query(postCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
+        } else if (climbType != null) {
+            console.log("6");
+            return query(postCollection, where("climbType", "==", climbType));
 
-    } else if (climbType != null) {
+        } else if (starRating != null) {
+            console.log("7");
+            return query(postCollection, where("starRating", "==", starRating));
 
-        return query(postCollection, where("climbType", "==", climbType));
+        } else {
 
-    } else if (starRating != null) {
+            return null;
 
-        return query(postCollection, where("starRating", "==", starRating));
-
+        }
     } else {
 
-        return null;
-
+        if (time != null) {
+            console.log("querying by time...");
+            return query(postCollection, where("postTime", "<=", time));
+        } else {
+            return null;
+        }
     }
 }
 

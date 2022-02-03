@@ -7,14 +7,10 @@
         align-items: center;
         width: auto;
         height: auto;
-        min-height: 10vh;
+        padding: 0;
         margin: 0;
         margin-top: 10px;
-        padding: 1px;
-    }
-    .no-margin {
-        margin: 0;
-        padding: 1px;
+        margin-bottom: 3vh;
     }
     .footer-row {
         display: flex;
@@ -22,16 +18,40 @@
         align-items: center;
         width: auto;
         height: auto;
+        margin: 0;
+        padding: 0;
     }
-    .footer-item {
+    .footer-icon {
         padding: 0 1.25rem 0 1.25rem;
         margin: 0;
         color: rgb(17, 17, 17);
     }
+    .footer-text {
+        padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+        margin: 0 0.25rem 0 0.25rem;
+        color: rgb(17, 17, 17);
+        text-decoration: none;
+        border: 3px solid black;
+        border-radius: 8px;
+        background-color: white;
+    }
+    .footer-spacer {
+        padding-top: 15px;
+        margin: 0px;
+    }
 </style>
-<div class="footer-container">
-    <div class="footer-row no-margin">
-        <a class="footer-item" href="https://github.com/Trevin-Small/Community-Crag"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
-        <a class="footer-item" href="mailto:contact@trevinsmall.com"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+<div class="footer-container" id="footer">
+    <span class="footer-spacer"> </span>
+    <div class="footer-row">
+        <a class="footer-text" href="https://communitycrag.com"><b>Home</b></a>
+        <a class="footer-text" href="https://communitycrag.com/about"><b>About Us</b></a>
+        <a class="footer-text" href="https://communitycrag.com/signup"><b>Sign Up</b></a>
     </div>
+    <span class="footer-spacer"> </span>
+    <div class="footer-row">
+        <a class="footer-icon" href="https://www.instagram.com/purdueclimbingclub/?hl=en"><i class="fa fa-instagram fa-2x" aria-hidden="true"></i></a>
+        <a class="footer-icon" href="https://github.com/Trevin-Small/Community-Crag"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
+        <a class="footer-icon" href="mailto:contact@trevinsmall.com"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+    </div>
+    <span class="footer-spacer"> </span>
 </div>

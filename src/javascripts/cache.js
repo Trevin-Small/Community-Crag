@@ -11,7 +11,7 @@ export class CacheDB {
     static storage = window.sessionStorage;
 
     static cacheAllPosts(posts) {
-        //this.storage.clear();
+        this.removeAllPosts();
         posts.forEach((post) => {
             this.cachePost(post);
         });
@@ -79,6 +79,16 @@ export class CacheDB {
 
     static removePost(postId) {
         this.storage.removeItem(String(postId));
+    }
+
+    static removeAllPosts() {
+        let postIds = Object.keys(this.storage);
+
+        postIds.forEach((postId) => {
+            if (this.nonPostKeys.indexOf(postId) == -1) {
+                this.removePost(postId);
+            }
+        });
     }
 
     static getCachedPost(postId) {

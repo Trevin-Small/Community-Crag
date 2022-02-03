@@ -1,4 +1,6 @@
-import { collection, doc, getDoc, getDocs, addDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc } from 'firebase/firestore';
+import { ref, deleteObject } from 'firebase/storage';
+import { db, storage, postCollectionName } from './index.js';
 
 /*
  * Post object that encapsulates all important information about a user's post.
@@ -410,3 +412,11 @@ export async function setPost(reference, post, isNewPost = false){
         }
     }
 } /* setPost() */
+
+export async function deletePostByObject(post) {
+    const postId = post.getPostId();
+    const postReference = doc(db, postCollectionName, postId);
+    const imageRef = ref(storage, post.getImage());
+    await deleteObject(imageRef);
+    await deleteDoc(postReference);
+}

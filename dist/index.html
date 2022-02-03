@@ -125,10 +125,11 @@
         <!-- Main JS-->
         <script>
             communityCrag.displayPosts(null);
-
+            
             window.addEventListener('beforeunload', function(e) {
                 communityCrag.updatePreviousURL(window.location.href);
             });
+
         </script>
     </body>
 </html>
