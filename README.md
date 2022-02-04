@@ -20,7 +20,7 @@ Targeted at the Purdue University Climbing wall to improve the climbing experien
 
 ## Special thanks to:
 ### Michael Marr
-- csi.js -> enabling client side .html file includes with incredible ease. [Check out the project](https://github.com/LexmarkWeb/csi.js) (Project is a bit outdated, but works like a charm!)
+- csi.js -> enabling client side .html file includes with incredible ease. [Check out the project](https://github.com/LexmarkWeb/csi.js) 
 
 ### Liam Schenk & Elliot Cram
 - They came up with the idea for this website!
