@@ -1,5 +1,5 @@
-import { db, postCollectionName } from '../init.js';
-import { CragDB } from '../library/crag_db.js';
+import { db, postCollectionName, CragDB } from '../library/library.js';
+
 
 export async function deletePostsByDate(dateString) {
     const date = new Date("Date milliseconds: " + dateString);

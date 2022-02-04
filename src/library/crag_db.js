@@ -61,11 +61,14 @@ export class CragDB {
     */
 
     static async getPost(db, collectionName, postId) {
+
         const postRef = doc(db, collectionName, postId);
         const postDoc = await getDoc(postRef);
+
         if (postDoc.exists()) {
             return constructPostObject(postDoc);
         }
+
         return null;
     } /* getPost() */
 
@@ -75,6 +78,7 @@ export class CragDB {
     */
 
     static async getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
+
         if (queryRef != null) {
             console.log("Fetching from db...");
             return await this.queryPosts(queryRef);
@@ -180,6 +184,7 @@ export class CragDB {
     */
 
     static async queryPosts(queryRef) {
+
         let postArray = [];
         let dbPosts = await getDocs(queryRef);
 
@@ -187,6 +192,7 @@ export class CragDB {
             let post = constructPostObject(postDoc);
             postArray.push(post);
         });
+
         return postArray;
     } /* getMultiplePosts() */
 
@@ -196,6 +202,7 @@ export class CragDB {
     */
 
     static async deletePost(db, collectionName, postId, post = null) {
+
         const docRef = doc(db, collectionName, postId);
 
         if (post == null) {
@@ -213,6 +220,7 @@ export class CragDB {
     */
 
     static async uploadCloudImage(directoryName, postTime, image) {
+
         const storageRef = ref(storage, directoryName + postTime);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image[0]);
@@ -225,11 +233,13 @@ export class CragDB {
     */
 
     static async getCloudImage(storageRef) {
+
         let imageUrl = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
             imageUrl = url;
         });
+
         return imageUrl;
     } /* getCloudImage() */
 
@@ -250,6 +260,7 @@ export class CragDB {
 
 function refreshedHomePage() {
     const prevURL = CacheDB.getPreviousURL();
+
     if (prevURL != null && prevURL.localeCompare(window.location.href) == 0) {
         CacheDB.clearPreviousURL();
         return true;

@@ -1,11 +1,17 @@
 
-import { createNewPostObject } from '../library/post.js';
-import { getUsername, isValidUser } from '../library/auth.js';
-import { db, imageStorageName, postCollectionName } from '../init';
-import { homeRedirect } from '../library/shared_functions.js';
-import { CragDB } from '../library/crag_db.js';
-import { CacheDB } from '../library/cache.js';
-import { Errors } from '../library/errors.js';
+import {
+    createNewPostObject,
+    getUsername,
+    isValidUser,
+    db,
+    imageStorageName,
+    postCollectionName,
+    homeRedirect,
+    CragDB,
+    CacheDB,
+    Errors
+} from '../library/library.js'
+
 
 export async function submitPost() {
 
@@ -98,7 +104,7 @@ export async function submitPost() {
 
     document.getElementById('submit-new-climb').disabled = true;
 
-    //try {
+    try {
         // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
         const date = new Date();
         const postTime = date.getTime();
@@ -118,11 +124,11 @@ export async function submitPost() {
         await CragDB.addPost(db, postCollectionName, newPost);
         await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
-    /*
+
     } catch(e) {
         console.log("Error submiting post: " + e);
         document.getElementById('submit-new-climb').disabled = false;
-    }*/
+    }
 }
 
 export function fileUploaded(value) {
