@@ -1,7 +1,3 @@
-import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc } from 'firebase/firestore';
-import { ref, deleteObject } from 'firebase/storage';
-import { db, storage, postCollectionName } from './index.js';
-
 /*
  * Post object that encapsulates all important information about a user's post.
  * Provides methods for getting and setting values, as well as useful methods
@@ -157,6 +153,30 @@ export class Post {
         this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (suggestionNum + this.grade))) * 1000 ) / 1000;
 
         return this.grade;
+    }
+
+    newPostData() {
+        return {
+            postTime: this.getNumericPostTime(),
+            setterUID: this.getSetterUID(),
+            setterName: this.getSetterName(),
+            name: this.getName(),
+            image: this.getImage(),
+            grade: this.getNumericalGrade(),
+            gradeCount: this.getGradeCount(),
+            comment: this.getComment(),
+            climbType: this.getClimbType(),
+            starRating: this.getStarRating(),
+            userList: this.getUserSuggestionList()
+        };
+    }
+
+    updateGradeData() {
+        return {
+            grade: this.getNumericalGrade(),
+            gradeCount: this.getGradeCount(),
+            userList: this.getUserSuggestionList()
+        };
     }
 
     renderPostList(baseElementId, postId) {
@@ -333,90 +353,3 @@ export function constructPostObject(postDoc) {
 export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
     return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating, {});
 } /* newPostObject() */
-
-/*
- * Get multiple posts based on query params
-*/
-
-export async function getMultiplePosts(queryRef) {
-    let postArray = [];
-    let dbPosts = await getDocs(queryRef);
-
-    dbPosts.forEach((postDoc) => {
-        let post = constructPostObject(postDoc);
-        postArray.push(post);
-    });
-    return postArray;
-} /* getMultiplePosts() */
-
-/*
- * Get a single post with a doc(db, collection, id) reference
-*/
-
-export async function getPost(postRef) {
-    const postDoc = await getDoc(postRef);
-    if (postDoc.exists()) {
-        return constructPostObject(postDoc);
-    }
-    return null;
-} /* getPost() */
-
-/*
- * Add or edit a post to the db based on the passed reference and boolean.
-*/
-
-export async function setPost(reference, post, isNewPost = false){
-
-    /*
-     * Make sure that the reference type (collection or document)
-     * matches the passed boolean specifying editing
-    */
-
-    if (!isNewPost && reference instanceof collection) {
-        console.log("Error: Trying to edit a post with only a collection reference.");
-        return;
-    } else if (isNewPost && reference instanceof doc) {
-        console.log("Error: Cannot specify document reference when creating a post. Posts are created with random ID's.");
-        return;
-    }
-
-    if (isNewPost) {
-        try {
-            const data =  {
-                postTime: post.getNumericPostTime(),
-                setterUID: post.getSetterUID(),
-                setterName: post.getSetterName(),
-                name: post.getName(),
-                image: post.getImage(),
-                grade: post.getNumericalGrade(),
-                gradeCount: post.getGradeCount(),
-                comment: post.getComment(),
-                climbType: post.getClimbType(),
-                starRating: post.getStarRating(),
-                userList: post.getUserSuggestionList()
-            };
-            await addDoc(reference, data);
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
-    } else {
-        try {
-            const data =  {
-                grade: post.getNumericalGrade(),
-                gradeCount: post.getGradeCount(),
-                userList: post.getUserSuggestionList()
-            };
-            await setDoc(reference, data, {merge: true});
-        } catch (e) {
-            console.error("Error editing document: ", e);
-        }
-    }
-} /* setPost() */
-
-export async function deletePostByObject(post) {
-    const postId = post.getPostId();
-    const postReference = doc(db, postCollectionName, postId);
-    const imageRef = ref(storage, post.getImage());
-    await deleteObject(imageRef);
-    await deleteDoc(postReference);
-}

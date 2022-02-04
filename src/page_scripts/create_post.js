@@ -1,20 +1,12 @@
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { postCollection, storage } from './index';
-import { createNewPostObject, setPost } from './post.js';
-import { getUsername, isValidUser } from './auth.js';
-import { getAllPosts, homeRedirect } from './sharedFunctions.js';
-import { Errors } from './errors.js';
-import { CacheDB } from './cache.js';
 
-export function fileUploaded(value) {
-    if (value != null) {
-        document.getElementById('check').style.display='block';
-        document.getElementById('camera').style.display='none';
-    } else {
-        document.getElementById('check').style.display='none';
-        document.getElementById('camera').style.display='block';
-    }
-}
+import { createNewPostObject } from '../library/post.js';
+import { addPost, getAllPosts } from '../library/firestore_interface.js';
+import { getUsername, isValidUser } from '../library/auth.js';
+import { db, imageStorageName, postCollectionName } from '../init';
+import { homeRedirect } from '../library/shared_functions.js';
+import { uploadCloudImage } from '../library/cloud_storage';
+import { Errors } from '../library/errors.js';
+import { CacheDB } from '../library/cache.js';
 
 export async function submitPost() {
 
@@ -107,20 +99,12 @@ export async function submitPost() {
 
     document.getElementById('submit-new-climb').disabled = true;
 
-    try {
+    //try {
         // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
         const date = new Date();
         const postTime = date.getTime();
-        const storageRef = ref(storage, 'purdue/' + postTime);
-        let imageUrl = null;
 
-        // Upload image to firebase storage
-        await uploadBytes(storageRef, image[0]);
-
-        // Get the url of the image
-        await getDownloadURL(storageRef).then((url) => {
-            imageUrl = url;
-        });
+        let imageUrl = await uploadCloudImage(imageStorageName, postTime, image);
 
         const uid = CacheDB.getUID();
         let setterName = CacheDB.getUsername();
@@ -132,11 +116,22 @@ export async function submitPost() {
 
         // Create post object and push it to firestore
         const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
-        await setPost(postCollection, newPost, true);
-        await getAllPosts(null, true);
+        await addPost(db, postCollectionName, newPost);
+        await getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
+    /*
     } catch(e) {
-        console.log(e);
+        console.log("Error submiting post: " + e);
         document.getElementById('submit-new-climb').disabled = false;
+    }*/
+}
+
+export function fileUploaded(value) {
+    if (value != null) {
+        document.getElementById('check').style.display='block';
+        document.getElementById('camera').style.display='none';
+    } else {
+        document.getElementById('check').style.display='none';
+        document.getElementById('camera').style.display='block';
     }
 }

@@ -1,6 +1,6 @@
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, updateProfile, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db, usersCollectionName } from './index.js';
+import { db, usersCollectionName } from '../init.js';
 import { Errors } from './errors.js';
 import { CacheDB } from './cache.js';
 
@@ -327,22 +327,17 @@ function getUID() {
   return uid;
 }
 
-function signedInRedirect() {
-  const baseUrl = 'https://communitycrag.com';
-  if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
-    window.location.href = baseUrl;
-  }
-}
-
 function updateNavBar(isSignedIn) {
   let notSignedIn = "block";
   let signedIn = "none";
   let signedInFlex = 'none';
+
   if (isSignedIn) {
       notSignedIn = "none";
       signedIn = "block";
       signedInFlex = 'flex';
   }
+
   try {
       document.getElementById('nav-log-in').style.display = notSignedIn;
   } catch {}
@@ -356,6 +351,13 @@ function updateNavBar(isSignedIn) {
       document.getElementById('nav-new-post').style.display = signedIn;
   } catch {}
   try {
-    document.getElementById('nav-new-post').style.display = signedIn;
+      document.getElementById('nav-new-post').style.display = signedIn;
   } catch {}
+}
+
+function signedInRedirect() {
+  const baseUrl = 'https://communitycrag.com';
+  if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
+      window.location.href = baseUrl;
+  }
 }

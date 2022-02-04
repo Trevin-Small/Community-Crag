@@ -52,7 +52,7 @@
                     <div class="post-stats">
                         <div class="stats-row-container">
                             <div class="stats-column-container left">
-                                <div class="suggest-grade-button" id="delete-post-button" onclick="communityCrag.showDelete();"><img src="./assets/trash.svg" style="margin:0px;"></div>
+                                <div class="suggest-grade-button" id="delete-post-button" onclick="communityCrag.showDeletePopup();"><img src="./assets/trash.svg" style="margin:0px;"></div>
                             </div>
                             <div class="stats-column-container">
                                 <div class="grade"><h3 id="post-grade"></h3></div>
@@ -66,7 +66,7 @@
                                 <h5 class="climb-type" id="climb-type"></h5>
                             </div>
                             <div class="stats-column-container right">
-                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showSuggestGrade();"><img id="not-suggested-icon" style="display:none;" src="./assets/suggest-grade.png" class="suggest-grade-icon"><img id="up-grade-icon" style="display:none;" src="./assets/up-grade.svg" class="suggest-grade-icon"><img id="down-grade-icon" style="display:none;" src="./assets/down-grade.svg" class="suggest-grade-icon"></div>
+                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showGradePopup();"><img id="not-suggested-icon" style="display:none;" src="./assets/suggest-grade.png" class="suggest-grade-icon"><img id="up-grade-icon" style="display:none;" src="./assets/up-grade.svg" class="suggest-grade-icon"><img id="down-grade-icon" style="display:none;" src="./assets/down-grade.svg" class="suggest-grade-icon"></div>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                 <div class="popup-column-container"><b>Suggest Difficulty:</b></div>
             </div>
             <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
-                <div class="popup-column-container right" onclick="communityCrag.hideSuggestGrade();"><img src="./assets/x.svg"></div>
+                <div class="popup-column-container right" onclick="communityCrag.hideGradePopup();"><img src="./assets/x.svg"></div>
             </div>
             <div class="popup-column-container" style="width:100%;">
                 <div class="popup-row-container">
@@ -114,13 +114,13 @@
                 <div class="popup-column-container" style="width:1.25rem;"></div>
             </div>
             <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
-                <div class="popup-column-container right" onclick="communityCrag.hideDelete()"><img src="./assets/x.svg"></div>
+                <div class="popup-column-container right" onclick="communityCrag.hideDeletePopup()"><img src="./assets/x.svg"></div>
             </div>
             <div style="margin:0.5rem;"></div>
             <div class="popup-row-container" style="width: auto;">
-                <button type="button" class="btn cancel-btn" onclick="communityCrag.hideDelete()">Cancel</button>
+                <button type="button" class="btn cancel-btn" onclick="communityCrag.hideDeletePopup()">Cancel</button>
                 <div style="width:1.25rem;"></div>
-                <button type="button" class="btn delete-btn" onclick="communityCrag.deletePost()">Delete</button>
+                <button type="button" class="btn delete-btn" onclick="communityCrag.deletePostByURL()">Delete</button>
             </div>
         </div>
 

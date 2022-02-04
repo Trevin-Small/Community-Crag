@@ -1,9 +1,9 @@
-import { displayPosts, searchByFilters, openPost } from './javascripts/explorePosts.js';
-import { fileUploaded, submitPost } from './javascripts/createPost.js';
-import { viewPost, showSuggestGrade, hideSuggestGrade, suggestGrade, showDelete, hideDelete, deletePost } from './javascripts/viewPost.js';
-import { signIn, signUp, logOut, sendPasswordReset, isAdmin } from './javascripts/auth.js';
-import { updatePreviousURL } from './javascripts/cache.js';
-import { deleteByDate } from './javascripts/sharedFunctions.js';
+import { displayPosts, searchByFilters, openPost } from './page_scripts/explore_posts.js';
+import { fileUploaded, submitPost } from './page_scripts/create_post.js';
+import { viewPost, showGradePopup, hideGradePopup, suggestGrade, showDeletePopup, hideDeletePopup, deletePostByURL } from './page_scripts/view_post.js';
+import { signIn, signUp, logOut, sendPasswordReset, isAdmin } from './library/auth.js';
+import { updatePreviousURL } from './library/cache.js';
+import { deletePostsByDate } from './page_scripts/delete_by_date.js';
 
 //<------------------------->
 //  ElOhEl  ( ͡° ͜ʖ ͡°)  ElOhEl
@@ -16,12 +16,12 @@ export {
     openPost,
     fileUploaded,
     viewPost,
-    showSuggestGrade,
-    hideSuggestGrade,
+    showGradePopup,
+    hideGradePopup,
     suggestGrade,
-    showDelete,
-    hideDelete,
-    deletePost,
+    showDeletePopup,
+    hideDeletePopup,
+    deletePostByURL,
     signIn,
     signUp,
     logOut,
@@ -29,5 +29,5 @@ export {
     isAdmin,
     submitPost,
     updatePreviousURL,
-    deleteByDate
+    deletePostsByDate
 };
