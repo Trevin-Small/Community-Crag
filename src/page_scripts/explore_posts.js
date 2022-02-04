@@ -1,5 +1,5 @@
-import { newQuery, getAllPosts } from '../library/firestore_interface';
 import { db, postCollectionName } from '../init.js';
+import { CragDB } from '../library/crag_db.js';
 
 export async function displayPosts(queryRef) {
 
@@ -8,7 +8,7 @@ export async function displayPosts(queryRef) {
         postListContainer.removeChild(postListContainer.lastChild);
     }
 
-    let postArray = await getAllPosts(queryRef, db, postCollectionName, false);
+    let postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, false);
 
     postArray.forEach((post) => {
         post.renderPostList('placeholder-post', post.getPostId());
@@ -18,7 +18,7 @@ export async function displayPosts(queryRef) {
 
 export async function searchByFilters(formId, e) {
     const form = new FormData(document.getElementById(formId));
-    await displayPosts(newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+    await displayPosts(CragDB.newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
     document.getElementById('search-button').disabled = false;
 }
 

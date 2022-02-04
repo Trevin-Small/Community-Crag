@@ -1,12 +1,11 @@
 
 import { createNewPostObject } from '../library/post.js';
-import { addPost, getAllPosts } from '../library/firestore_interface.js';
 import { getUsername, isValidUser } from '../library/auth.js';
 import { db, imageStorageName, postCollectionName } from '../init';
 import { homeRedirect } from '../library/shared_functions.js';
-import { uploadCloudImage } from '../library/cloud_storage';
-import { Errors } from '../library/errors.js';
+import { CragDB } from '../library/crag_db.js';
 import { CacheDB } from '../library/cache.js';
+import { Errors } from '../library/errors.js';
 
 export async function submitPost() {
 
@@ -104,7 +103,7 @@ export async function submitPost() {
         const date = new Date();
         const postTime = date.getTime();
 
-        let imageUrl = await uploadCloudImage(imageStorageName, postTime, image);
+        let imageUrl = await CragDB.uploadCloudImage(imageStorageName, postTime, image);
 
         const uid = CacheDB.getUID();
         let setterName = CacheDB.getUsername();
@@ -116,8 +115,8 @@ export async function submitPost() {
 
         // Create post object and push it to firestore
         const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
-        await addPost(db, postCollectionName, newPost);
-        await getAllPosts(null, db, postCollectionName, true);
+        await CragDB.addPost(db, postCollectionName, newPost);
+        await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
     /*
     } catch(e) {

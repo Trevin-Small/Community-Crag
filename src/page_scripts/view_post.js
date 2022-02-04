@@ -1,7 +1,7 @@
-import { deletePost, getPost, updatePostGrade } from '../library/firestore_interface';
 import { homeRedirect } from '../library/shared_functions';
 import { db, postCollectionName } from '../init.js';
 import { isSignedIn } from '../library/auth.js';
+import { CragDB} from '../library/crag_db.js';
 import { CacheDB } from '../library/cache';
 
 export async function viewPost(postObject = null) {
@@ -17,7 +17,7 @@ export async function viewPost(postObject = null) {
             post = cachedPost;
         } else { // If a user visits a link directly without visiting the home page, the post wont be cached -> Fetch it instead.
             console.log("Displaying db fetched post...");
-            post = await getPost(db, postCollectionName, postId);
+            post = await CragDB.getPost(db, postCollectionName, postId);
         }
 
     }
@@ -68,7 +68,7 @@ export async function suggestGrade() {
     const postId = getIdByURL();
 
     try {
-        let post = await getPost(db, postCollectionName, postId);
+        let post = await CragDB.getPost(db, postCollectionName, postId);
 
         hideGradePopup();
 
@@ -81,7 +81,7 @@ export async function suggestGrade() {
                 const suggestionNum = isSuggestingHarder == true ? 1 : -1;
                 post.suggestGrade(suggestionNum, CacheDB.getUID());
                 CacheDB.cachePost(post);
-                await updatePostGrade(db, postCollectionName, postId, post);
+                await CragDB.updatePostGrade(db, postCollectionName, postId, post);
                 viewPost(post);
             }
 
@@ -98,7 +98,7 @@ export async function suggestGrade() {
 export async function deletePostByURL() {
     hideDeletePopup();
     const postId = getIdByURL();
-    await deletePost(db, postCollectionName, postId);
+    await CragDB.deletePost(db, postCollectionName, postId);
     homeRedirect();
 }
 
