@@ -9,7 +9,7 @@ import { signIn, signUp, logOut, sendPasswordReset, isAdmin } from './library/au
 import { updatePreviousURL } from './library/cache.js';
 
 //<------------------------------>
-//|   ElOhEl  ( ͡° ͜ʖ ͡°)  ElOhEl   |
+//|  ElOhEl  ( ͡° ͜ʖ ͡°)  ElOhEl   |
 //<------------------------------>
 
 // Expose all functions that need to be avaialable client-side after webpack bundle

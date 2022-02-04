@@ -1,3 +1,4 @@
+import { doc } from 'firebase/firestore';
 import { db, postCollectionName, CragDB } from '../library/library.js';
 
 
@@ -9,6 +10,13 @@ export async function displayPosts(queryRef) {
     }
 
     let postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, false);
+
+    const noResults = document.getElementById('no-results');
+    if (postArray.length == 0) {
+        noResults.style.display = 'flex';
+    } else {
+        noResults.style.display = 'none';
+    }
 
     postArray.forEach((post) => {
         post.renderPostList('placeholder-post', post.getPostId());

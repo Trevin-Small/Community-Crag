@@ -1,4 +1,3 @@
-
 import {
     createNewPostObject,
     getUsername,
