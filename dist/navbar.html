@@ -1,0 +1,30 @@
+<div class="navbar-title-container">
+    <div class="title-block title-left">
+        <a href="https://communitycrag.com/"><img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;"></a>
+        <a class="navbar-brand" href="https://communitycrag.com/"><h5 style="margin:0px;">Community Crag</h5></a>
+    </div>
+    <div class="title-block title-right">
+        <div class="menu-button" id="menu-button" onclick="document.getElementById('navbar-dropdown').classList.toggle('active');"><img src="./assets/menu.svg" style="height:100%;width:auto;" /></div>
+    </div>
+</div>
+<div class="navbar-dropdown" id="navbar-dropdown">
+    <div class="menu-item" onclick="window.location.href='https://communitycrag.com'">
+        <p class="menu-text">Home</p>
+        <hr class="menu-line">
+    </div>
+    <div class="menu-item" onclick="window.location.href='https://communitycrag.com/about'">
+        <p class="menu-text">About Us</p>
+        <hr class="menu-line">
+    </div>
+    <div class="menu-item" onclick="window.location.href='https://communitycrag.com/login'">
+        <p class="menu-text">Login</p>
+        <hr class="menu-line">
+    </div>
+    <div class="menu-item" onclick="window.location.href='https://communitycrag.com/signup'">
+        <p class="menu-text">Sign Up</p>
+        <hr class="menu-line">
+    </div>
+    <div class="menu-item" onclick="communityCrag.logOut();">
+        <p class="menu-text">Log Out</p>
+    </div>
+</div>

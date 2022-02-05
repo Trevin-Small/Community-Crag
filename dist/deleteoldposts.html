@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Crag | Delete Old Posts</title>
@@ -18,14 +18,8 @@
     </head>
     <body class="background">
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;">
-                <a class="navbar-brand" href="https://communitycrag.com/">Community Crag</a>
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    </ul>
-            </div>
+        <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
+            <div data-include="./navbar.html" id="navbar"></div>
         </nav>
         <!-- Page content-->
         <div class="scroll" id="scroll">
@@ -50,8 +44,6 @@
             <div data-include="./footer.html"></div>
             <div data-include="./spacer.html"></div>
         </div>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
             window.onload = async function() {
                 const isAdminVal = await communityCrag.isAdmin();

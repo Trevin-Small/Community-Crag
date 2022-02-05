@@ -327,7 +327,7 @@ function getUID() {
   return uid;
 }
 
-function updateNavBar(isSignedIn) {
+export function updateNavBar(isSignedIn) {
   let notSignedIn = "block";
   let signedIn = "none";
   let signedInFlex = 'none';
