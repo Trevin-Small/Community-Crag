@@ -11,15 +11,14 @@ onAuthStateChanged(auth, (activeUser) => {
 
     // User is signed in
     if (isEmailVerified()) {
-      updateNavBar(true);
+      //updateNavBar(true);
+      CacheDB.signIn(activeUser.uid);
     }
-
-    CacheDB.signIn(activeUser.uid);
 
   } else {
 
     // User is signed out
-    updateNavBar(false);
+    //updateNavBar(false);
     CacheDB.signOut();
 
   }
@@ -284,6 +283,7 @@ export async function isSignedIn() {
 export function logOut() {
   auth.signOut();
   CacheDB.signOut();
+  signedOutRedirect();
 }
 
 export async function isEmailVerified() {
@@ -327,7 +327,8 @@ function getUID() {
   return uid;
 }
 
-export function updateNavBar(isSignedIn) {
+export function updateNavBar() {
+  const isSignedIn = CacheDB.getIsSignedIn();
   let whenNotSignedIn = "block";
   let whenSignedIn = "none";
 
@@ -343,13 +344,18 @@ export function updateNavBar(isSignedIn) {
       document.getElementById('navbar-log-out').style.display = whenSignedIn;
       document.getElementById('navbar-new-post').style.display = whenSignedIn;
   } catch (e) {
-    console.log("Update Nav Bar: " + e);
+      console.log("Update Nav Bar: " + e);
   }
 }
 
 function signedInRedirect() {
-  const baseUrl = 'https://communitycrag.com';
-  if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
-      window.location.href = baseUrl;
-  }
+    const baseUrl = 'https://communitycrag.com';
+    if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
+        window.location.href = baseUrl;
+    }
+}
+
+function signedOutRedirect() {
+    const signedOutURL = 'https://communitycrag.com/loggedout';
+    window.location.href = signedOutURL;
 }
