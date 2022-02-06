@@ -8,8 +8,6 @@
         <title>Community Crag | Home</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
-        <!--Font awesome svg's-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/bootstrap-styles.css" rel="stylesheet" />
         <link href="css/background.css" rel="stylesheet" />
@@ -17,6 +15,7 @@
         <link href="css/buttons.css" rel="stylesheet" />
         <link href="css/post-content.css" rel="stylesheet" />
         <link href="css/search-bar.css" rel="stylesheet" />
+
         <script src="./csi.js"></script>
         <script src="https://communitycrag.com/bundle.js"></script>
     </head>
@@ -79,11 +78,11 @@
                 </div>
                 <div class="no-results" id="no-results">
                     <div class="no-results-row">
-                        <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
+                        <img style="width:2rem;height:2rem;" src="./assets/exclamation.svg" />
                         <h4 style="margin: 0 1rem 0 1rem;">No Results Found!</h4>
-                        <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
+                        <img style="width:2rem;height:2rem;" src="./assets/exclamation.svg" />
                     </div>
-                    <b>It's looking a little empty here. <a href="./createpost.html"><i>Try creating your own post!</i></a></b>
+                    <b>The Crag's a little empty here. <br><a href="./createpost.html"><i>Try creating your own post!</i></a></b>
                 </div>
             </ul>
             <ul class="hidden">
@@ -94,15 +93,15 @@
                         </div>
                         <div class="post-stats">
                             <div class="hidden-name"><h4 id="hidden-post-name"></h4></div>
-                            <div class="grade"><h4 id="post-grade"></h4></div>
+                            <div style="margin: 5px 0 0 0;"><h4 style="margin:0" id="post-grade"></h4></div>
                             <div class="stars">
-                                <span class="fa fa-star star-icon" id="star-one"></span>
-                                <span class="fa fa-star star-icon" id="star-two"></span>
-                                <span class="fa fa-star star-icon" id="star-three"></span>
+                                <img class="star-icon" src="./assets/star.svg" id="star-one" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-two" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-three" />
                             </div>
                             <div class="stars">
-                                <span class="fa fa-star star-icon" id="star-four"></span>
-                                <span class="fa fa-star star-icon" id="star-five"></span>
+                                <img class="star-icon-two" src="./assets/star.svg" id="star-four" />
+                                <img class="star-icon-two" src="./assets/star.svg" id="star-five" />
                             </div>
                             <h4 class="climb-type" id="climb-type"></h4>
                         </div>

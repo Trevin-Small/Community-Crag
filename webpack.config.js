@@ -1,11 +1,11 @@
 const path = require('path');
-const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // Host
 const host = process.env.HOST || 'localhost';
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.js',
     watch: true,
     output: {
@@ -14,14 +14,14 @@ module.exports = {
         library: 'communityCrag',
 
     },
-    plugins: [
-        new NodePolyfillPlugin()
-    ],
     resolve: {
       fallback: {
         fs: false
       }
     },
+    plugins: [
+      new BundleAnalyzerPlugin(),
+    ],
     devServer: {
       // Serve index.html as the base
       static: './dist',

@@ -210,52 +210,42 @@ export class Post {
 
         if (this.starRating >= 1) {
             let starOne = clone.querySelector("#star-one");
-            starOne.classList.add('checked');
+            starOne.src = './assets/star.svg';
         } else {
             let starOne = clone.querySelector("#star-one");
-            if (starOne.classList.contains('checked')) {
-                starOne.classList.remove('checked');
-            }
+            starOne.src = './assets/star-empty.svg';
         }
 
         if (this.starRating >= 2) {
             let starTwo = clone.querySelector("#star-two");
-            starTwo.classList.add('checked');
+            starTwo.src = './assets/star.svg';
         } else {
             let starTwo = clone.querySelector("#star-two");
-            if (starTwo.classList.contains('checked')) {
-                starTwo.classList.remove('checked');
-            }
+            starTwo.src = './assets/star-empty.svg';
         }
 
         if (this.starRating >= 3) {
             let starThree = clone.querySelector("#star-three");
-                starThree.classList.add('checked');
+                starThree.src = './assets/star.svg';
         } else {
             let starThree = clone.querySelector("#star-three");
-            if (starThree.classList.contains('checked')) {
-                starThree.classList.remove('checked');
-            }
+            starThree.src = './assets/star-empty.svg';
         }
 
         if (this.starRating >= 4) {
             let starFour = clone.querySelector("#star-four");
-                starFour.classList.add('checked');
+                starFour.src = './assets/star.svg';
         } else {
             let starFour = clone.querySelector("#star-four");
-            if (starFour.classList.contains('checked')) {
-                starFour.classList.remove('checked');
-            }
+            starFour.src = './assets/star-empty.svg';
         }
 
         if (this.starRating >= 5) {
             let starFive = clone.querySelector("#star-five");
-                starFive.classList.add('checked');
+                starFive.src = './assets/star.svg';
         } else {
             let starFive = clone.querySelector("#star-five");
-            if (starFive.classList.contains('checked')) {
-                starFive.classList.remove('checked');
-            }
+            starFive.src = './assets/star-empty.svg';
         }
 
         let parent = document.getElementById('search-container').parentNode;

@@ -328,31 +328,23 @@ function getUID() {
 }
 
 export function updateNavBar(isSignedIn) {
-  let notSignedIn = "block";
-  let signedIn = "none";
-  let signedInFlex = 'none';
+  let whenNotSignedIn = "block";
+  let whenSignedIn = "none";
 
   if (isSignedIn) {
-      notSignedIn = "none";
-      signedIn = "block";
-      signedInFlex = 'flex';
+      whenNotSignedIn = "none";
+      whenSignedIn = "block";
   }
 
   try {
-      document.getElementById('nav-log-in').style.display = notSignedIn;
-  } catch {}
-  try {
-      document.getElementById('nav-sign-up').style.display = notSignedIn;
-  } catch {}
-  try {
-      document.getElementById('nav-log-out').style.display = signedIn;
-  } catch {}
-  try {
-      document.getElementById('nav-new-post').style.display = signedIn;
-  } catch {}
-  try {
-      document.getElementById('nav-new-post').style.display = signedIn;
-  } catch {}
+      document.getElementById('navbar-login').style.display = whenNotSignedIn;
+      document.getElementById('navbar-sign-up').style.display = whenNotSignedIn;
+
+      document.getElementById('navbar-log-out').style.display = whenSignedIn;
+      document.getElementById('navbar-new-post').style.display = whenSignedIn;
+  } catch (e) {
+    console.log("Update Nav Bar: " + e);
+  }
 }
 
 function signedInRedirect() {

@@ -1,31 +1,34 @@
 <div class="touch-detector" id="touch-detector" onclick="this.classList.remove('touch-detector-active');document.getElementById('navbar-dropdown').classList.remove('active');document.getElementById('menu-icon').classList.remove('menu-icon-rotate');"></div>
 <div class="navbar-title-container">
     <div class="title-block title-left">
-        <a href="./"><img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;"></a>
+        <a href="./"><img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;width:2em;margin-right:10px;"></a>
         <a class="navbar-brand" href="./"><h5 style="margin:0px;">Community Crag</h5></a>
     </div>
     <div class="title-block title-right">
-        <div class="menu-button" id="menu-button" onclick="document.getElementById('touch-detector').classList.toggle('touch-detector-active');document.getElementById('navbar-dropdown').classList.toggle('active');document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');"><img class="menu-icon" id="menu-icon" src="./assets/menu.svg" style="height:50%;width:auto;" /></div>
+        <div class="menu-button" id="menu-button" onclick="document.getElementById('touch-detector').classList.toggle('touch-detector-active');document.getElementById('navbar-dropdown').classList.toggle('active');document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');"><img class="menu-icon" id="menu-icon" src="./assets/menu.svg" /></div>
     </div>
 </div>
 <div class="navbar-dropdown" id="navbar-dropdown">
-    <div class="menu-item" onclick="window.location.href='./'">
+    <div class="menu-item" id="navbar-home" onclick="window.location.href='./'">
         <p class="menu-text">Home</p>
         <hr class="menu-line">
     </div>
-    <div class="menu-item" onclick="window.location.href='./about.html'">
+    <div class="menu-item" id="navbar-about" onclick="window.location.href='./about.html'">
         <p class="menu-text">About Us</p>
         <hr class="menu-line">
     </div>
-    <div class="menu-item" onclick="window.location.href='./login.html'">
-        <p class="menu-text">Log Out</p>
+    <div class="menu-item" id="navbar-new-post" style="display:none" onclick="window.location.href='./createpost.html'">
+        <p class="menu-text">New Post</p>
         <hr class="menu-line">
     </div>
-    <div class="menu-item" onclick="window.location.href='./signup.html'">
+    <div class="menu-item" id="navbar-log-out" style="display:none;margin-bottom:1rem;" onclick="communityCrag.logOut();">
+        <p class="menu-text">Log Out</p>
+    </div>
+    <div class="menu-item" id="navbar-login" onclick="window.location.href='./login.html'">
         <p class="menu-text">Login</p>
         <hr class="menu-line">
     </div>
-    <div class="menu-item" style="margin:1rem;" onclick="communityCrag.logOut();">
+    <div class="menu-item" id="navbar-sign-up" style="margin:0.75rem;" onclick="window.location.href='./signup.html'">
         <button class="btn sign-up-btn">Sign Up</button>
     </div>
 </div>
