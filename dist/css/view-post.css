@@ -155,13 +155,10 @@
 }
 .star-icon {
     height: 100%;
-    max-width: calc((100% / 3) - (7px * 2));
+    max-width: calc((100% / 5) - (7px * 2));
     aspect-ratio: 1 / 1;
     padding: 0;
     margin: 0 2px 0 2px;
-}
-.checked {
-    color: orange;
 }
 .climb-type {
     margin-top: 10px;

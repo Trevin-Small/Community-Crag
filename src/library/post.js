@@ -269,54 +269,39 @@ export class Post {
             element.querySelector('#grade-count').style.display = 'none';
         }
 
+        let starOne = element.querySelector("#star-one");
         if (this.starRating >= 1) {
-            let starOne = element.querySelector("#star-one");
-            starOne.classList.add('checked');
+            starOne.src = './assets/star.svg';
         } else {
-            let starOne = element.querySelector("#star-one");
-            if (starOne.classList.contains('checked')) {
-                starOne.classList.remove('checked');
-            }
+            starOne.src = './assets/star-empty.svg';
         }
 
+        let starTwo = element.querySelector("#star-two");
         if (this.starRating >= 2) {
-            let starTwo = element.querySelector("#star-two");
-            starTwo.classList.add('checked');
+            starTwo.src = './assets/star.svg';
         } else {
-            let starTwo = element.querySelector("#star-two");
-            if (starTwo.classList.contains('checked')) {
-                starTwo.classList.remove('checked');
-            }
+            starTwo.src = './assets/star-empty.svg';
         }
 
+        let starThree = element.querySelector("#star-three");
         if (this.starRating >= 3) {
-            let starThree = element.querySelector("#star-three");
-                starThree.classList.add('checked');
+                starThree.src = './assets/star.svg';
         } else {
-            let starThree = element.querySelector("#star-three");
-            if (starThree.classList.contains('checked')) {
-                starThree.classList.remove('checked');
-            }
+            starThree.src = './assets/star-empty.svg';
         }
 
+        let starFour = element.querySelector("#star-four");
         if (this.starRating >= 4) {
-            let starFour = element.querySelector("#star-four");
-                starFour.classList.add('checked');
+                starFour.src = './assets/star.svg';
         } else {
-            let starFour = element.querySelector("#star-four");
-            if (starFour.classList.contains('checked')) {
-                starFour.classList.remove('checked');
-            }
+            starFour.src = './assets/star-empty.svg';
         }
 
+        let starFive = element.querySelector("#star-five");
         if (this.starRating >= 5) {
-            let starFive = element.querySelector("#star-five");
-                starFive.classList.add('checked');
+                starFive.src = './assets/star.svg';
         } else {
-            let starFive = element.querySelector("#star-five");
-            if (starFive.classList.contains('checked')) {
-                starFive.classList.remove('checked');
-            }
+            starFive.src = './assets/star-empty.svg';
         }
     }
 

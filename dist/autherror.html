@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Crag | About</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/bootstrap-styles.css" rel="stylesheet" />
+        <link href="css/background.css" rel="stylesheet" />
+        <link href="css/navbar.css" rel="stylesheet"/>
+        <link href="css/buttons.css" rel="stylesheet" />
+        <link href="css/auth.css" rel="stylesheet" />
+        <script src="./csi.js"></script>
+        <script src="https://communitycrag.com/bundle.js"></script>
+        <style>
+            .title-row {
+                align-self: flex-start;
+                display:flex;
+                flex-direction:row;
+                justify-content: flex-start;
+                align-items:center;
+                margin: 1rem 0 0 1rem;
+            }
+            .button-row {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .about-heading {
+                width: 35%;
+                padding: 0.25rem;
+                border-radius: 12px 12px 0 0;
+                border-width: 3px 3px 0px 3px;
+                border-color: black;
+                border-style: solid;
+                background-color: lightgray;
+                text-align: center;
+            }
+            .heading-line {
+                width:75%;
+                opacity: 1;
+                padding-top:1px;
+            }
+        </style>
+    </head>
+    <body class="background">
+        <!-- Responsive navbar-->
+        <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
+            <div data-include="./navbar.html" id="navbar"></div>
+        </nav>
+        <!-- Page content-->
+        <div class="scroll" id="scroll">
+            <div class="auth-container">
+                <div class="contents" style="margin-top: 0;">
+                    <div style="padding-top:20px;"></div>
+                    <h3>Oops! You aren't logged in!</h3>
+                    <h5>The page you were trying to visit requires you to sign in.</h5>
+                    <div style="padding-top:20px;"></div>
+                    <button class="btn submit-auth" style="background-color:var(--off-white);" onclick="window.location.href='https://communitycrag.com/'">
+                        <div class="button-row">
+                            <img alt="Community Crag Logo" src="assets/logo-black.svg" style="height:1.5rem;width:auto;margin:0.5rem;"><b>Go Back Home</b>
+                        </div>
+                    </button>
+                    <div style="padding-top:20px;"></div>
+                </div>
+            </div>
+            <div data-include="./footer.html"></div>
+            <div data-include="./spacer.html"></div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            window.addEventListener('beforeunload', function(e) {
+                communityCrag.updatePreviousURL(window.location.href);
+            });
+        </script>
+    </body>
+</html>
