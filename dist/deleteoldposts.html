@@ -15,6 +15,23 @@
         <link href="css/auth.css" rel="stylesheet" />
         <script src="./csi.js"></script>
         <script src="https://communitycrag.com/bundle.js"></script>
+        <script>
+            async function authRedirect() {
+                const authError = "https://communitycrag.com/autherror.html";
+                const signedIn = await communityCrag.isSignedIn();
+                if (!signedIn) {
+                    window.location.href = authError;
+                    return;
+                }
+
+                const isAdminVal = await communityCrag.isAdmin();
+                if (!isAdminVal) {
+                    window.location.href = "https://communitycrag.com/notpermitted";
+                }
+            }
+
+            authRedirect();
+        </script>
     </head>
     <body class="background">
         <!-- Responsive navbar-->
@@ -45,12 +62,6 @@
             <div data-include="./spacer.html"></div>
         </div>
         <script>
-            window.onload = async function() {
-                const isAdminVal = await communityCrag.isAdmin();
-                if (!isAdminVal) {
-                    window.location.href = "https://communitycrag.com";
-                }
-            };
             window.addEventListener('beforeunload', function(e) {
                 communityCrag.updatePreviousURL(window.location.href);
             });

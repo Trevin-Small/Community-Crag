@@ -93,10 +93,15 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            const authError = "https://communitycrag.com/autherror.html";
-            if (!communityCrag.isSignedIn()) {
-                window.location.href = authError;
+            async function authRedirect() {
+                const authError = "https://communitycrag.com/autherror.html";
+                const signedIn = await communityCrag.isSignedIn();
+                if (!signedIn) {
+                    window.location.href = authError;
+                }
             }
+
+            authRedirect();
 
             window.addEventListener('beforeunload', function(e) {
                 communityCrag.updatePreviousURL(window.location.href);
