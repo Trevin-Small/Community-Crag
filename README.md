@@ -12,9 +12,7 @@ This website is mobile-first. While computer navigation is still supported, the 
 <br>
 ## About the website:
 #### Open source, free to use, and no ads. Fork it, use it at your gym or for something besides climbing!
-- Built with HTML, CSS, Vanilla javascript, Firebase/Firestore, Google cloud storage API.
-
-The javacsript is bundled with webpack (Though currently is built in dev mode. If you want better site performance, build the project in production mode).
+- Built with HTML, CSS, Vanilla javascript, Firebase/Firestore, Google cloud storage API. Bundled with webpack.
 
 Targeted at the Purdue University Climbing wall to improve the climbing experience for all students. 
 
