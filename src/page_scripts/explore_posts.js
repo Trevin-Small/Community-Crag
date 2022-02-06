@@ -1,4 +1,3 @@
-import { doc } from 'firebase/firestore';
 import { db, postCollectionName, CragDB } from '../library/library.js';
 
 
@@ -31,5 +30,5 @@ export async function searchByFilters(formId, e) {
 }
 
 export async function openPost(postId) {
-    window.location.href = "https://communitycrag.com/viewpost?" + postId;
+    window.location.href = "./viewpost.html?" + postId;
 }

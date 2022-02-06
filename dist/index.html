@@ -83,7 +83,7 @@
                         <h4 style="margin: 0 1rem 0 1rem;">No Results Found!</h4>
                         <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
                     </div>
-                    <b>It's looking a little empty here. <a href="https://communitycrag.com/createpost"><i>Try creating your own post!</i></a></b>
+                    <b>It's looking a little empty here. <a href="./createpost.html"><i>Try creating your own post!</i></a></b>
                 </div>
             </ul>
             <ul class="hidden">
@@ -123,7 +123,7 @@
         <!-- Main JS-->
         <script>
             communityCrag.displayPosts(null);
-            
+
             window.addEventListener('beforeunload', function(e) {
                 communityCrag.updatePreviousURL(window.location.href);
             });
