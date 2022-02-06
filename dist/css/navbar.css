@@ -30,6 +30,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    pointer-events: all;
 }
 .title-left {
     width: calc(70% - 1.25rem);
@@ -47,7 +48,6 @@
     position: absolute;
     width: 100vw;
     max-height: 0;
-    z-index: 100;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -56,11 +56,11 @@
     margin: 0;
     color: var(--off-white);
     background-color: var(--navbar-dark);
-    transition: max-height 0.4s ease-in-out;
     pointer-events: none;
     overflow: hidden;
     background-color: var(--navbar-menu);
     border-radius: 0 0 20px 20px;
+    transition: max-height 0.4s ease-in;
 }
 .active {
     max-height: 100vh;
@@ -70,7 +70,7 @@
     display: inherit;
     justify-content: center;
     align-items: center;
-    height: 50%;
+    height: 100%;
     width: auto;
     padding: 0;
     margin: 0;
@@ -103,4 +103,15 @@
 .menu-text {
     cursor: pointer;
     margin: 0.75rem;
+}
+.touch-detector {
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+.touch-detector-active {
+    pointer-events: all;
 }

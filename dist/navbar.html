@@ -1,10 +1,11 @@
+<div class="touch-detector" id="touch-detector" onclick="this.classList.remove('touch-detector-active');document.getElementById('navbar-dropdown').classList.remove('active');document.getElementById('menu-icon').classList.remove('menu-icon-rotate');"></div>
 <div class="navbar-title-container">
     <div class="title-block title-left">
         <a href="./"><img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;margin-right:10px;"></a>
         <a class="navbar-brand" href="./"><h5 style="margin:0px;">Community Crag</h5></a>
     </div>
     <div class="title-block title-right">
-        <div class="menu-button" id="menu-button" onclick="document.getElementById('navbar-dropdown').classList.toggle('active'); document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');"><img class="menu-icon" id="menu-icon" src="./assets/menu.svg" style="height:100%;width:auto;" /></div>
+        <div class="menu-button" id="menu-button" onclick="document.getElementById('touch-detector').classList.toggle('touch-detector-active');document.getElementById('navbar-dropdown').classList.toggle('active');document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');"><img class="menu-icon" id="menu-icon" src="./assets/menu.svg" style="height:50%;width:auto;" /></div>
     </div>
 </div>
 <div class="navbar-dropdown" id="navbar-dropdown">
