@@ -191,7 +191,7 @@ export class Post {
         clone.querySelector('#climb-type').innerHTML = this.climbType;
         let postComment = clone.querySelector('#post-comment');
 
-        const maxChars = (window.innerWidth / 700) * 100;
+        const maxChars = (window.innerWidth / 700) * 150;
         if (this.comment.length >= maxChars) {
             postComment.innerHTML = this.comment.slice(0, maxChars) + '...';
         } else {
