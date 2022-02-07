@@ -1,11 +1,18 @@
-<div class="touch-detector" id="touch-detector" onclick="this.classList.remove('touch-detector-active');document.getElementById('navbar-dropdown').classList.remove('active');document.getElementById('menu-icon').classList.remove('menu-icon-rotate');"></div>
+<div class="touch-detector" id="touch-detector"
+    onclick="this.classList.remove('touch-detector-active');document.getElementById('navbar-dropdown').classList.remove('active');document.getElementById('menu-icon').classList.remove('menu-icon-rotate');">
+</div>
 <div class="navbar-title-container">
     <div class="title-block title-left">
-        <a href="./"><img alt="Community Crag Logo" src="assets/logo.svg" style="height:2em;width:2em;margin-right:10px;"></a>
-        <a class="navbar-brand" href="./"><h5 style="margin:0px;">Community Crag</h5></a>
+        <a href="./"><img alt="Community Crag Logo" src="assets/logo.svg"
+                style="height:2em;width:2em;margin-right:10px;"></a>
+        <a class="navbar-brand" href="./">
+            <h5 style="margin:0px;">Community Crag</h5>
+        </a>
     </div>
     <div class="title-block title-right">
-        <div class="menu-button" id="menu-button" onclick="communityCrag.updateNavBar();document.getElementById('touch-detector').classList.toggle('touch-detector-active');document.getElementById('navbar-dropdown').classList.toggle('active');document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');"><img class="menu-icon" id="menu-icon" src="./assets/menu.svg" /></div>
+        <div class="menu-button" id="menu-button"
+            onclick="communityCrag.updateNavBar();document.getElementById('touch-detector').classList.toggle('touch-detector-active');document.getElementById('navbar-dropdown').classList.toggle('active');document.getElementById('menu-icon').classList.toggle('menu-icon-rotate');">
+            <img class="menu-icon" id="menu-icon" src="./assets/menu.svg" /></div>
     </div>
 </div>
 <div class="navbar-dropdown" id="navbar-dropdown">
@@ -21,7 +28,8 @@
         <p class="menu-text">Create Post</p>
         <hr class="menu-line">
     </div>
-    <div class="menu-item" id="navbar-log-out" style="display:none;margin-bottom:1rem;" onclick="communityCrag.logOut();">
+    <div class="menu-item" id="navbar-log-out" style="display:none;margin-bottom:1rem;"
+        onclick="communityCrag.logOut();">
         <p class="menu-text">Log Out</p>
     </div>
     <div class="menu-item" id="navbar-login" onclick="window.location.href='./login.html'">

@@ -41,7 +41,8 @@ async function showButtons(post) {
     const signedIn = await isSignedIn();
 
     if (signedIn) {
-        document.getElementById('suggest-grade-button').style.display = flex;
+        const suggestGradeButton = document.getElementById('suggest-grade-button');
+        suggestGradeButton.style.display = flex;
 
         const suggestion = post.getUserSuggestion(CacheDB.getUID());
 
@@ -53,10 +54,12 @@ async function showButtons(post) {
             document.getElementById('not-suggested-icon').style.display = none;
             document.getElementById('up-grade-icon').style.display = flex;
             document.getElementById('down-grade-icon').style.display = none;
+            suggestGradeButton.setAttribute('onclick', "");
         } else {
             document.getElementById('not-suggested-icon').style.display = none;
             document.getElementById('up-grade-icon').style.display = none;
             document.getElementById('down-grade-icon').style.display = flex;
+            suggestGradeButton.setAttribute('onclick', "");
         }
     }
 
@@ -67,7 +70,7 @@ async function showButtons(post) {
 
 export async function suggestGrade() {
     document.getElementById('suggest-grade-submit').disabled = true;
-    document.getElementById('suggest-grade-button').setAttribute('onclick','');
+    document.getElementById('suggest-grade-button').setAttribute('onclick', '');
     const isSuggestingHarder = document.getElementById('suggestion-choice').checked;
     const postId = getIdByURL();
 
@@ -95,7 +98,7 @@ export async function suggestGrade() {
     } catch (e) {
         console.log("Error suggesting grade: " + e);
         document.getElementById('suggest-grade-submit').disabled = false;
-        document.getElementById('suggest-grade-button').setAttribute('onclick','communityCrag.showSuggestGrade();');
+        document.getElementById('suggest-grade-button').setAttribute('onclick', 'communityCrag.showSuggestGrade();');
     }
 }
 

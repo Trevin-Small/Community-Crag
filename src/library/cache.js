@@ -122,7 +122,7 @@ export class CacheDB {
 
     }
 
-    static postToObject (post) {
+    static postToObject(post) {
         let suggestionsString = "";
         let suggestions = post.getUserSuggestionList();
         let keys = Object.keys(suggestions);
@@ -146,7 +146,7 @@ export class CacheDB {
         };
     }
 
-    static objectToPost (object) {
+    static objectToPost(object) {
         let suggestionsString = object.userList;
         let keyValuePairs = suggestionsString.split(" ");
         let suggestionList = {};
@@ -158,8 +158,7 @@ export class CacheDB {
             }
         });
 
-        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.comment,
-                        object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
+        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
     }
 }
 

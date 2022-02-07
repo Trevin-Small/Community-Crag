@@ -1,63 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Crag | Sign Up</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/bootstrap-styles.css" rel="stylesheet" />
-        <link href="css/background.css" rel="stylesheet" />
-        <link href="css/navbar.css" rel="stylesheet"/>
-        <link href="css/buttons.css" rel="stylesheet" />
-        <link href="css/auth.css" rel="stylesheet" />
-        <script src="./csi.js"></script>
-        <script src="https://communitycrag.com/bundle.js"></script>
-    </head>
-    <body class="background">
-        <!-- Responsive navbar-->
-        <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
-            <div data-include="./navbar.html" id="navbar"></div>
-        </nav>
-        <!-- Page content-->
-        <div class="scroll" id="scroll">
-            <div class="auth-container">
-                <div class="contents">
-                    <h3>Sign Up</h3>
-                    <hr>
-                    <div class="info-message" id="info-message" style="display:none;"></div>
-                    <div class="error-message" id="error-message" style="display:none;"></div>
-                    <form class="auth-form" onsubmit="event.preventDefault();">
-                        <div style="margin:0.25rem;"></div>
-                        <b>Enter Your Purdue Email:</b>
-                        <input class="text-input" type="text" name="email" id="email" placeholder="email@purdue.edu">
-                        <div style="margin:0.5rem;"></div>
-                        <b>Name Displayed on Posts:</b>
-                        <input class="text-input" type="text" id="username" name="name" placeholder="e.g. 'John Purdue'">
-                        <div style="margin:0.5rem;"></div>
-                        <b>New Password:</b>
-                        <input class="text-input" type="password" id="pass" name="pass" placeholder="New Password">
-                        <div style="margin:0.75rem;"></div>
-                        <b>Re-type Your Password:</b>
-                        <input class="text-input" type="password" id="re-pass" name="pass" placeholder="Re-type Password">
-                        <div style="margin:0.75rem;"></div>
-                        <button class="btn submit-auth" type="button" id="submit-signup" onClick="communityCrag.signUp();">Sign Up</button>
-                        <div style="margin:0.75rem;"></div>
-                        <b>NOTE:</b>
-                        <p style="text-align:center;width:75%;">You won't receive any emails from us (Besides the verification email) <br> Purdue emails are used for security purposes and to moderate users and their posts.</p>
-                    </form>
-                </div>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Crag | Sign Up</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/bootstrap-styles.css" rel="stylesheet" />
+    <link href="css/background.css" rel="stylesheet" />
+    <link href="css/navbar.css" rel="stylesheet" />
+    <link href="css/buttons.css" rel="stylesheet" />
+    <link href="css/auth.css" rel="stylesheet" />
+    <script src="./csi.js"></script>
+    <script src="https://communitycrag.com/bundle.js"></script>
+</head>
+
+<body class="background">
+    <!-- Responsive navbar-->
+    <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
+        <div data-include="./navbar.html" id="navbar"></div>
+    </nav>
+    <!-- Page content-->
+    <div class="scroll" id="scroll">
+        <div class="auth-container">
+            <div class="contents">
+                <h3>Sign Up</h3>
+                <hr>
+                <div class="info-message" id="info-message" style="display:none;"></div>
+                <div class="error-message" id="error-message" style="display:none;"></div>
+                <form class="auth-form" onsubmit="event.preventDefault();">
+                    <div style="margin:0.25rem;"></div>
+                    <b>Enter Your Purdue Email:</b>
+                    <input class="text-input" type="text" name="email" id="email" placeholder="email@purdue.edu">
+                    <div style="margin:0.5rem;"></div>
+                    <b>Name Displayed on Posts:</b>
+                    <input class="text-input" type="text" id="username" name="name" placeholder="e.g. 'John Purdue'">
+                    <div style="margin:0.5rem;"></div>
+                    <b>New Password:</b>
+                    <input class="text-input" type="password" id="pass" name="pass" placeholder="New Password">
+                    <div style="margin:0.75rem;"></div>
+                    <b>Re-type Your Password:</b>
+                    <input class="text-input" type="password" id="re-pass" name="pass" placeholder="Re-type Password">
+                    <div style="margin:0.75rem;"></div>
+                    <button class="btn submit-auth" type="button" id="submit-signup"
+                        onClick="communityCrag.signUp();">Sign Up</button>
+                    <div style="margin:0.75rem;"></div>
+                    <b>NOTE:</b>
+                    <p style="text-align:center;width:75%;">You won't receive any emails from us (Besides the
+                        verification email) <br> Purdue emails are used for security purposes and to moderate users and
+                        their posts.</p>
+                </form>
             </div>
-            <div data-include="./footer.html"></div>
-            <div data-include="./spacer.html"></div>
         </div>
-        <script>
-            window.addEventListener('beforeunload', function(e) {
-                communityCrag.updatePreviousURL(window.location.href);
-            });
-        </script>
-    </body>
+        <div data-include="./footer.html"></div>
+        <div data-include="./spacer.html"></div>
+    </div>
+    <script>
+        window.addEventListener('beforeunload', function (e) {
+            communityCrag.updatePreviousURL(window.location.href);
+        });
+    </script>
+</body>
+
 </html>

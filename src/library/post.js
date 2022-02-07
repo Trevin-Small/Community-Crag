@@ -6,7 +6,11 @@
 */
 
 export class Post {
+
     constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
+
+        this.INITIAL_GRADE_COUNT = 2;
+
         this.postTime = postTime;
         this.postId = postId;
         this.setterUID = setterUID;
@@ -27,15 +31,19 @@ export class Post {
         this.userSuggestionList = userSuggestionList;
     }
 
+    getInitialGradeCount() {
+        return this.INITIAL_GRADE_COUNT;
+    }
+
     getNumericPostTime() {
         return this.postTime;
     }
 
     getPostTime() {
         const dateObject = new Date(this.postTime * 10000);
-        const month = dateObject.toLocaleString("en-US", {month: "numeric"}) // December
-        const day = dateObject.toLocaleString("en-US", {day: "numeric"}) // 9
-        const year = dateObject.toLocaleString("en-US", {year: "numeric"}) // 2019
+        const month = dateObject.toLocaleString("en-US", { month: "numeric" }) // December
+        const day = dateObject.toLocaleString("en-US", { day: "numeric" }) // 9
+        const year = dateObject.toLocaleString("en-US", { year: "numeric" }) // 2019
         return month + "/" + day + "/" + (year % 1000);
     }
 
@@ -124,7 +132,7 @@ export class Post {
         this.comment = comment;
     }
 
-    resetGradeCount(){
+    resetGradeCount() {
         this.gradeCount = 1;
     }
 
@@ -138,6 +146,7 @@ export class Post {
 
     suggestGrade(suggestionNum, uid) {
         this.setUserSuggestion(suggestionNum, uid);
+
         /* Disallow downvoting grades lower than 0 and higher than 15 */
 
         if (this.getNumericalGrade < 1) {
@@ -148,9 +157,15 @@ export class Post {
             return;
         }
 
-        this.gradeCount = this.gradeCount + 1;
-        let suggestionWeight = 1 / this.gradeCount;
-        this.grade = Math.round( (((this.gradeCount - 1) * suggestionWeight * this.grade) + (suggestionWeight * (suggestionNum + this.grade))) * 1000 ) / 1000;
+        this.gradeCount++;
+        const voteWeight = 1 / this.gradeCount;
+
+        // Old grade * weight per vote * total number of votes prior to vote
+        const previousGradeWeight = this.grade * (this.gradeCount - 1) * voteWeight;
+
+        // Suggested Grade * weight per vote * 1 vote
+        const suggestedGradeWeight = (this.grade + suggestionNum) * voteWeight;
+        this.grade = Math.floor((previousGradeWeight + suggestedGradeWeight) * 100) / 100;
 
         return this.grade;
     }
@@ -183,7 +198,7 @@ export class Post {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
         clone.id = postId;
-        clone.querySelector('#post-container').setAttribute('id',postId);
+        clone.querySelector('#post-container').setAttribute('id', postId);
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();
@@ -200,13 +215,12 @@ export class Post {
 
         let gradeCount = clone.querySelector('#count');
 
-        if (this.gradeCount == 1) {
+        if (this.gradeCount <= this.INITIAL_GRADE_COUNT) {
             gradeCount.style.visibility = 'hidden';
         } else {
             gradeCount.style.visibility = 'visible';
+            gradeCount.innerHTML = (this.gradeCount - this.INITIAL_GRADE_COUNT) + " Grade Suggestions";
         }
-
-        gradeCount.innerHTML = (this.gradeCount - 1) + " Grade Suggestions";
 
         if (this.starRating >= 1) {
             let starOne = clone.querySelector("#star-one");
@@ -226,7 +240,7 @@ export class Post {
 
         if (this.starRating >= 3) {
             let starThree = clone.querySelector("#star-three");
-                starThree.src = './assets/star.svg';
+            starThree.src = './assets/star.svg';
         } else {
             let starThree = clone.querySelector("#star-three");
             starThree.src = './assets/star-empty.svg';
@@ -234,7 +248,7 @@ export class Post {
 
         if (this.starRating >= 4) {
             let starFour = clone.querySelector("#star-four");
-                starFour.src = './assets/star.svg';
+            starFour.src = './assets/star.svg';
         } else {
             let starFour = clone.querySelector("#star-four");
             starFour.src = './assets/star-empty.svg';
@@ -242,7 +256,7 @@ export class Post {
 
         if (this.starRating >= 5) {
             let starFive = clone.querySelector("#star-five");
-                starFive.src = './assets/star.svg';
+            starFive.src = './assets/star.svg';
         } else {
             let starFive = clone.querySelector("#star-five");
             starFive.src = './assets/star-empty.svg';
@@ -263,8 +277,8 @@ export class Post {
         element.querySelector('#post-grade').innerHTML = this.getGrade();
         element.querySelector('#post-comment').innerHTML = this.comment;
         element.querySelector('#climb-type').innerHTML = this.climbType;
-        if (this.gradeCount > 1) {
-            element.querySelector('#grade-count').innerHTML = (this.gradeCount - 1) + " Grade Suggestions";
+        if (this.gradeCount > this.INITIAL_GRADE_COUNT) {
+            element.querySelector('#grade-count').innerHTML = (this.gradeCount - this.INITIAL_GRADE_COUNT) + " Grade Suggestions";
         } else {
             element.querySelector('#grade-count').style.display = 'none';
         }
@@ -285,21 +299,21 @@ export class Post {
 
         let starThree = element.querySelector("#star-three");
         if (this.starRating >= 3) {
-                starThree.src = './assets/star.svg';
+            starThree.src = './assets/star.svg';
         } else {
             starThree.src = './assets/star-empty.svg';
         }
 
         let starFour = element.querySelector("#star-four");
         if (this.starRating >= 4) {
-                starFour.src = './assets/star.svg';
+            starFour.src = './assets/star.svg';
         } else {
             starFour.src = './assets/star-empty.svg';
         }
 
         let starFive = element.querySelector("#star-five");
         if (this.starRating >= 5) {
-                starFive.src = './assets/star.svg';
+            starFive.src = './assets/star.svg';
         } else {
             starFive.src = './assets/star-empty.svg';
         }
@@ -318,7 +332,7 @@ export class Post {
 export function constructPostObject(postDoc) {
     const postData = postDoc.data();
     return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment,
-                    postData.climbType, postData.grade, postData.gradeCount, postData.starRating, postData.userList);
+        postData.climbType, postData.grade, postData.gradeCount, postData.starRating, postData.userList);
 } /* constructPostObject() */
 
 /*
@@ -326,5 +340,5 @@ export function constructPostObject(postDoc) {
 */
 
 export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
-    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, 1, starRating, {});
+    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, Post.getInitialGradeCount(), starRating, {});
 } /* newPostObject() */

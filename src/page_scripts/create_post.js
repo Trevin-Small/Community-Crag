@@ -124,7 +124,7 @@ export async function submitPost() {
         await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
 
-    } catch(e) {
+    } catch (e) {
         console.log("Error submiting post: " + e);
         document.getElementById('submit-new-climb').disabled = false;
     }
@@ -132,10 +132,10 @@ export async function submitPost() {
 
 export function fileUploaded(value) {
     if (value != null) {
-        document.getElementById('check').style.display='block';
-        document.getElementById('camera').style.display='none';
+        document.getElementById('check').style.display = 'block';
+        document.getElementById('camera').style.display = 'none';
     } else {
-        document.getElementById('check').style.display='none';
-        document.getElementById('camera').style.display='block';
+        document.getElementById('check').style.display = 'none';
+        document.getElementById('camera').style.display = 'block';
     }
 }

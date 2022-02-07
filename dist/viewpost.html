@@ -1,124 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
-        <meta name="description" content="Community Crag - Collaborative Climbing" />
-        <meta name="author" content="Trevin Small" />
-        <title id="page-title">Crag |</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/bootstrap-styles.css" rel="stylesheet" />
-        <link href="css/background.css" rel="stylesheet" />
-        <link href="css/navbar.css" rel="stylesheet"/>
-        <link href="css/buttons.css" rel="stylesheet" />
-        <link href="css/view-post.css" rel="stylesheet" />
-        <link href="css/slider.css" rel="stylesheet" />
-        <script src="./csi.js"></script>
-        <script src="https://communitycrag.com/bundle.js"></script>
-    </head>
-    <body class="background">
-        <!-- Responsive navbar-->
-        <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
-            <div data-include="./navbar.html" id="navbar"></div>
-        </nav>
 
-        <!-- Page content-->
-        <div class="post-content">
-            <div class="post-container" id="post-container">
-                <div class="content-container">
-                    <div class="title-row-container">
-                        <div class="post-text-container">
-                            <div class="post-title">
-                                <div class="name"><h3 class="name" id="post-name"></h3></div>
-                            </div>
-                            <hr class="divider">
-                            <p class="post-info" id="post-info"></p>
-                            <p class="post-info" id="grade-count"></p>
-                        </div>
-                    </div>
-                    <div class="post-stats">
-                        <div class="stats-row-container">
-                            <div class="stats-column-container left">
-                                <div class="suggest-grade-button" id="delete-post-button" onclick="communityCrag.showDeletePopup();"><img src="./assets/trash.svg" style="margin:0px;"></div>
-                            </div>
-                            <div class="stats-column-container">
-                                <div class="grade"><h3 id="post-grade"></h3></div>
-                                <div class="stars">
-                                    <img class="star-icon" src="./assets/star.svg" id="star-one" />
-                                    <img class="star-icon" src="./assets/star.svg" id="star-two" />
-                                    <img class="star-icon" src="./assets/star.svg" id="star-three" />
-                                    <img class="star-icon" src="./assets/star.svg" id="star-four" />
-                                    <img class="star-icon" src="./assets/star.svg" id="star-five" />
-                                </div>
-                                <h5 class="climb-type" id="climb-type"></h5>
-                            </div>
-                            <div class="stats-column-container right">
-                                <div class="suggest-grade-button" id="suggest-grade-button" onclick="communityCrag.showGradePopup();"><img id="not-suggested-icon" style="display:none;" src="./assets/suggest-grade.png" class="suggest-grade-icon"><img id="up-grade-icon" style="display:none;" src="./assets/up-grade.svg" class="suggest-grade-icon"><img id="down-grade-icon" style="display:none;" src="./assets/down-grade.svg" class="suggest-grade-icon"></div>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
+    <meta name="description" content="Community Crag - Collaborative Climbing" />
+    <meta name="author" content="Trevin Small" />
+    <title id="page-title">Crag |</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/bootstrap-styles.css" rel="stylesheet" />
+    <link href="css/background.css" rel="stylesheet" />
+    <link href="css/navbar.css" rel="stylesheet" />
+    <link href="css/buttons.css" rel="stylesheet" />
+    <link href="css/view-post.css" rel="stylesheet" />
+    <link href="css/slider.css" rel="stylesheet" />
+    <script src="./csi.js"></script>
+    <script src="https://communitycrag.com/bundle.js"></script>
+</head>
+
+<body class="background">
+    <!-- Responsive navbar-->
+    <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
+        <div data-include="./navbar.html" id="navbar"></div>
+    </nav>
+
+    <!-- Page content-->
+    <div class="post-content">
+        <div class="post-container" id="post-container">
+            <div class="content-container">
+                <div class="title-row-container">
+                    <div class="post-text-container">
+                        <div class="post-title">
+                            <div class="name">
+                                <h3 class="name" id="post-name"></h3>
                             </div>
                         </div>
-                    </div>
-                    <div class="post-img-container">
-                        <img src="" class="post-img" id="post-image">
-                    </div>
-                    <div class="comment">
-                        <p id="post-comment"></p>
+                        <hr class="divider">
+                        <p class="post-info" id="post-info"></p>
+                        <p class="post-info" id="grade-count"></p>
                     </div>
                 </div>
-            </div>
-            <div data-include="./footer.html"></div>
-            <div data-include="./spacer.html"></div>
-        </div>
-
-        <div class="shadow-overlay" id="shadow"></div>
-
-        <div class="popup" id="suggest-grade-popup">
-            <div class="popup-row-container">
-                <div class="popup-column-container"><b>Suggest Difficulty:</b></div>
-            </div>
-            <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
-                <div class="popup-column-container right" onclick="communityCrag.hideGradePopup();"><img src="./assets/x.svg"></div>
-            </div>
-            <div class="popup-column-container" style="width:100%;">
-                <div class="popup-row-container">
-                    <b><i>Easier</i></b>
-                    <div class="switch-container">
-                        <label class="switch">
-                            <input id="suggestion-choice" type="checkbox">
-                            <span class="slider round"></span>
-                        </label>
+                <div class="post-stats">
+                    <div class="stats-row-container">
+                        <div class="stats-column-container left">
+                            <div class="suggest-grade-button" id="delete-post-button"
+                                onclick="communityCrag.showDeletePopup();"><img src="./assets/trash.svg"
+                                    style="margin:0px;"></div>
+                        </div>
+                        <div class="stats-column-container">
+                            <div class="grade">
+                                <h3 id="post-grade"></h3>
+                            </div>
+                            <div class="stars">
+                                <img class="star-icon" src="./assets/star.svg" id="star-one" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-two" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-three" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-four" />
+                                <img class="star-icon" src="./assets/star.svg" id="star-five" />
+                            </div>
+                            <h5 class="climb-type" id="climb-type"></h5>
+                        </div>
+                        <div class="stats-column-container right">
+                            <div class="suggest-grade-button" id="suggest-grade-button"
+                                onclick="communityCrag.showGradePopup();"><img id="not-suggested-icon"
+                                    style="display:none;" src="./assets/suggest-grade.png"
+                                    class="suggest-grade-icon"><img id="up-grade-icon" style="display:none;"
+                                    src="./assets/up-grade.svg" class="suggest-grade-icon"><img id="down-grade-icon"
+                                    style="display:none;" src="./assets/down-grade.svg" class="suggest-grade-icon">
+                            </div>
+                        </div>
                     </div>
-                    <b><i>Harder</i></b>
                 </div>
-                <div style="margin:0.5rem;"></div>
-                <button type="button" style="width:60%;" id="suggest-grade-submit" class="btn popup-btn" onclick="this.disabled=true;communityCrag.suggestGrade()">Submit</button>
+                <div class="post-img-container">
+                    <img src="" class="post-img" id="post-image">
+                </div>
+                <div class="comment">
+                    <p id="post-comment"></p>
+                </div>
             </div>
         </div>
+        <div data-include="./footer.html"></div>
+        <div data-include="./spacer.html"></div>
+    </div>
 
-        <div class="popup" id="delete-post">
+    <div class="shadow-overlay" id="shadow"></div>
+
+    <div class="popup" id="suggest-grade-popup">
+        <div class="popup-row-container">
+            <div class="popup-column-container"><b>Suggest Difficulty:</b></div>
+        </div>
+        <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
+            <div class="popup-column-container right" onclick="communityCrag.hideGradePopup();"><img
+                    src="./assets/x.svg"></div>
+        </div>
+        <div class="popup-column-container" style="width:100%;">
             <div class="popup-row-container">
-                <div class="popup-column-container" style="width:1.25rem;"></div>
-                <div class="popup-column-container"><b>Are You Sure You Want<br>To Delete Your Post?</b></div>
-                <div class="popup-column-container" style="width:1.25rem;"></div>
-            </div>
-            <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
-                <div class="popup-column-container right" onclick="communityCrag.hideDeletePopup()"><img src="./assets/x.svg"></div>
+                <b><i>Easier</i></b>
+                <div class="switch-container">
+                    <label class="switch">
+                        <input id="suggestion-choice" type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <b><i>Harder</i></b>
             </div>
             <div style="margin:0.5rem;"></div>
-            <div class="popup-row-container" style="width: auto;">
-                <button type="button" class="btn cancel-btn" onclick="communityCrag.hideDeletePopup()">Cancel</button>
-                <div style="width:1.25rem;"></div>
-                <button type="button" class="btn delete-btn" onclick="communityCrag.deletePostByURL()">Delete</button>
-            </div>
+            <button type="button" style="width:60%;" id="suggest-grade-submit" class="btn popup-btn"
+                onclick="this.disabled=true;communityCrag.suggestGrade()">Submit</button>
         </div>
+    </div>
 
-        <!-- Main JS-->
-        <script>
-            communityCrag.viewPost();
-            window.addEventListener('beforeunload', function(e) {
-                communityCrag.updatePreviousURL(window.location.href);
-            });
-        </script>
-    </body>
+    <div class="popup" id="delete-post">
+        <div class="popup-row-container">
+            <div class="popup-column-container" style="width:1.25rem;"></div>
+            <div class="popup-column-container"><b>Are You Sure You Want<br>To Delete Your Post?</b></div>
+            <div class="popup-column-container" style="width:1.25rem;"></div>
+        </div>
+        <div class="popup-row-container" style="position:absolute;top:0.2em;justify-content:flex-end;">
+            <div class="popup-column-container right" onclick="communityCrag.hideDeletePopup()"><img
+                    src="./assets/x.svg"></div>
+        </div>
+        <div style="margin:0.5rem;"></div>
+        <div class="popup-row-container" style="width: auto;">
+            <button type="button" class="btn cancel-btn" onclick="communityCrag.hideDeletePopup()">Cancel</button>
+            <div style="width:1.25rem;"></div>
+            <button type="button" class="btn delete-btn" onclick="communityCrag.deletePostByURL()">Delete</button>
+        </div>
+    </div>
+
+    <!-- Main JS-->
+    <script>
+        communityCrag.viewPost();
+        window.addEventListener('beforeunload', function (e) {
+            communityCrag.updatePreviousURL(window.location.href);
+        });
+    </script>
+</body>
+
 </html>
