@@ -122,7 +122,7 @@ export async function submitPost() {
         // Create post object and push it to firestore
         const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
-
+        w
         // Query by post time to get the most recent post
         await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
