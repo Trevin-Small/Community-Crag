@@ -107,11 +107,12 @@ export async function submitPost() {
         // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
         const date = new Date();
         const postTime = date.getTime();
+        const firebasePostTime = Math.floor(postTime / 10000);
 
         let imageUrl = await CragDB.uploadCloudImage(imageStorageName, postTime, image);
 
         const uid = CacheDB.getUID();
-        let setterName = CacheDB.getUsername();
+        let setterName = await CacheDB.getUsername();
 
         if (setterName == null) {
             setterName = await getUsername();
@@ -119,8 +120,10 @@ export async function submitPost() {
         }
 
         // Create post object and push it to firestore
-        const newPost = createNewPostObject(Math.floor(postTime / 10000), uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
+        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
+
+        // Query by post time to get the most recent post
         await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();
 

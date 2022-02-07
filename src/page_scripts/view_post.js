@@ -27,19 +27,30 @@ export async function viewPost(postObject = null) {
     }
 
     if (post != null) {
-        post.viewPost();
-        showButtons(post);
+        post.renderViewPost();
+        await showButtons(post);
     } else {
         window.location.href = "https://communitycrag.com/postnotfound";
     }
 }
 
 async function showButtons(post) {
+
     const flex = 'flex';
     const none = 'none';
     const adminUID = "HdsKN00bCnTn9dmFkYtLLiMnOA42";
     const signedIn = await isSignedIn();
 
+    if (post.getSetterUID() === CacheDB.getUID() || CacheDB.getUID() == adminUID) {
+        document.getElementById('delete-post-button').style.display = flex;
+    }
+
+    // Hide the suggest grade button for the post creator
+    if (post.getSetterUID() === CacheDB.getUID()) {
+        return;
+    }
+
+    // Display the suggest grade button, and show up/down if previously voted.
     if (signedIn) {
         const suggestGradeButton = document.getElementById('suggest-grade-button');
         suggestGradeButton.style.display = flex;
@@ -61,10 +72,6 @@ async function showButtons(post) {
             document.getElementById('down-grade-icon').style.display = flex;
             suggestGradeButton.setAttribute('onclick', "");
         }
-    }
-
-    if (post.getSetterUID() === CacheDB.getUID() || CacheDB.getUID() == adminUID) {
-        document.getElementById('delete-post-button').style.display = flex;
     }
 }
 

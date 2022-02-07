@@ -266,7 +266,7 @@ export class Post {
         parent.insertBefore(clone, null);
     }
 
-    viewPost() {
+    renderViewPost() {
 
         document.getElementById('page-title').innerHTML = "Crag | " + this.name;
 

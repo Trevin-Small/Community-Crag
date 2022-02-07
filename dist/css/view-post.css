@@ -113,13 +113,23 @@
 }
 .stats-column-container {
     height: 100%;
-    width: 33%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 0px;
     margin: 0;
+}
+.right {
+    width: 20%;
+    align-items: flex-end;
+    justify-self: flex-end;
+}
+.left {
+    width: 20%;
+    align-items: flex-start;
+    justify-self: flex-start;
 }
 .suggest-grade-button {
     position: relative;
@@ -146,8 +156,10 @@
     margin-bottom: 0px;
 }
 .stars {
+    height: auto;
+    max-height: 2rem;
     width: 100%;
-    margin: 0px 5px 0px 5px;
+    margin: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -238,14 +250,6 @@
     align-items: center;
     padding: 0;
     margin: 0.5rem;
-}
-.right {
-    align-items: flex-end;
-    justify-self: flex-end;
-}
-.left {
-    align-items: flex-start;
-    justify-self: flex-start;
 }
 .popup {
     position: fixed;

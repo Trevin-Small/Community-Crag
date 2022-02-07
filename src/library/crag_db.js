@@ -39,7 +39,7 @@ export class CragDB {
     * Update the Grade data on an existing post in firestore
     */
 
-    static async updatePostGrade(db, collectionName, postId, post){
+    static async updatePostGrade(db, collectionName, postId, post) {
 
         const postRef = doc(db, collectionName, postId);
 
@@ -49,7 +49,7 @@ export class CragDB {
                 gradeCount: post.getGradeCount(),
                 userList: post.getUserSuggestionList()
             }
-            await setDoc(postRef, data, {merge: true});
+            await setDoc(postRef, data, { merge: true });
         } catch (e) {
             console.error("Error editing document: ", e);
         }
