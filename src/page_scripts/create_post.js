@@ -101,7 +101,10 @@ export async function submitPost() {
             break;
     }
 
-    document.getElementById('submit-new-climb').disabled = true;
+    const submitButton = document.getElementById('submit-new-climb');
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Loading...';
+    Errors.infoMessage("Submission Loading...", "info-message");
 
     try {
         // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
@@ -112,7 +115,7 @@ export async function submitPost() {
         let imageUrl = await CragDB.uploadCloudImage(imageStorageName, postTime, image);
 
         const uid = CacheDB.getUID();
-        let setterName = await CacheDB.getUsername();
+        let setterName = CacheDB.getUsername();
 
         if (setterName == null) {
             setterName = await getUsername();
@@ -122,7 +125,7 @@ export async function submitPost() {
         // Create post object and push it to firestore
         const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
-        w
+
         // Query by post time to get the most recent post
         await CragDB.getAllPosts(null, db, postCollectionName, true);
         homeRedirect();

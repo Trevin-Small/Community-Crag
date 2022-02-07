@@ -7,6 +7,8 @@
 
 export class Post {
 
+    static STATIC_INITIAL_GRADE_COUNT = 2;
+
     constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
 
         this.INITIAL_GRADE_COUNT = 2;
@@ -31,8 +33,8 @@ export class Post {
         this.userSuggestionList = userSuggestionList;
     }
 
-    getInitialGradeCount() {
-        return this.INITIAL_GRADE_COUNT;
+    static getInitialGradeCount() {
+        return this.STATIC_INITIAL_GRADE_COUNT;
     }
 
     getNumericPostTime() {

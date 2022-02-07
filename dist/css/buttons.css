@@ -10,7 +10,7 @@
     margin-left: 5px;
     border: 3px solid #ffa100;
     border-radius: 8px;
-    transition-duration: 0.4s;
+    transition: all 0.3s;
     cursor: pointer;
     white-space: normal;
 }

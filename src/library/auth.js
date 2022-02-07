@@ -36,93 +36,93 @@ async function pushUserToFirebase(someUID, someUsername) {
 
 export async function signUp() {
 
-    Errors.resetBorders(['#777', '3px'], ['email', 'username', 'pass', 're-pass']);
+  Errors.resetBorders(['#777', '3px'], ['email', 'username', 'pass', 're-pass']);
 
-    const errorId = 'error-message';
-    const errorMessages = [
-        'Email domain must be "@purdue.edu"',
-        'Username cannot be over 15 characters!',
-        'Username cannot under 3 characters!',
-        'Password must be at least 6 characters!',
-        'Whitespace is not allowed in this field!',
-        'Field(s) cannot be left empty!',
-        'Invalid Email!',
-        'An account with this email already exists!',
-        'Password is too weak.',
-        'Passwords must match!'
-    ]
-    const emailVerificationMessage = "An email verification is on its way! Check your inbox for a message from us."
+  const errorId = 'error-message';
+  const errorMessages = [
+    'Email domain must be "@purdue.edu"',
+    'Username cannot be over 15 characters!',
+    'Username cannot under 3 characters!',
+    'Password must be at least 6 characters!',
+    'Whitespace is not allowed in this field!',
+    'Field(s) cannot be left empty!',
+    'Invalid Email!',
+    'An account with this email already exists!',
+    'Password is too weak.',
+    'Passwords must match!'
+  ]
+  const emailVerificationMessage = "An email verification is on its way! Check your inbox for a message from us."
 
-    const email = document.getElementById('email').value;
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('pass').value;
-    const retypePassword = document.getElementById('re-pass').value;
+  const email = document.getElementById('email').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('pass').value;
+  const retypePassword = document.getElementById('re-pass').value;
 
-    const isException = isExceptionEmail(email);
-    if (!isException) {
-      if (email.split('@')[1] !== 'purdue.edu') {
-        Errors.inputErrorBorderHighlight('email');
-        Errors.errorMessage(errorMessages[0], errorId);
-        return;
-      } else if (email.includes(' ')) {
-        Errors.inputErrorBorderHighlight('email');
-        Errors.errorMessage(errorMessages[4], errorId);
-        return;
-      }
-    }
-
-    if (username.length > 15) {
-      Errors.inputErrorBorderHighlight('username');
-      Errors.errorMessage(errorMessages[1], errorId);
+  const isException = isExceptionEmail(email);
+  if (!isException) {
+    if (email.split('@')[1] !== 'purdue.edu') {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.errorMessage(errorMessages[0], errorId);
       return;
-    } else if (username.length < 3) {
-      Errors.inputErrorBorderHighlight('username');
-      Errors.errorMessage(errorMessages[2], errorId);
-      return;
-    } else if (/^\s*$/.test(username)) {
-      Errors.inputErrorBorderHighlight('username');
-      Errors.errorMessage(errorMessages[5], errorId);
-      return;
-    } else if (password.length < 6) {
-      Errors.inputErrorBorderHighlight('pass');
-      Errors.errorMessage(errorMessages[3], errorId);
-      return;
-    } else if (password.includes(' ')) {
-      Errors.inputErrorBorderHighlight('pass');
+    } else if (email.includes(' ')) {
+      Errors.inputErrorBorderHighlight('email');
       Errors.errorMessage(errorMessages[4], errorId);
       return;
-    } else if (retypePassword !== password) {
-      Errors.inputErrorBorderHighlight('pass');
-      Errors.inputErrorBorderHighlight('re-pass');
-      Errors.errorMessage(errorMessages[9], errorId);
+    }
+  }
+
+  if (username.length > 15) {
+    Errors.inputErrorBorderHighlight('username');
+    Errors.errorMessage(errorMessages[1], errorId);
+    return;
+  } else if (username.length < 3) {
+    Errors.inputErrorBorderHighlight('username');
+    Errors.errorMessage(errorMessages[2], errorId);
+    return;
+  } else if (/^\s*$/.test(username)) {
+    Errors.inputErrorBorderHighlight('username');
+    Errors.errorMessage(errorMessages[5], errorId);
+    return;
+  } else if (password.length < 6) {
+    Errors.inputErrorBorderHighlight('pass');
+    Errors.errorMessage(errorMessages[3], errorId);
+    return;
+  } else if (password.includes(' ')) {
+    Errors.inputErrorBorderHighlight('pass');
+    Errors.errorMessage(errorMessages[4], errorId);
+    return;
+  } else if (retypePassword !== password) {
+    Errors.inputErrorBorderHighlight('pass');
+    Errors.inputErrorBorderHighlight('re-pass');
+    Errors.errorMessage(errorMessages[9], errorId);
+    return;
+  }
+
+  await createUserWithEmailAndPassword(auth, email, password).catch(function (error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    if (errorCode == 'auth/email-already-in-use') {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.errorMessage(errorMessages[7], errorId);
+      return;
+    } else if (errorCode == 'auth/invalid-email') {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.errorMessage(errorMessages[6], errorId);
+      return;
+    } else if (errorCode == 'auth/weak-password') {
+      Errors.inputErrorBorderHighlight('email');
+      Errors.errorMessage(errorMessages[8], errorId);
       return;
     }
 
-    await createUserWithEmailAndPassword(auth, email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      if (errorCode == 'auth/email-already-in-use') {
-        Errors.inputErrorBorderHighlight('email');
-        Errors.errorMessage(errorMessages[7], errorId);
-        return;
-      } else if (errorCode == 'auth/invalid-email') {
-        Errors.inputErrorBorderHighlight('email');
-        Errors.errorMessage(errorMessages[6], errorId);
-        return;
-      } else if (errorCode == 'auth/weak-password') {
-        Errors.inputErrorBorderHighlight('email');
-        Errors.errorMessage(errorMessages[8], errorId);
-        return;
-      }
+  });
 
-    });
-
-    updateProfile(getUsername(), {displayName: username});
-    await pushUserToFirebase(getUID(), username);
-    await sendEmailVerification(auth.currentUser);
-    Errors.infoMessage(emailVerificationMessage, 'info-message');
-    logOut();
-    //signedInRedirect();
+  updateProfile(getUsername(), { displayName: username });
+  await pushUserToFirebase(getUID(), username);
+  await sendEmailVerification(auth.currentUser);
+  Errors.infoMessage(emailVerificationMessage, 'info-message');
+  logOut(false);
+  //signedInRedirect();
 
 }
 
@@ -133,12 +133,12 @@ export async function signIn() {
 
   const errorId = 'error-message';
   const errorMessages = [
-      'Email domain must be "@purdue.edu"',
-      'Field(s) cannot be left empty!',
-      'Invalid Email.',
-      'This account has been disabled.',
-      'No account exists with this email.',
-      'Incorrect Password.'
+    'Email domain must be "@purdue.edu"',
+    'Field(s) cannot be left empty!',
+    'Invalid Email.',
+    'This account has been disabled.',
+    'No account exists with this email.',
+    'Incorrect Password.'
   ];
 
   const email = document.getElementById('email').value;
@@ -165,7 +165,7 @@ export async function signIn() {
     return;
   }
 
-  await signInWithEmailAndPassword(auth, email, password).catch(function(error) {
+  await signInWithEmailAndPassword(auth, email, password).catch(function (error) {
     // Handle Errors here.
     var errorCode = error.code;
     if (errorCode === 'auth/invalid-email') {
@@ -195,9 +195,9 @@ export async function signIn() {
   console.log("Verified: " + await isEmailVerified());
   const valid = await isValidUser();
   if (valid == 0) {
-      Errors.errorMessage("You received an email from us. Please complete the verification before signing in.", errorId);
-      logOut();
-      return;
+    Errors.errorMessage("You received an email from us. Please complete the verification before signing in.", errorId);
+    logOut();
+    return;
   }
 
   signedInRedirect();
@@ -216,7 +216,7 @@ function isExceptionEmail(email) {
     "trevincub03@gmail.com"
   ]
   let returnVal = false;
-  exceptions.forEach(function(exception) {
+  exceptions.forEach(function (exception) {
     if (email === exception) {
       returnVal = true;
     }
@@ -236,9 +236,9 @@ export async function sendPasswordReset() {
     url: 'https://communitycrag.com/login'
   };
 
-  await sendPasswordResetEmail(auth, email, actionCodeSettings).then(function(){
+  await sendPasswordResetEmail(auth, email, actionCodeSettings).then(function () {
     Errors.infoMessage("A password reset email is on its way! It may take a few minutes to deliver.", infoId);
-  }).catch(function(error) {
+  }).catch(function (error) {
     // Handle Errors here.
     var errorCode = error.code;
     if (errorCode === 'auth/invalid-email') {
@@ -258,6 +258,16 @@ export async function sendPasswordReset() {
     }
     document.getElementById('submit-reset').disabled = false;
   });
+}
+
+function getUID() {
+  let uid = CacheDB.getUID();
+  if (uid != null) {
+    return uid;
+  }
+  uid = auth.currentUser.uid;
+  CacheDB.setUID(uid);
+  return uid;
 }
 
 export async function getUsername() {
@@ -280,10 +290,12 @@ export async function isSignedIn() {
   return CacheDB.getIsSignedIn();
 }
 
-export function logOut() {
+export function logOut(redirect = true) {
   auth.signOut();
   CacheDB.signOut();
-  signedOutRedirect();
+  if (redirect) {
+    signedOutRedirect();
+  }
 }
 
 export async function isEmailVerified() {
@@ -313,18 +325,8 @@ export async function isAdmin() {
     isAdminUser = await getDoc(doc(db, usersCollectionName, getUID()));
     isAdminUser = isAdminUser.data().isAdmin;
     console.log(isAdminUser);
-  } catch {}
+  } catch { }
   return isAdminUser;
-}
-
-function getUID() {
-  let uid = CacheDB.getUID();
-  if (uid != null) {
-    return uid;
-  }
-  uid = auth.currentUser.uid;
-  CacheDB.setUID(uid);
-  return uid;
 }
 
 export function updateNavBar() {
@@ -333,29 +335,29 @@ export function updateNavBar() {
   let whenSignedIn = "none";
 
   if (isSignedIn) {
-      whenNotSignedIn = "none";
-      whenSignedIn = "block";
+    whenNotSignedIn = "none";
+    whenSignedIn = "block";
   }
 
   try {
-      document.getElementById('navbar-login').style.display = whenNotSignedIn;
-      document.getElementById('navbar-sign-up').style.display = whenNotSignedIn;
+    document.getElementById('navbar-login').style.display = whenNotSignedIn;
+    document.getElementById('navbar-sign-up').style.display = whenNotSignedIn;
 
-      document.getElementById('navbar-log-out').style.display = whenSignedIn;
-      document.getElementById('navbar-new-post').style.display = whenSignedIn;
+    document.getElementById('navbar-log-out').style.display = whenSignedIn;
+    document.getElementById('navbar-new-post').style.display = whenSignedIn;
   } catch (e) {
-      console.log("Update Nav Bar: " + e);
+    console.log("Update Nav Bar: " + e);
   }
 }
 
 function signedInRedirect() {
-    const baseUrl = 'https://communitycrag.com';
-    if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
-        window.location.href = baseUrl;
-    }
+  const baseUrl = 'https://communitycrag.com';
+  if (window.location.href === baseUrl + '/signup' || window.location.href === baseUrl + '/login') {
+    window.location.href = baseUrl;
+  }
 }
 
 function signedOutRedirect() {
-    const signedOutURL = 'https://communitycrag.com/loggedout';
-    window.location.href = signedOutURL;
+  const signedOutURL = 'https://communitycrag.com/loggedout';
+  window.location.href = signedOutURL;
 }

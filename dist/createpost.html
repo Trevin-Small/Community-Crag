@@ -31,6 +31,7 @@
                 <h3>Create New Problem</h3>
                 <hr>
                 <div class="error-message" id="error-message" style="display:none;"></div>
+                <div class="info-message" id="info-message" style="display:none;"></div>
                 <form class="create-form" autocomplete="off" onsubmit="event.preventDefault();">
                     <div style="margin:0.25rem;"></div>
                     <b>Name Your Climb:</b>
@@ -42,9 +43,8 @@
                             style="display:block;" src="./assets/camera.svg"> Choose Photo</label>
                     <input id="file-upload" type="file" accept="image/*" multiple="false"
                         oninput="communityCrag.fileUploaded(document.getElementById('file-upload').value)" />
-                    <p class="centered-text">Please edit the photo before uploading and circle any holds used in this
-                        problem. <br> For more info, refer to our<br><a href="./photoguide">Photo Editing
-                            Guide</a>
+                    <p class="centered-text">Please edit the photo before uploading.<br><a href="./photoguide">Photo
+                            Editing Guide</a>
                     </p>
                     <div style="margin:0.5rem;"></div>
                     <b>Select a Grade:</b>

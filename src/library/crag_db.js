@@ -224,7 +224,7 @@ export class CragDB {
         const storageRef = ref(storage, directoryName + postTime);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image[0]);
-        return await getCloudImage(storageRef);
+        return await this.getCloudImage(storageRef);
     } /* uploadCloudImage() */
 
 
