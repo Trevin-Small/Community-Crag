@@ -221,10 +221,45 @@ export class CragDB {
 
     static async uploadCloudImage(directoryName, postTime, image) {
 
+        function readFileAsync(file) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+
+                reader.onload = function (e) {
+                    let image = new Image();
+
+                    image.onload = function () {
+                        console.log("Width: " + this.width + ", Height: " + this.height);
+                        resolve([this.width, this.height]);
+                    };
+
+                    image.src = e.target.result;
+                };
+
+                reader.onerror = reject;
+
+                reader.readAsDataURL(file);
+            })
+        }
+
+        const dimensions = await readFileAsync(image[0]);
+        const width = dimensions[0];
+        const height = dimensions[1];
+
+        let orientation = 0;
+        if (height > width) {
+            orientation = 1;
+        } else if (width > height) {
+            orientation = -1;
+        }
+
+        console.log("Orientation: " + orientation);
+
         const storageRef = ref(storage, directoryName + postTime);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image[0]);
-        return await this.getCloudImage(storageRef);
+        return await this.getCloudImage(storageRef, orientation);
+
     } /* uploadCloudImage() */
 
 
@@ -232,17 +267,27 @@ export class CragDB {
      * Get the URL of a given image reference
     */
 
-    static async getCloudImage(storageRef) {
+    static async getCloudImage(storageRef, orientation) {
 
         const verticalImageTransform = "tr:w-1500,h-2000/";
-        const horizontalImageTransform = "tr:w-2900,h-1500/";
+        const horizontalImageTransform = "tr:w-2000,h-1500/";
+        let photoOrientationTransform = "";
+
+        if (orientation == 1) {
+            photoOrientationTransform = verticalImageTransform;
+        } else if (orientation == -1) {
+            photoOrientationTransform = horizontalImageTransform;
+        }
+
+        console.log("Photo Transform: " + photoOrientationTransform);
 
         let imageUrl = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
-            imageUrl = url;
-            url = url.replace("https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F", "https://ik.imagekit.io/communitycrag/" + photoOrientationTransform);
+            imageUrl = url.replace("https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F", "https://ik.imagekit.io/communitycrag/" + photoOrientationTransform);
         });
+
+        console.log(imageUrl);
 
         return imageUrl;
     } /* getCloudImage() */
@@ -253,6 +298,11 @@ export class CragDB {
     */
 
     static async deleteCloudImage(url) {
+
+        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-1500,h-2000/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
+        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-2000,h-1500/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
+        url = url.replace("https://ik.imagekit.io/communitycrag/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
+
         const imageRef = ref(storage, url);
         await deleteObject(imageRef);
     } /*deleteCloudImage() */
