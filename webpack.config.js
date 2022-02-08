@@ -4,7 +4,7 @@ const path = require('path');
 const host = process.env.HOST || 'localhost';
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: './src/index.js',
   watch: true,
   output: {
