@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/Trevin-Small/Community-Crag/issues"
   },
-  "homepage": "https://github.com/Trevin-Small/Community-Crag#readme",
+  "homepage": "https://communitycrag.com",
   "devDependencies": {
     "@babel/core": "^7.16.10",
     "@babel/preset-env": "^7.16.10",

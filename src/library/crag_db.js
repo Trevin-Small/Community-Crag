@@ -234,10 +234,14 @@ export class CragDB {
 
     static async getCloudImage(storageRef) {
 
+        const verticalImageTransform = "tr:w-1500,h-2000/";
+        const horizontalImageTransform = "tr:w-2900,h-1500/";
+
         let imageUrl = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
             imageUrl = url;
+            url = url.replace("https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F", "https://ik.imagekit.io/communitycrag/" + photoOrientationTransform);
         });
 
         return imageUrl;
