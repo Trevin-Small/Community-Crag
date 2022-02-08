@@ -17,8 +17,11 @@ This website is mobile-first. While computer navigation is still supported, the 
 Targeted at the Purdue University Climbing wall to improve the climbing experience for all students. 
 
 ## Special thanks to:
-### Michael Marr
+### [Michael Marr](https://github.com/mikemarr)
 - csi.js -> enabling client side .html file includes with incredible ease. [Check out the project](https://github.com/LexmarkWeb/csi.js) 
 
-### Liam Schenk & Elliot Cram
+### [ImageKit.io](https://imagekit.io)
+- Providing **FREE** image compression, resizing, and caching, linked directly to firebase storage. Super simple to setup, and can vastly speed up the website. (Note this is a temporary solution. While it works great, the more efficient solution would be to compress/resize the images through firebase functions.)
+
+### [Liam Schenk](https://github.com/climber-guy1772) & Elliot Cram
 - They came up with the idea for this website!
