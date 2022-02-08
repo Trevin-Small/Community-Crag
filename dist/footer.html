@@ -74,5 +74,11 @@
         <a class="footer-icon-container" href="mailto:contact@trevinsmall.com"><img class="footer-icon"
                 src="./assets/envelope.svg" /></a>
     </div>
-    <span class="footer-spacer footer-bottom"></span>
+    <span class="footer-spacer footer-bottom" id="footer-spacer-bottom"></span>
 </div>
+<script>
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log('display-mode is standalone');
+        document.getElementById('footer-spacer-bottom').style.marginBottom = '0px';
+    }
+</script>

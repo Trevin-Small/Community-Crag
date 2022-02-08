@@ -6,4 +6,5 @@
     height: 100vh;
     width: 100vw;
     padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+    overflow: hidden;
 }
