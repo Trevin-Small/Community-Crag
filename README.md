@@ -17,7 +17,7 @@ This website is mobile-first. While computer navigation is still supported, the 
 Targeted at the Purdue University Climbing wall to improve the climbing experience for all students. 
 
 ## Special thanks to:
-### Michael Marr
+### [Michael Marr](https://github.com/mikemarr)
 - csi.js -> enabling client side .html file includes with incredible ease. [Check out the project](https://github.com/LexmarkWeb/csi.js) 
 
 ### [ImageKit.io](https://imagekit.io)
