@@ -269,8 +269,8 @@ export class CragDB {
 
     static async getCloudImage(storageRef, orientation) {
 
-        const verticalImageTransform = "tr:w-1500,h-2000/";
-        const horizontalImageTransform = "tr:w-2000,h-1500/";
+        const verticalImageTransform = "tr:n-post-photo-vertical/";
+        const horizontalImageTransform = "tr:n-post-photo-horizontal/";
         let photoOrientationTransform = "";
 
         if (orientation == 1) {
