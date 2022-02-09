@@ -4,13 +4,13 @@ import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
 import { storage } from '../init';
 
-export class CragDB {
+export const CragDB = () => {
 
     /*
     * Add a new post to firestore
     */
 
-    static async addPost(db, collectionName, post) {
+    async function addPost(db, collectionName, post) {
 
         const collectionRef = collection(db, collectionName);
 
@@ -39,7 +39,7 @@ export class CragDB {
     * Update the Grade data on an existing post in firestore
     */
 
-    static async updatePostGrade(db, collectionName, postId, post) {
+    async function updatePostGrade(db, collectionName, postId, post) {
 
         const postRef = doc(db, collectionName, postId);
 
@@ -60,7 +60,7 @@ export class CragDB {
     * Get one post from firestore
     */
 
-    static async getPost(db, collectionName, postId) {
+    async function getPost(db, collectionName, postId) {
 
         const postRef = doc(db, collectionName, postId);
         const postDoc = await getDoc(postRef);
@@ -77,7 +77,7 @@ export class CragDB {
     * Get all posts that meet the query. If the query is all posts, check for Cached data before fetching from the db.
     */
 
-    static async getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
+    async function getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
 
         if (queryRef != null) {
             console.log("Fetching from db...");
@@ -102,7 +102,7 @@ export class CragDB {
      * Input search parameters (grade, star rating, climb type, OR a time) and return a query object that meets those parameters
     */
 
-    static newQuery(db, collectionName, grade, starRating, climbType, time = null) {
+    function newQuery(db, collectionName, grade, starRating, climbType, time = null) {
 
         const dbCollection = collection(db, collectionName);
 
@@ -183,7 +183,7 @@ export class CragDB {
     * Query firestore and retreive posts that meet the criteria
     */
 
-    static async queryPosts(queryRef) {
+    async function queryPosts(queryRef) {
 
         let postArray = [];
         let dbPosts = await getDocs(queryRef);
@@ -201,7 +201,7 @@ export class CragDB {
     * Delete a post entirely, removing its data on firestore and in cloud storage
     */
 
-    static async deletePost(db, collectionName, postId, post = null) {
+    async function deletePost(db, collectionName, postId, post = null) {
 
         const docRef = doc(db, collectionName, postId);
 
@@ -219,7 +219,7 @@ export class CragDB {
      * Upload a given image file to cloud storage and return its URL
     */
 
-    static async uploadCloudImage(directoryName, postTime, image) {
+    async function uploadCloudImage(directoryName, postTime, image) {
 
         function readFileAsync(file) {
             return new Promise((resolve, reject) => {
@@ -267,7 +267,7 @@ export class CragDB {
      * Get the URL of a given image reference
     */
 
-    static async getCloudImage(storageRef, orientation) {
+    async function getCloudImage(storageRef, orientation) {
 
         const verticalImageTransform = "tr:n-post-photo-vertical/";
         const horizontalImageTransform = "tr:n-post-photo-horizontal/";
@@ -297,7 +297,7 @@ export class CragDB {
      * Delete an image from cloud storage by URL
     */
 
-    static async deleteCloudImage(url) {
+    async function deleteCloudImage(url) {
 
         url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-1500,h-2000/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
         url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-2000,h-1500/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
@@ -306,6 +306,18 @@ export class CragDB {
         const imageRef = ref(storage, url);
         await deleteObject(imageRef);
     } /*deleteCloudImage() */
+
+
+    return {
+        addPost: addPost,
+        getPost: getPost,
+        getAllPosts: getAllPosts,
+        deletePost: deletePost,
+        updatePostGrade: updatePostGrade,
+        newQuery: newQuery,
+        queryPosts: queryPosts,
+        uploadCloudImage: uploadCloudImage
+    };
 
 }
 

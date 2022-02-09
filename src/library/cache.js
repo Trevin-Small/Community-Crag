@@ -1,112 +1,112 @@
 import { Post } from "./post.js";
 
-export class CacheDB {
+export const CacheDB = () => {
 
-    static dbName = 'post-data';
-    static signedIn = 'signed-in'
-    static uid = 'uid';
-    static username = 'username';
-    static prevURL = 'prev-URL';
-    static nonPostKeys = [this.signedIn, this.uid, this.username, this.prevURL];
-    static storage = window.sessionStorage;
+    const dbName = 'post-data';
+    const signedIn = 'signed-in'
+    const uid = 'uid';
+    const username = 'username';
+    const prevURL = 'prev-URL';
+    let nonPostKeys = [signedIn, uid, username, prevURL];
+    let storage = window.sessionStorage;
 
-    static cacheAllPosts(posts) {
-        this.removeAllPosts();
+    function cacheAllPosts(posts) {
+        removeAllPosts();
         posts.forEach((post) => {
-            this.cachePost(post);
+            cachePost(post);
         });
     }
 
-    static markSignedIn() {
-        this.storage.setItem(this.signedIn, 'true');
+    function markSignedIn() {
+        storage.setItem(signedIn, 'true');
     }
 
-    static markSignedOut() {
-        this.storage.setItem(this.signedIn, 'false');
+    function markSignedOut() {
+        storage.setItem(signedIn, 'false');
     }
 
-    static getIsSignedIn() {
-        return this.storage.getItem(this.signedIn) === 'true';
+    function getIsSignedIn() {
+        return storage.getItem(signedIn) === 'true';
     }
 
-    static setUID(uid) {
-        this.storage.setItem(this.uid, uid);
+    function setUID(uid) {
+        storage.setItem(uid, uid);
     }
 
-    static getUID() {
-        return this.storage.getItem(this.uid);
+    function getUID() {
+        return storage.getItem(uid);
     }
 
-    static clearUID() {
-        this.storage.removeItem(this.uid);
+    function clearUID() {
+        storage.removeItem(uid);
     }
 
-    static setUserame(username) {
-        this.storage.setItem(this.username, username);
+    function setUserame(username) {
+        storage.setItem(username, username);
     }
 
-    static getUsername() {
-        return this.storage.getItem(this.username);
+    function getUsername() {
+        return storage.getItem(username);
     }
 
-    static signIn(uid) {
-        this.setUID(uid);
-        this.markSignedIn();
+    function signIn(uid) {
+        setUID(uid);
+        markSignedIn();
     }
 
-    static signOut() {
-        this.storage.removeItem(this.username);
-        this.clearUID();
-        this.markSignedOut();
+    function signOut() {
+        storage.removeItem(username);
+        clearUID();
+        markSignedOut();
     }
 
-    static updatePreviousURL(url) {
-        this.storage.setItem(this.prevURL, url);
+    function updatePreviousURL(url) {
+        storage.setItem(prevURL, url);
     }
 
-    static getPreviousURL() {
-        return this.storage.getItem(this.prevURL);
+    function getPreviousURL() {
+        return storage.getItem(prevURL);
     }
 
-    static clearPreviousURL() {
-        this.storage.removeItem(this.prevURL);
+    function clearPreviousURL() {
+        storage.removeItem(prevURL);
     }
 
     // Define the addData() function
-    static cachePost(post) {
-        this.storage.setItem(post.getPostId(), JSON.stringify(this.postToObject(post)));
+    function cachePost(post) {
+        storage.setItem(post.getPostId(), JSON.stringify(postToObject(post)));
     }
 
-    static removePost(postId) {
-        this.storage.removeItem(String(postId));
+    function removePost(postId) {
+        storage.removeItem(String(postId));
     }
 
-    static removeAllPosts() {
-        let postIds = Object.keys(this.storage);
+    function removeAllPosts() {
+        let postIds = Object.keys(storage);
 
         postIds.forEach((postId) => {
-            if (this.nonPostKeys.indexOf(postId) == -1) {
-                this.removePost(postId);
+            if (nonPostKeys.indexOf(postId) == -1) {
+                removePost(postId);
             }
         });
     }
 
-    static getCachedPost(postId) {
-        const storageVal = this.storage.getItem(postId);
+    function getCachedPost(postId) {
+        const storageVal = storage.getItem(postId);
         if (storageVal == null) {
             return null;
         }
         const postObject = JSON.parse(storageVal);
-        return this.objectToPost(postObject);
+        return objectToPost(postObject);
     }
 
-    static getAllCachedPosts(query = null) {
-        let postIds = Object.keys(this.storage);
+    function getAllCachedPosts(query = null) {
+        let postIds = Object.keys(storage);
         let postList = [];
 
         postIds.forEach((postId) => {
-            if (this.nonPostKeys.indexOf(postId) == -1) {
-                postList.push(this.getCachedPost(postId));
+            if (nonPostKeys.indexOf(postId) == -1) {
+                postList.push(getCachedPost(postId));
             }
         });
 
@@ -118,11 +118,11 @@ export class CacheDB {
      *  [ Grade , Climb Type , Number of Stars ]
     */
 
-    static queryCachedPosts(queries) {
+    function queryCachedPosts(queries) {
 
     }
 
-    static postToObject(post) {
+    function postToObject(post) {
         let suggestionsString = "";
         let suggestions = post.getUserSuggestionList();
         let keys = Object.keys(suggestions);
@@ -146,7 +146,7 @@ export class CacheDB {
         };
     }
 
-    static objectToPost(object) {
+    function objectToPost(object) {
         let suggestionsString = object.userList;
         let keyValuePairs = suggestionsString.split(" ");
         let suggestionList = {};
@@ -160,6 +160,31 @@ export class CacheDB {
 
         return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
     }
+
+    return {
+        dbName: dbName,
+        cacheAllPosts: cacheAllPosts,
+        markSignedIn: markSignedIn,
+        markSignedOut: markSignedOut,
+        getIsSignedIn: getIsSignedIn,
+        setUID: setUID,
+        getUID: getUID,
+        clearUID: clearUID,
+        setUserame: setUserame,
+        getUsername: getUsername,
+        signIn: signIn,
+        signOut: signOut,
+        updatePreviousURL: updatePreviousURL,
+        getPreviousURL: getPreviousURL,
+        clearPreviousURL: clearPreviousURL,
+        cachePost: cachePost,
+        removePost: removePost,
+        removeAllPosts: removeAllPosts,
+        getCachedPost: getCachedPost,
+        getAllCachedPosts: getAllCachedPosts,
+        postToObject: postToObject,
+        objectToPost: objectToPost
+    };
 }
 
 export function updatePreviousURL(url) {
