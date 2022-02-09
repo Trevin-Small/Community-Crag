@@ -218,7 +218,12 @@ export class Post {
         let element = document.getElementById(baseElementId);
         let clone = element.cloneNode(true);
         clone.id = postId;
-        clone.querySelector('#post-container').setAttribute('id', postId);
+
+        const postContainer = clone.querySelector('#post-container');
+        postContainer.id = postId;
+        //const postImageURL = (this.isVerticalImage ? verticalImageTransformation : horizontalImageTransformation) + this.image;
+        //postContainer.name = postImageURL;
+
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();

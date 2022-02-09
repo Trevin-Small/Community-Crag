@@ -1,5 +1,6 @@
 import { db, postCollectionName, CragDB } from '../library/library.js';
 
+const postTemplateId = 'placeholder-post';
 
 export async function displayPosts(queryRef) {
 
@@ -18,7 +19,7 @@ export async function displayPosts(queryRef) {
     }
 
     postArray.forEach((post) => {
-        post.renderPostList('placeholder-post', post.getPostId());
+        post.renderPostList(postTemplateId, post.getPostId());
     });
 
 }
@@ -29,6 +30,6 @@ export async function searchByFilters(formId, e) {
     document.getElementById('search-button').disabled = false;
 }
 
-export async function openPost(postId) {
-    window.location.href = "./viewpost.html?" + postId;
+export function openPost(postId, imageURL) {
+    window.location.href = "./viewpost.html?id=" + postId;// + "&url=" + imageURL;
 }

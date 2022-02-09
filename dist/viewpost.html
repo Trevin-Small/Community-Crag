@@ -1,7 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head id="head">
+    <!-- Script to grab the image from the url parameters and preload it
+    <script id="preload-image-script">
+        const imageKitBaseURL = "https://ik.imagekit.io/communitycrag/";
+        let url = window.location.href;
+        let index = url.indexOf('&') + 1;
+        url = url.slice(index).replace("url=", "");
+        url = imageKitBaseURL + url;
+        console.log(`URL: ${url}`);
+        const preload = document.createElement('link');
+        preload.rel = "preload";
+        preload.as = "image";
+        preload.id = "image-preload";
+        preload.href = url;
+        document.getElementById('head').insertBefore(preload, document.getElementById('preload-image-script'));
+    </script>
+     --->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <meta name="description" content="Community Crag - Collaborative Climbing" />

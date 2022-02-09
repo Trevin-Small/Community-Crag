@@ -12,18 +12,7 @@ export async function viewPost(postObject = null) {
     let post = postObject;
 
     if (post == null) {
-        const postId = getIdByURL();
-
-        const cachedPost = CacheDB.getCachedPost(postId);
-
-        if (cachedPost != null) { // If the post is already cached
-            console.log("Displaying cached post...");
-            post = cachedPost;
-        } else { // If a user visits a link directly without visiting the home page, the post wont be cached -> Fetch it instead.
-            console.log("Displaying db fetched post...");
-            post = await CragDB.getPost(db, postCollectionName, postId);
-        }
-
+        post = await getPostByURL();
     }
 
     if (post != null) {
@@ -145,5 +134,23 @@ export function hideDeletePopup() {
 }
 
 function getIdByURL() {
-    return window.location.href.split("?")[1].replace(/%20/g, " ");
+    let url = window.location.href.replace("https://communitycrag.com/viewpost?id=", "").replace(/%20/g, " ");
+    url = url.split("&")[0];
+    return url;
+}
+
+async function getPostByURL() {
+    const postId = getIdByURL();
+    const cachedPost = CacheDB.getCachedPost(postId);
+    let post = null;
+
+    if (cachedPost != null) { // If the post is already cached
+        console.log("Displaying cached post...");
+        post = cachedPost;
+    } else { // If a user visits a link directly without visiting the home page, the post wont be cached -> Fetch it instead.
+        console.log("Displaying db fetched post...");
+        post = await CragDB.getPost(db, postCollectionName, postId);
+    }
+
+    return post;
 }
