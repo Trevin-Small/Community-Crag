@@ -4,7 +4,7 @@ import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
 import { storage } from '../init';
 
-export const CragDB = () => {
+export const CragDB = (function () {
 
     /*
     * Add a new post to firestore
@@ -319,7 +319,7 @@ export const CragDB = () => {
         uploadCloudImage: uploadCloudImage
     };
 
-}
+})();
 
 // ----------------------------------------------------------------------------------->
 // These functions dont belong in this file. Need to find a new solution...

@@ -1,13 +1,13 @@
 import { Post } from "./post.js";
 
-export const CacheDB = () => {
+export const CacheDB = (function () {
 
     const dbName = 'post-data';
     const signedIn = 'signed-in'
-    const uid = 'uid';
+    const uidKey = 'uid';
     const username = 'username';
     const prevURL = 'prev-URL';
-    let nonPostKeys = [signedIn, uid, username, prevURL];
+    let nonPostKeys = [signedIn, uidKey, username, prevURL];
     let storage = window.sessionStorage;
 
     function cacheAllPosts(posts) {
@@ -30,15 +30,15 @@ export const CacheDB = () => {
     }
 
     function setUID(uid) {
-        storage.setItem(uid, uid);
+        storage.setItem(uidKey, uid);
     }
 
     function getUID() {
-        return storage.getItem(uid);
+        return storage.getItem(uidKey);
     }
 
     function clearUID() {
-        storage.removeItem(uid);
+        storage.removeItem(uidKey);
     }
 
     function setUserame(username) {
@@ -96,6 +96,7 @@ export const CacheDB = () => {
         if (storageVal == null) {
             return null;
         }
+
         const postObject = JSON.parse(storageVal);
         return objectToPost(postObject);
     }
@@ -185,7 +186,7 @@ export const CacheDB = () => {
         postToObject: postToObject,
         objectToPost: objectToPost
     };
-}
+})();
 
 export function updatePreviousURL(url) {
     CacheDB.updatePreviousURL(url);
