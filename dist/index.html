@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+    <link type="preload" rel="https://ik.imagekit.io" />
+    <link type="preload" rel="https://firestore.googleapis.com/" />
+    <link type="preload" rel="https://community-crag.firebaseapp.com" />
+    <link type="preload" rel="https://apis.google.com" />
+    <link type="preload" rel="https://googleapis.com" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <meta name="description" content="Community Crag - Collaborative Climbing" />
@@ -11,10 +17,6 @@
     <meta name="theme-color" content="#212529">
 
     <title>Community Crag | Home</title>
-
-    <link type="preconnect" rel="https://community-crag.firebaseapp.com" />
-    <link type="preconnect" rel="https://apis.google.com" />
-    <link type="preconnect" rel="https://googleapis.com" />
 
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/logo.svg" />
@@ -26,6 +28,7 @@
     <link href="css/post-content.css" rel="stylesheet" />
     <link href="css/search-bar.css" rel="stylesheet" />
 
+    <script defer id='communityCragScript' src="https://communitycrag.com/bundle.js"></script>
     <script src="./csi.js"></script>
 </head>
 
@@ -143,9 +146,10 @@
     </div>
     <div data-include="./spacer.html"></div>
     <!-- Main JS-->
-    <script src="https://communitycrag.com/bundle.js"></script>
     <script>
-        communityCrag.displayPosts(null);
+        document.getElementById('communityCragScript').addEventListener('load', function () {
+            communityCrag.displayPosts(null);
+        });
 
         window.addEventListener('beforeunload', function (e) {
             communityCrag.updatePreviousURL(window.location.href);

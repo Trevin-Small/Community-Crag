@@ -3,11 +3,11 @@ import { Post } from "./post.js";
 export const CacheDB = (function () {
 
     const dbName = 'post-data';
-    const signedIn = 'signed-in'
+    const signedInKey = 'signed-in'
     const uidKey = 'uid';
-    const username = 'username';
+    const usernameKey = 'username';
     const prevURL = 'prev-URL';
-    let nonPostKeys = [signedIn, uidKey, username, prevURL];
+    let nonPostKeys = [signedInKey, uidKey, usernameKey, prevURL];
     let storage = window.sessionStorage;
 
     function cacheAllPosts(posts) {
@@ -18,15 +18,15 @@ export const CacheDB = (function () {
     }
 
     function markSignedIn() {
-        storage.setItem(signedIn, 'true');
+        storage.setItem(signedInKey, 'true');
     }
 
     function markSignedOut() {
-        storage.setItem(signedIn, 'false');
+        storage.setItem(signedInKey, 'false');
     }
 
     function getIsSignedIn() {
-        return storage.getItem(signedIn) === 'true';
+        return storage.getItem(signedInKey) === 'true';
     }
 
     function setUID(uid) {
@@ -42,11 +42,11 @@ export const CacheDB = (function () {
     }
 
     function setUserame(username) {
-        storage.setItem(username, username);
+        storage.setItem(usernameKey, username);
     }
 
     function getUsername() {
-        return storage.getItem(username);
+        return storage.getItem(usernameKey);
     }
 
     function signIn(uid) {
@@ -55,7 +55,7 @@ export const CacheDB = (function () {
     }
 
     function signOut() {
-        storage.removeItem(username);
+        storage.removeItem(usernameKey);
         clearUID();
         markSignedOut();
     }
@@ -138,6 +138,7 @@ export const CacheDB = (function () {
             setterName: post.getSetterName(),
             name: post.getName(),
             image: post.getImage(),
+            isVerticalImage: post.getIsVerticalImage(),
             grade: post.getNumericalGrade(),
             gradeCount: post.getGradeCount(),
             comment: post.getComment(),
@@ -159,7 +160,7 @@ export const CacheDB = (function () {
             }
         });
 
-        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
+        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.isVerticalImage, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
     }
 
     return {

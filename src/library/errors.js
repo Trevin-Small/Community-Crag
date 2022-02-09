@@ -16,10 +16,10 @@ export class Errors {
         });
         try {
             errorMessage(null, 'error-message');
-        } catch{}
+        } catch { }
         try {
             infoMessage(null, 'info-message');
-        } catch{}
+        } catch { }
     }
 
     static errorMessage(message, errorElementId) {

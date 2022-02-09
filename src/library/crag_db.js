@@ -2,7 +2,15 @@ import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, whe
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
-import { storage } from '../init';
+import {
+    storage,
+    imageKitBaseURL,
+    verticalImageTransformation,
+    horizontalImageTransformation,
+    verticalThumbnailTransformation,
+    horizontalThumbnailTransformation,
+    firebaseBaseURL
+} from '../init';
 
 export const CragDB = (function () {
 
@@ -21,6 +29,7 @@ export const CragDB = (function () {
                 setterName: post.getSetterName(),
                 name: post.getName(),
                 image: post.getImage(),
+                isVerticalImage: post.getIsVerticalImage(),
                 grade: post.getNumericalGrade(),
                 gradeCount: post.getGradeCount(),
                 comment: post.getComment(),
@@ -81,14 +90,14 @@ export const CragDB = (function () {
 
         if (queryRef != null) {
             console.log("Fetching from db...");
-            return await this.queryPosts(queryRef);
+            return await queryPosts(queryRef);
         }
 
         queryRef = collection(db, collectionName);
 
         if (isNewSession() || refreshedHomePage() || forceUpdate) {
             console.log("Fetching from db...");
-            let postArray = await this.queryPosts(queryRef);
+            let postArray = await queryPosts(queryRef);
             CacheDB.cacheAllPosts(postArray);
             return postArray;
         } else {
@@ -209,10 +218,31 @@ export const CragDB = (function () {
             post = CacheDB.getCachedPost(postId);
         }
 
-        await this.deleteCloudImage(post.getImage());
+        await deleteCloudImage(post.getImage());
         await deleteDoc(docRef);
         CacheDB.removePost(postId);
     } /* deletePost() */
+
+    async function imageIsVertical(image) {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                let image = new Image();
+
+                image.onload = function () {
+                    console.log("Width: " + this.width + ", Height: " + this.height);
+                    resolve(this.width < this.height);
+                };
+
+                image.src = e.target.result;
+            };
+
+            reader.onerror = reject;
+
+            reader.readAsDataURL(image);
+        });
+    }
 
 
     /*
@@ -221,44 +251,12 @@ export const CragDB = (function () {
 
     async function uploadCloudImage(directoryName, postTime, image) {
 
-        function readFileAsync(file) {
-            return new Promise((resolve, reject) => {
-                let reader = new FileReader();
-
-                reader.onload = function (e) {
-                    let image = new Image();
-
-                    image.onload = function () {
-                        console.log("Width: " + this.width + ", Height: " + this.height);
-                        resolve([this.width, this.height]);
-                    };
-
-                    image.src = e.target.result;
-                };
-
-                reader.onerror = reject;
-
-                reader.readAsDataURL(file);
-            })
-        }
-
-        const dimensions = await readFileAsync(image[0]);
-        const width = dimensions[0];
-        const height = dimensions[1];
-
-        let orientation = 0;
-        if (height > width) {
-            orientation = 1;
-        } else if (width > height) {
-            orientation = -1;
-        }
-
-        console.log("Orientation: " + orientation);
+        const isVertical = await imageIsVertical(image);
 
         const storageRef = ref(storage, directoryName + postTime);
         // Upload image to firebase storage
-        await uploadBytes(storageRef, image[0]);
-        return await this.getCloudImage(storageRef, orientation);
+        await uploadBytes(storageRef, image);
+        return await getCloudImage(storageRef, isVertical);
 
     } /* uploadCloudImage() */
 
@@ -268,28 +266,21 @@ export const CragDB = (function () {
     */
 
     async function getCloudImage(storageRef, orientation) {
-
-        const verticalImageTransform = "tr:n-post-photo-vertical/";
-        const horizontalImageTransform = "tr:n-post-photo-horizontal/";
         let photoOrientationTransform = "";
 
-        if (orientation == 1) {
-            photoOrientationTransform = verticalImageTransform;
-        } else if (orientation == -1) {
-            photoOrientationTransform = horizontalImageTransform;
+        if (orientation == true) {
+            photoOrientationTransform = verticalImageTransformation;
+        } else {
+            photoOrientationTransform = horizontalImageTransformation;
         }
 
-        console.log("Photo Transform: " + photoOrientationTransform);
-
-        let imageUrl = null;
+        let imageURL = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
-            imageUrl = url.replace("https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F", "https://ik.imagekit.io/communitycrag/" + photoOrientationTransform);
+            imageURL = url.replace(firebaseBaseURL, "");
         });
 
-        console.log(imageUrl);
-
-        return imageUrl;
+        return imageURL;
     } /* getCloudImage() */
 
 
@@ -298,11 +289,7 @@ export const CragDB = (function () {
     */
 
     async function deleteCloudImage(url) {
-
-        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-1500,h-2000/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-2000,h-1500/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-        url = url.replace("https://ik.imagekit.io/communitycrag/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-
+        url = firebaseBaseURL + url;
         const imageRef = ref(storage, url);
         await deleteObject(imageRef);
     } /*deleteCloudImage() */
@@ -316,6 +303,7 @@ export const CragDB = (function () {
         updatePostGrade: updatePostGrade,
         newQuery: newQuery,
         queryPosts: queryPosts,
+        imageIsVertical: imageIsVertical,
         uploadCloudImage: uploadCloudImage
     };
 

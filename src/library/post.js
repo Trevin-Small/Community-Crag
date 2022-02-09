@@ -1,3 +1,11 @@
+import {
+    imageKitBaseURL,
+    verticalThumbnailTransformation,
+    horizontalThumbnailTransformation,
+    verticalImageTransformation,
+    horizontalImageTransformation
+} from "../init";
+
 /*
  * Post object that encapsulates all important information about a user's post.
  * Provides methods for getting and setting values, as well as useful methods
@@ -9,7 +17,7 @@ export class Post {
 
     static STATIC_INITIAL_GRADE_COUNT = 2;
 
-    constructor(postTime, postId, setterUID, setterName, name, image, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
+    constructor(postTime, postId, setterUID, setterName, name, image, isVerticalImage, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
 
         this.INITIAL_GRADE_COUNT = 2;
 
@@ -19,6 +27,7 @@ export class Post {
         this.setterName = setterName;
         this.name = name;
         this.image = image;
+        this.isVerticalImage = isVerticalImage;
 
         if (grade - Math.floor(grade) == 0) {
             this.grade = grade + 0.5;
@@ -67,6 +76,10 @@ export class Post {
 
     getImage() {
         return this.image;
+    }
+
+    getIsVerticalImage() {
+        return this.isVerticalImage;
     }
 
     getNumericalGrade() {
@@ -126,6 +139,10 @@ export class Post {
         this.image = image;
     }
 
+    setIsVerticalImage(isVerticalImage) {
+        this.isVerticalImage = isVerticalImage;
+    }
+
     setGrade(grade) {
         this.grade = grade + 0.5;
     }
@@ -179,6 +196,7 @@ export class Post {
             setterName: this.getSetterName(),
             name: this.getName(),
             image: this.getImage(),
+            isVerticalImage: this.getIsVerticalImage(),
             grade: this.getNumericalGrade(),
             gradeCount: this.getGradeCount(),
             comment: this.getComment(),
@@ -204,10 +222,14 @@ export class Post {
         clone.querySelector('#post-name').innerHTML = this.name;
         clone.querySelector('#hidden-post-name').innerHTML = this.name;
         clone.querySelector('#post-grade').innerHTML = this.getGrade();
-        clone.querySelector('#post-image').src = this.image;
         clone.querySelector('#climb-type').innerHTML = this.climbType;
-        let postComment = clone.querySelector('#post-comment');
 
+        // Apply the correct photo transform to the URL
+        // (Requests downsized photo through imagekit for faster loading)
+        const transformation = this.isVerticalImage ? verticalThumbnailTransformation : horizontalThumbnailTransformation;
+        clone.querySelector('#post-image').src = imageKitBaseURL + transformation + this.image;
+
+        let postComment = clone.querySelector('#post-comment');
         const maxChars = (window.innerWidth / 700) * 150;
         if (this.comment.length >= maxChars) {
             postComment.innerHTML = this.comment.slice(0, maxChars) + '...';
@@ -275,10 +297,15 @@ export class Post {
         let element = document.getElementById('post-container');
         element.querySelector('#post-name').innerHTML = this.name;
         element.querySelector('#post-info').innerHTML = this.setterName + " - " + this.getPostTime();
-        element.querySelector('#post-image').src = this.image;
         element.querySelector('#post-grade').innerHTML = this.getGrade();
         element.querySelector('#post-comment').innerHTML = this.comment;
         element.querySelector('#climb-type').innerHTML = this.climbType;
+
+        // Apply the correct photo transform to the URL
+        // (Requests downsized photo through imagekit for faster loading)
+        const transformation = this.isVerticalImage ? verticalImageTransformation : horizontalImageTransformation;
+        element.querySelector('#post-image').src = imageKitBaseURL + transformation + this.image;
+
         if (this.gradeCount > this.INITIAL_GRADE_COUNT) {
             element.querySelector('#grade-count').innerHTML = (this.gradeCount - this.INITIAL_GRADE_COUNT) + " Grade Suggestions";
         } else {
@@ -333,7 +360,7 @@ export class Post {
 
 export function constructPostObject(postDoc) {
     const postData = postDoc.data();
-    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.comment,
+    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.isVerticalImage, postData.comment,
         postData.climbType, postData.grade, postData.gradeCount, postData.starRating, postData.userList);
 } /* constructPostObject() */
 
@@ -341,6 +368,6 @@ export function constructPostObject(postDoc) {
  * Javascript doesnt support overloading, so this is basically an alternate "constructor"
 */
 
-export function createNewPostObject(postTime, setterUID, setterName, postName, imageUrl, comment, climbType, grade, starRating) {
-    return new Post(postTime, null, setterUID, setterName, postName, imageUrl, comment, climbType, grade, Post.getInitialGradeCount(), starRating, {});
+export function createNewPostObject(postTime, setterUID, setterName, postName, imageURL, imageOrientation, comment, climbType, grade, starRating) {
+    return new Post(postTime, null, setterUID, setterName, postName, imageURL, imageOrientation, comment, climbType, grade, Post.getInitialGradeCount(), starRating, {});
 } /* newPostObject() */
