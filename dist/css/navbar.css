@@ -34,7 +34,7 @@
     overflow: hidden;
     background-color: var(--navbar-menu);
     border-radius: 0 0 20px 20px;
-    transition: max-height 0.3s ease-in;
+    transition: max-height 0.4s ease-in-out;
 }
 .navbar-brand {
     color: white;
