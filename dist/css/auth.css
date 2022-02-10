@@ -1,12 +1,3 @@
-.scroll {
-    width: 100vw;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-y: scroll;
-}
 .auth-container {
     width: 85vw;
     max-width: 550px;
@@ -38,7 +29,7 @@ hr {
     border: 0;
     clear:both;
     display:block;
-    width: 90%;               
+    width: 90%;
     background-color: black;
     height: 1px;
     border: 1px solid black;

@@ -6,25 +6,6 @@
     visibility: hidden;
     display: none;
 }
-.post-content {
-    height:100%;
-    width: 100vw;
-    left: 50vw;
-    top:0px;
-    position: relative;
-    transform: translate(-50%, 0);
-    overflow-y: scroll;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
-.post-item {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
 .post-container {
     width: 90vw;
     max-width: 800px;

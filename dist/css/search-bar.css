@@ -1,6 +1,5 @@
 .search-bar-container {
-    width: 90vw;
-    max-width: 55rem;
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: row;
@@ -9,7 +8,6 @@
     padding: 10px;
     border: 4px solid black;
     border-radius: 20px;
-    margin-top: 10px;
 }
 .search-form {
     display: flex;

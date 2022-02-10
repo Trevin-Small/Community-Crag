@@ -1,10 +1,14 @@
 .background {
-    background-color: var(--off-white);
+    position: relative;
+    top: 0px;
+    left: 0px;
     display: flex;
     flex-direction: column;
-    justify-self: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     height: 100vh;
     width: 100vw;
-    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+    padding: env(safe-area-inset-top) 0 0 0;
+    background-color: var(--off-white);
     overflow: hidden;
 }
