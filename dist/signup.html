@@ -45,10 +45,19 @@
                     <input class="text-input" type="text" id="username" name="name" placeholder="e.g. 'John Purdue'">
                     <div style="margin:0.5rem;"></div>
                     <b>New Password:</b>
-                    <input class="text-input" type="password" id="pass" name="pass" placeholder="New Password">
+                    <div class="password-input">
+                        <input class="text-input" type="password" id="pass" name="pass" placeholder="Password">
+                        <img class="password-eye" alt="view-password"
+                            onclick="this.classList.toggle('eye-slashed');let pass = document.getElementById('pass'); if(pass.type==='password'){pass.type='text'}else{pass.type='password'};">
+                    </div>
                     <div style="margin:0.75rem;"></div>
                     <b>Re-type Your Password:</b>
-                    <input class="text-input" type="password" id="re-pass" name="pass" placeholder="Re-type Password">
+                    <div class="password-input">
+                        <input class="text-input" type="password" id="re-pass" name="pass"
+                            placeholder="Re-type Password">
+                        <img class="password-eye" alt="view-password"
+                            onclick="this.classList.toggle('eye-slashed');let pass = document.getElementById('re-pass'); if(pass.type==='password'){pass.type='text'}else{pass.type='password'};">
+                    </div>
                     <div style="margin:0.75rem;"></div>
                     <button class="btn submit-auth" type="button" id="submit-signup"
                         onClick="communityCrag.signUp();">Sign Up</button>

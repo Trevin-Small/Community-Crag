@@ -41,7 +41,11 @@
                     <input class="text-input" type="text" id="email" name="email" placeholder="email@purdue.edu">
                     <div style="margin:0.5rem;"></div>
                     <b>Enter Your Password:</b>
-                    <input class="text-input" type="password" id="pass" name="pass" placeholder="Password">
+                    <div class="password-input">
+                        <input class="text-input" type="password" id="pass" name="pass" placeholder="Password">
+                        <img class="password-eye" src="./assets/eye.svg" alt="view-password"
+                            onclick="this.classList.toggle('eye-slashed');let pass = document.getElementById('pass'); if(pass.type==='password'){pass.type='text'}else{pass.type='password'};">
+                    </div>
                     <div style="margin:0.2rem;"></div>
                     <a href="./forgotpassword.html"><i>Forgot your password?</i></a>
                     <div style="margin:0.75rem;"></div>

@@ -43,6 +43,26 @@ hr {
     justify-content: flex-start;
     align-items: center;
 }
+.password-input {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    margin :0;
+}
+.password-eye {
+    position: absolute;
+    right: 22%;
+    height: 1.25rem;
+    padding: 0;
+    content:url('../assets/eye-slashed.svg');
+}
+.eye-slashed {
+    content:url('../assets/eye.svg');
+}
 .text-input {
   width: 70%;
   height: auto;
