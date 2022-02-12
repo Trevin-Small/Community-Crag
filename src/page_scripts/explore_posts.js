@@ -4,12 +4,16 @@ const postTemplateId = 'placeholder-post';
 
 export async function displayPosts(queryRef) {
 
-    let postListContainer = document.getElementById('post-list');
-    while (postListContainer.lastChild != null && postListContainer.lastChild.nodeName !== 'DIV') {
-        postListContainer.removeChild(postListContainer.lastChild);
-    }
-
     let postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, false);
+
+    const postListContainer = document.getElementById('post-list');
+    const listChildren = Array.from(postListContainer.children);
+    listChildren.forEach((child) => {
+        if (child.nodeName === 'LI' || child.id === 'loading') {
+            console.log("Removing: " + child.id + "\n");
+            postListContainer.removeChild(child);
+        }
+    });
 
     const noResults = document.getElementById('no-results');
     if (postArray.length == 0) {

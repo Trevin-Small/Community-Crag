@@ -292,7 +292,7 @@ export class Post {
         }
 
         let parent = document.getElementById('search-container').parentNode;
-        parent.insertBefore(clone, document.getElementById('footer'));
+        parent.insertBefore(clone, null);
     }
 
     renderViewPost() {
