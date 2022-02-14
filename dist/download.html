@@ -136,7 +136,7 @@
                 </div>
                 <hr class="heading-line">
                 <p style="text-align: center;">
-                    This app is a
+                    Communiy Crag is a
                     <a
                         href="https://www.google.com/search?q=pwa+meaning&rlz=1C5CHFA_enUS904US904&oq=PWA+&aqs=chrome.0.69i59l3j69i57j0i512j69i60l3.1362j0j7&sourceid=chrome&ie=UTF-8">
 
@@ -144,7 +144,9 @@
                     <br> Essentially, its an "app" that contains a website.
                 </p>
                 <p style="text-align: center;">
-                    For Safari Users: Hit Share -> Add to home screen -> Add
+                    For Safari Users: Hit Share -> Add to home screen -> Add <br>
+                    Other browsers: Most modern browsers (Chrome, Opera, etc..) have a similar feature.
+                    May be listed as "Save Page"
                 </p>
                 <div class="about-heading">
                     <b>What will it do?</b>
@@ -176,17 +178,27 @@
             navigator.serviceWorker.register('./service-worker.js');
         }
 
-        window.addEventListener("beforeinstallprompt", function (beforeInstallPromptEvent) {
-            beforeInstallPromptEvent.preventDefault(); // Prevents immediate prompt display
-            const installButton = document.getElementById('install-button');
+        let deferredPrompt;
 
-            // Shows prompt after a user clicks an "install" button
-            installButton.addEventListener("click", function (mouseEvent) {
-                // you should not use the MouseEvent here, obviously
-                beforeInstallPromptEvent.prompt();
-            });
+        window.addEventListener("beforeinstallprompt", function (beforeInstallPromptEvent) {
+            console.log("beforeinstallevent");
+            //beforeInstallPromptEvent.preventDefault(); // Prevents immediate prompt display
+            deferredPrompt = beforeInstallPromptEvent;
 
         });
+
+        // Shows prompt after a user clicks an "install" button
+        document.getElementById('install-button').addEventListener("click", async () => {
+            console.log("Button clicked");
+            if (deferredPrompt !== null) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                }
+            }
+        });
+
     </script>
 </body>
 

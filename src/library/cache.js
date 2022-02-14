@@ -10,9 +10,10 @@ export const CacheDB = (function () {
     let nonPostKeys = [signedInKey, uidKey, usernameKey, prevURL];
     let storage = window.sessionStorage;
 
-    function cacheAllPosts(posts) {
+    function cacheAllPosts(postArray) {
         removeAllPosts();
-        posts.forEach((post) => {
+
+        postArray.forEach((post) => {
             cachePost(post);
         });
     }

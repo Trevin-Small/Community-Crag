@@ -80,8 +80,9 @@ export const CragDB = (function () {
 
 
     /*
-    * Get all posts that meet the query. If the query is all posts, check for Cached data before fetching from the db.
-    */
+     * Get all posts that meet the query. If the query is all posts, check for Cached data before fetching from the db.
+     * Returns: postArray
+     */
 
     async function getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
 
@@ -141,38 +142,30 @@ export const CragDB = (function () {
 
             // All possible Query Combinations
             if (grade != null && starRating != null && climbType != null) {
-                console.log("1");
                 return query(dbCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating), where("climbType", "==", climbType));
 
             } else if (grade != null && starRating != null) {
-                console.log("2");
                 return query(dbCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("starRating", "==", starRating));
 
             } else if (grade != null && climbType != null) {
-                console.log("3");
                 return query(dbCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange), where("climbType", "==", climbType));
 
             } else if (starRating != null && climbType != null) {
-                console.log("4");
                 return query(dbCollection, where("starRating", "==", starRating), where("climbType", "==", climbType));
 
             } else if (grade != null) {
-                console.log("5");
                 return query(dbCollection, where("grade", ">=", grade), where("grade", "<", grade + gradeSearchRange));
 
             } else if (climbType != null) {
-                console.log("6");
                 return query(dbCollection, where("climbType", "==", climbType));
 
             } else if (starRating != null) {
-                console.log("7");
                 return query(dbCollection, where("starRating", "==", starRating));
 
             }
         } else {
 
             if (time != null) {
-                console.log("querying by time...");
                 return query(dbCollection, where("postTime", "<=", time));
             } else {
                 return null;
