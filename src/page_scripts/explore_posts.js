@@ -28,7 +28,7 @@ export async function displayPosts(queryRef) {
 
 }
 
-export async function searchByFilters(formId, e) {
+export async function searchByFilters(formId) {
     const form = new FormData(document.getElementById(formId));
     await displayPosts(CragDB.newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
     document.getElementById('search-button').disabled = false;

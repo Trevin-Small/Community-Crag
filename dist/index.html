@@ -44,9 +44,8 @@
             <div class="search-bar-container" id="search-container">
                 <form class="search-form" id="search-form" onsubmit="event.preventDefault()">
                     <div class="select-container">
-                        <b class="select-text">Grade:</b>
                         <select class="select" name="Grade" id="grade-filter">
-                            <option value="-1">All</option>
+                            <option value="-1">Grade</option>
                             <option value="0">V0</option>
                             <option value="1">V1</option>
                             <option value="2">V2</option>
@@ -61,9 +60,8 @@
                         </select>
                     </div>
                     <div class="select-container">
-                        <b class="select-text">Type:</b>
                         <select class="select" name="Climb Type" id="type-filter">
-                            <option value="0">All</option>
+                            <option value="0">Type</option>
                             <option value="1">Overhang</option>
                             <option value="2">Slab</option>
                             <option value="3">Mixed</option>
@@ -71,11 +69,9 @@
                             <option value="5">Other</option>
                         </select>
                     </div>
-                    <div class="break"></div>
                     <div class="select-container">
-                        <b class="select-text"> Stars:</b>
                         <select class="select" name="Star Rating" id="star-filter">
-                            <option value="0">All</option>
+                            <option value="0">Stars</option>
                             <option value="1">1 ⭐</option>
                             <option value="2">2 ⭐</option>
                             <option value="3">3 ⭐</option>
@@ -84,9 +80,8 @@
                         </select>
                     </div>
                     <div class="select-container">
-                        <b class="select-text">Go:</b>
                         <button class="btn search-button" id="search-button" type="button"
-                            onclick="this.disabled=true;communityCrag.searchByFilters('search-form', event)">Search</button>
+                            onclick="this.disabled=true;communityCrag.searchByFilters('search-form')">Search</button>
                     </div>
                 </form>
             </div>
@@ -101,7 +96,6 @@
             </div>
             <div class="loading" id="loading">
                 <img src="./assets/loading.svg" class="loading-icon" />
-                <h5 style="margin:0 0 2px 15px;">Loading...</h5>
             </div>
 
             <!-- Posts get inserted here with JavaScript -->

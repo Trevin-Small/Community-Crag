@@ -9,8 +9,12 @@ import {
 /*
  * Post object that encapsulates all important information about a user's post.
  * Provides methods for getting and setting values, as well as useful methods
- * like the render function which creates HTML elements to display its data
- * on the home query page.
+ *
+ * The renderPostList() function which creates HTML elements on the homepage
+ * (index.html) to display its data
+ *
+ * The viewPost() method shows a posts data when clicked on from the homepage
+ * This method shows all post data (vote count, comment, date posted, etc).
 */
 
 export class Post {
@@ -26,7 +30,9 @@ export class Post {
         this.setterUID = setterUID;
         this.setterName = setterName;
         this.name = name;
-        this.image = image;
+
+        // Replace %2F (the firebase version) with a forward slash to make it compatible with imageKit
+        this.image = image.replace("%2F", "/");
         this.isVerticalImage = isVerticalImage;
 
         if (grade - Math.floor(grade) == 0) {

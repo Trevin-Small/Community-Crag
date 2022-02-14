@@ -11,7 +11,6 @@ import {
     Errors
 } from '../library/library.js'
 
-
 export async function submitPost() {
 
     const errorId = 'error-message';
@@ -116,9 +115,10 @@ export async function submitPost() {
         const date = new Date();
         const postTime = date.getTime();
         const firebasePostTime = Math.floor(postTime / 10000);
-        const imageUrl = await CragDB.uploadCloudImage(imageStorageName, postTime, image);
-        const isVerticalImage = await CragDB.imageIsVertical(image);
         const uid = CacheDB.getUID();
+        const imageData = await CragDB.uploadCloudImage(imageStorageName, postTime, uid, image);
+        const imageURL = imageData[0];
+        const isVerticalImage = imageData[1];
 
         let setterName = CacheDB.getUsername();
         if (setterName == null) {
@@ -127,7 +127,7 @@ export async function submitPost() {
         }
 
         // Create post object and push it to firestore
-        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageUrl, isVerticalImage, comment, climbType, grade, starRating);
+        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageURL, isVerticalImage, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
 
         // Query by post time to get the most recent post
@@ -142,12 +142,33 @@ export async function submitPost() {
     }
 }
 
-export function fileUploaded(value) {
-    if (value != null) {
+export function fileUploaded(fileUploadId) {
+    let image = null;
+
+    try {
+        image = document.getElementById(fileUploadId).files[0];
+    } catch (e) {
+        console.log(e);
+    }
+
+    if (image != null) {
         document.getElementById('check').style.display = 'block';
         document.getElementById('camera').style.display = 'none';
     } else {
         document.getElementById('check').style.display = 'none';
         document.getElementById('camera').style.display = 'block';
     }
+    displayImagePreview(image);
+}
+
+async function displayImagePreview(image) {
+    const imageData = await CragDB.loadImageFile(image);
+    const imageSRC = imageData[1];
+
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.src = imageSRC;
+
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    imagePreviewContainer.style.display = 'flex';
+
 }

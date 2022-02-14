@@ -223,16 +223,24 @@ export const CragDB = (function () {
         CacheDB.removePost(postId);
     } /* deletePost() */
 
-    async function imageIsVertical(image) {
+    async function loadImageFile(image) {
         return new Promise((resolve, reject) => {
+
             let reader = new FileReader();
 
+            //Read the contents of Image File.
+            reader.readAsDataURL(image);
             reader.onload = function (e) {
+
+                // Initiate the JavaScript Image object.
                 let image = new Image();
 
+                // Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                // Resolve whether the image is vertical or not, and its src (base64 url for display)
                 image.onload = function () {
-                    console.log("Width: " + this.width + ", Height: " + this.height);
-                    resolve(this.width < this.height);
+                    resolve([this.width < this.height, image.src]);
                 };
 
                 image.src = e.target.result;
@@ -240,7 +248,6 @@ export const CragDB = (function () {
 
             reader.onerror = reject;
 
-            reader.readAsDataURL(image);
         });
     }
 
@@ -249,14 +256,25 @@ export const CragDB = (function () {
      * Upload a given image file to cloud storage and return its URL
     */
 
-    async function uploadCloudImage(directoryName, postTime, image) {
+    async function uploadCloudImage(directoryName, postTime, uid, image) {
 
-        const isVertical = await imageIsVertical(image);
+        const imageData = await loadImageFile(image);
+        const isVertical = imageData[0];
 
-        const storageRef = ref(storage, directoryName + postTime);
+        // Pass the user's uid as metadata to the image
+        // -------------------------------------------------------
+        // This allows for storage rules to ensure that a user
+        // requesting to delete an image is the owner of the image.
+        const metadata = {
+            customMetadata: {
+                'uid': uid
+            }
+        };
+
+        const storageRef = ref(storage, directoryName + "/" + uid + "/" + postTime);
         // Upload image to firebase storage
-        await uploadBytes(storageRef, image);
-        return await getCloudImage(storageRef, isVertical);
+        await uploadBytes(storageRef, image, metadata);
+        return [await getCloudImage(storageRef, isVertical), isVertical];
 
     } /* uploadCloudImage() */
 
@@ -266,6 +284,7 @@ export const CragDB = (function () {
     */
 
     async function getCloudImage(storageRef, orientation) {
+        const forwardSlash = "%2F";
         let photoOrientationTransform = "";
 
         if (orientation == true) {
@@ -277,7 +296,7 @@ export const CragDB = (function () {
         let imageURL = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
-            imageURL = url.replace(firebaseBaseURL, "");
+            imageURL = url.replace(firebaseBaseURL, "")
         });
 
         return imageURL;
@@ -303,7 +322,7 @@ export const CragDB = (function () {
         updatePostGrade: updatePostGrade,
         newQuery: newQuery,
         queryPosts: queryPosts,
-        imageIsVertical: imageIsVertical,
+        loadImageFile: loadImageFile,
         uploadCloudImage: uploadCloudImage
     };
 
