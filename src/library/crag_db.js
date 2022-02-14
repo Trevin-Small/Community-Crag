@@ -1,14 +1,11 @@
-import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
 import {
     storage,
-    imageKitBaseURL,
     verticalImageTransformation,
     horizontalImageTransformation,
-    verticalThumbnailTransformation,
-    horizontalThumbnailTransformation,
     firebaseBaseURL
 } from '../init';
 
@@ -171,10 +168,6 @@ export const CragDB = (function () {
                 console.log("7");
                 return query(dbCollection, where("starRating", "==", starRating));
 
-            } else {
-
-                return null;
-
             }
         } else {
 
@@ -296,7 +289,7 @@ export const CragDB = (function () {
         let imageURL = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
-            imageURL = url.replace(firebaseBaseURL, "")
+            imageURL = url.replace(firebaseBaseURL, "").replace("%2F", "/");
         });
 
         return imageURL;

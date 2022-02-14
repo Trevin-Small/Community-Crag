@@ -32,7 +32,7 @@ export class Post {
         this.name = name;
 
         // Replace %2F (the firebase version) with a forward slash to make it compatible with imageKit
-        this.image = image.replace("%2F", "/");
+        this.image = image;
         this.isVerticalImage = isVerticalImage;
 
         if (grade - Math.floor(grade) == 0) {
