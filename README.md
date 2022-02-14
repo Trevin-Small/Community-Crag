@@ -21,7 +21,7 @@ Targeted at the Purdue University Climbing wall to improve the climbing experien
 - csi.js -> enabling client side .html file includes with incredible ease. [Check out the project](https://github.com/LexmarkWeb/csi.js) 
 
 ### [ImageKit.io](https://imagekit.io)
-- Providing **FREE** image compression, resizing, and caching, linked directly to firebase storage. Super simple to setup, and can vastly speed up the website.
+- Providing **FREE** image compression, resizing, and caching, linked directly to firebase storage. Super simple to setup, makes the website load WAY faster and saves a __LOT__ of bandwith
 
 ### [Liam Schenk](https://github.com/climber-guy1772) & Elliot Cram
 - They came up with the idea for this website!
