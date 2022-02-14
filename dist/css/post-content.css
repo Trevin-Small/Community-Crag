@@ -26,41 +26,37 @@
     margin: 20px 0px 10px 0px;
     padding: 10px;
 }
-.post-content {
-    height:100%;
-    width: 100vw;
-    left: 50vw;
-    top:0px;
-    position: relative;
-    transform: translate(-50%, 0);
-    overflow-y: scroll;
-    overflow-x: hidden;
+.loading {
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-}
-.post-list {
-    list-style-type: none; /* Remove bullets */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
-    display: flex;
-    flex-direction: column;
+    flex-direction:row;
     justify-content: center;
     align-items: center;
-
+    text-align:center;
+    margin: 10px 0px 10px 0px;
+    padding: 10px;
 }
+.loading-icon {
+    height: 2.5rem;
+    animation: rotation 1.5s infinite ease;
+}
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
 .spacer {
     height: 30px;
 }
 .post-item {
+    width: 100%;
     display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
 }
 .post-container {
-    width: 90vw;
-    max-width: 55rem;
+    width: 100%;
     height: 15rem;
     display: flex;
     flex-direction: row;
@@ -138,6 +134,11 @@
 }
 .climb-type {
     margin: 5px 0px 0px 0px;
+}
+@media screen and (max-width: 400px) {
+    .climb-type {
+        display: none;
+    }
 }
 .grade-count {
     display: table-cell;

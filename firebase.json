@@ -7,7 +7,17 @@
       "**/.*",
       "**/node_modules/**"
     ],
-  "appAssociation": "AUTO",
-  "rewrites": [ { "source": "/purdue/viewpost/**", "dynamicLinks": true } ]
+    "appAssociation": "AUTO",
+    "rewrites": [
+      {
+        "source": "/purdue/viewpost/**",
+        "dynamicLinks": true
+      }
+    ]
+  },
+  "functions": {
+    "predeploy": [
+      "npm --prefix \"$RESOURCE_DIR\" run lint"
+    ]
   }
 }

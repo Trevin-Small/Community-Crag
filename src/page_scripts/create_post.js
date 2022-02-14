@@ -11,10 +11,10 @@ import {
     Errors
 } from '../library/library.js'
 
-
 export async function submitPost() {
 
     const errorId = 'error-message';
+    const infoId = 'info-message';
     const errorMessages = [
         "Name is over the character 20 limit!",
         "Comment is over the 1200 character limit!",
@@ -22,6 +22,10 @@ export async function submitPost() {
         "Field(s) cannot be left empty!",
         "You must upload an image!"
     ]
+
+    // Hide info and error messages so that old ones don't continue to display..
+    Errors.errorMessage(null, errorId);
+    Errors.infoMessage(null, infoId);
 
     const valid = await isValidUser();
     if (valid == -1) {
@@ -38,7 +42,7 @@ export async function submitPost() {
 
     const name = document.getElementById('name').value;
     const comment = document.getElementById('comment').value;
-    const image = document.getElementById('file-upload').files;
+    const image = document.getElementById('file-upload').files[0];
     const grade = parseInt(document.getElementById('grade').value);
     const starRating = parseInt(document.getElementById('star-rating').value);
     let climbType = parseInt(document.getElementById('climb-type').value);
@@ -53,7 +57,7 @@ export async function submitPost() {
             Errors.errorMessage(errorMessages[3], errorId);
         }
         return;
-    } else if (image.length == 0) {
+    } else if (image == null || image == undefined) {
         Errors.inputErrorBorderHighlight('submit-new-climb');
         Errors.errorMessage(errorMessages[4], errorId);
         return;
@@ -104,26 +108,26 @@ export async function submitPost() {
     const submitButton = document.getElementById('submit-new-climb');
     submitButton.disabled = true;
     submitButton.innerHTML = 'Loading...';
-    Errors.infoMessage("Submission Loading...", "info-message");
+    Errors.infoMessage("Submission Loading...", infoId);
 
     try {
         // Create a unique image name by appending the milliseconds since Jan 1, 1970, to the post name.
         const date = new Date();
         const postTime = date.getTime();
         const firebasePostTime = Math.floor(postTime / 10000);
-
-        let imageUrl = await CragDB.uploadCloudImage(imageStorageName, postTime, image);
-
         const uid = CacheDB.getUID();
-        let setterName = CacheDB.getUsername();
+        const imageData = await CragDB.uploadCloudImage(imageStorageName, postTime, uid, image);
+        const imageURL = imageData[0];
+        const isVerticalImage = imageData[1];
 
+        let setterName = CacheDB.getUsername();
         if (setterName == null) {
             setterName = await getUsername();
             CacheDB.setUserame(setterName);
         }
 
         // Create post object and push it to firestore
-        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageUrl, comment, climbType, grade, starRating);
+        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageURL, isVerticalImage, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
 
         // Query by post time to get the most recent post
@@ -131,17 +135,40 @@ export async function submitPost() {
         homeRedirect();
 
     } catch (e) {
+        Errors.infoMessage(null, infoId);
+        Errors.errorMessage("An internal error occured. Try again later...", errorId);
         console.log("Error submiting post: " + e);
         document.getElementById('submit-new-climb').disabled = false;
     }
 }
 
-export function fileUploaded(value) {
-    if (value != null) {
+export function fileUploaded(fileUploadId) {
+    let image = null;
+
+    try {
+        image = document.getElementById(fileUploadId).files[0];
+    } catch (e) {
+        console.log(e);
+    }
+
+    if (image != null) {
         document.getElementById('check').style.display = 'block';
         document.getElementById('camera').style.display = 'none';
     } else {
         document.getElementById('check').style.display = 'none';
         document.getElementById('camera').style.display = 'block';
     }
+    displayImagePreview(image);
+}
+
+async function displayImagePreview(image) {
+    const imageData = await CragDB.loadImageFile(image);
+    const imageSRC = imageData[1];
+
+    const imagePreview = document.getElementById('image-preview');
+    imagePreview.src = imageSRC;
+
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    imagePreviewContainer.style.display = 'flex';
+
 }

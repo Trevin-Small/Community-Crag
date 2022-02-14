@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+    <script defer src="./bundle.js" id="communityCragScript"></script>
+    <link type="preconnect" rel="https://ik.imagekit.io" />
+    <link type="preconnect" rel="https://firestore.googleapis.com/" />
+    <link type="preconnect" rel="https://apis.google.com" />
+    <link type="preconnect" rel="https://googleapis.com" />
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover" />
     <meta name="description" content="Community Crag - Collaborative Climbing" />
@@ -17,6 +23,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/bootstrap-styles.css" rel="stylesheet" />
     <link href="css/background.css" rel="stylesheet" />
+    <link href="css/page-frame.css" rel="stylesheet" />
     <link href="css/navbar.css" rel="stylesheet" />
     <link href="css/buttons.css" rel="stylesheet" />
     <link href="css/post-content.css" rel="stylesheet" />
@@ -27,19 +34,18 @@
 
 <body class="background">
     <!-- Responsive navbar-->
-    <nav class=" navbar" style="position:sticky; flex: 0 1 auto;">
+    <nav class=" navbar">
         <div data-include="./navbar.html" id="navbar"></div>
     </nav>
 
     <!-- Page content-->
-    <div class="post-content">
-        <ul class="post-list" id="post-list">
+    <div class="scroll">
+        <ul class="scroll-content" id="post-list" style="margin:0;padding:0;">
             <div class="search-bar-container" id="search-container">
                 <form class="search-form" id="search-form" onsubmit="event.preventDefault()">
                     <div class="select-container">
-                        <b class="select-text">Grade:</b>
                         <select class="select" name="Grade" id="grade-filter">
-                            <option value="-1">All</option>
+                            <option value="-1">Grade</option>
                             <option value="0">V0</option>
                             <option value="1">V1</option>
                             <option value="2">V2</option>
@@ -54,9 +60,8 @@
                         </select>
                     </div>
                     <div class="select-container">
-                        <b class="select-text">Type:</b>
                         <select class="select" name="Climb Type" id="type-filter">
-                            <option value="0">All</option>
+                            <option value="0">Type</option>
                             <option value="1">Overhang</option>
                             <option value="2">Slab</option>
                             <option value="3">Mixed</option>
@@ -64,11 +69,9 @@
                             <option value="5">Other</option>
                         </select>
                     </div>
-                    <div class="break"></div>
                     <div class="select-container">
-                        <b class="select-text"> Stars:</b>
                         <select class="select" name="Star Rating" id="star-filter">
-                            <option value="0">All</option>
+                            <option value="0">Stars</option>
                             <option value="1">1 ⭐</option>
                             <option value="2">2 ⭐</option>
                             <option value="3">3 ⭐</option>
@@ -77,9 +80,8 @@
                         </select>
                     </div>
                     <div class="select-container">
-                        <b class="select-text">Go:</b>
                         <button class="btn search-button" id="search-button" type="button"
-                            onclick="this.disabled=true;communityCrag.searchByFilters('search-form', event)">Search</button>
+                            onclick="this.disabled=true;communityCrag.searchByFilters('search-form')">Search</button>
                     </div>
                 </form>
             </div>
@@ -92,56 +94,63 @@
                 <b>The Crag's a little empty here. <br><a href="./createpost.html"><i>Try creating your own
                             post!</i></a></b>
             </div>
-        </ul>
-        <ul class="hidden">
-            <li class="post-item" id="placeholder-post">
-                <div class="post-container" onClick="communityCrag.openPost(this.id);" id="post-container">
-                    <div class="post-img-container">
-                        <img src="" class="post-img" id="post-image">
-                    </div>
-                    <div class="post-stats">
-                        <div class="hidden-name">
-                            <h4 id="hidden-post-name"></h4>
-                        </div>
-                        <div style="margin: 7px 0 0 0;">
-                            <h4 style="margin:0" id="post-grade"></h4>
-                        </div>
-                        <div class="stars">
-                            <img class="star-icon" src="./assets/star.svg" id="star-one" />
-                            <img class="star-icon" src="./assets/star.svg" id="star-two" />
-                            <img class="star-icon" src="./assets/star.svg" id="star-three" />
-                        </div>
-                        <div class="stars">
-                            <img class="star-icon" src="./assets/star.svg" id="star-four" />
-                            <img class="star-icon" src="./assets/star.svg" id="star-five" />
-                        </div>
-                        <h4 class="climb-type" id="climb-type"></h4>
-                    </div>
-                    <div class="post-text-container">
-                        <div class="post-title">
-                            <div class="name">
-                                <h3 id="post-name"></h3>
-                            </div>
-                            <div class="grade-count">
-                                <p class="count" id="count">
-                                <p>
-                            </div>
-                        </div>
-                        <hr class="divider">
-                        <div class="comment">
-                            <p id="post-comment"></p>
-                        </div>
-                    </div>
-                </div>
-            </li>
+            <div class="loading" id="loading">
+                <img src="./assets/loading.svg" class="loading-icon" />
+            </div>
+
+            <!-- Posts get inserted here with JavaScript -->
         </ul>
         <div data-include="./footer.html"></div>
+        <div data-include="./spacer.html"></div>
     </div>
-    <div data-include="./spacer.html"></div>
-    <!-- Main JS-->
-    <script src="https://communitycrag.com/bundle.js"></script>
+
+    <ul class="hidden">
+        <li class="post-item" id="placeholder-post">
+            <div class="post-container" onClick="communityCrag.openPost(this.id, this.name);" id="post-container"
+                name="post-image-url">
+                <div class="post-img-container">
+                    <img src="" class="post-img" id="post-image">
+                </div>
+                <div class="post-stats">
+                    <div class="hidden-name">
+                        <h4 id="hidden-post-name"></h4>
+                    </div>
+                    <div style="margin: 7px 0 0 0;">
+                        <h4 style="margin:0" id="post-grade"></h4>
+                    </div>
+                    <div class="stars">
+                        <img class="star-icon" src="./assets/star.svg" id="star-one" />
+                        <img class="star-icon" src="./assets/star.svg" id="star-two" />
+                        <img class="star-icon" src="./assets/star.svg" id="star-three" />
+                    </div>
+                    <div class="stars">
+                        <img class="star-icon" src="./assets/star.svg" id="star-four" />
+                        <img class="star-icon" src="./assets/star.svg" id="star-five" />
+                    </div>
+                    <h4 class="climb-type" id="climb-type"></h4>
+                </div>
+                <div class="post-text-container">
+                    <div class="post-title">
+                        <div class="name">
+                            <h3 id="post-name"></h3>
+                        </div>
+                        <div class="grade-count">
+                            <p class="count" id="count">
+                            <p>
+                        </div>
+                    </div>
+                    <hr class="divider">
+                    <div class="comment">
+                        <p id="post-comment"></p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
     <script>
-        communityCrag.displayPosts(null);
+        document.getElementById('communityCragScript').addEventListener('load', function () {
+            communityCrag.displayPosts(null);
+        });
 
         window.addEventListener('beforeunload', function (e) {
             communityCrag.updatePreviousURL(window.location.href);

@@ -19,12 +19,13 @@
     <link href="css/navbar.css" rel="stylesheet" />
     <link href="css/buttons.css" rel="stylesheet" />
     <link href="css/createpost.css" rel="stylesheet" />
+    <link href="css/page-frame.css" rel="stylesheet" />
     <script src="./csi.js"></script>
 </head>
 
 <body class="background">
     <!-- Responsive navbar-->
-    <nav class="navbar" style="position:sticky; flex: 0 1 auto;">
+    <nav class="navbar">
         <div data-include="./navbar.html" id="navbar"></div>
     </nav>
     <!-- Page content-->
@@ -45,10 +46,16 @@
                             style="display:none;" src="./assets/check.svg"><img id="camera" class="photo-icon"
                             style="display:block;" src="./assets/camera.svg"> Choose Photo</label>
                     <input id="file-upload" type="file" accept="image/*" multiple="false"
-                        oninput="communityCrag.fileUploaded(document.getElementById('file-upload').value)" />
+                        oninput="communityCrag.fileUploaded('file-upload')" />
                     <p class="centered-text">Please edit the photo before uploading.<br><a href="./photoguide">Photo
                             Editing Guide</a>
                     </p>
+                    <div id="image-preview-container"
+                        style="display:none;flex-direction:column;align-items:center;margin:0;padding:0;">
+                        <b>Preview:</b>
+                        <img src="" style="border:3px solid black;border-radius:14px;max-width:70%;max-height:400px;"
+                            id="image-preview" alt="image preview" />
+                    </div>
                     <div style="margin:0.5rem;"></div>
                     <b>Select a Grade:</b>
                     <select class="select" name="Grade" id="grade">

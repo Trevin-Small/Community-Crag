@@ -1,16 +1,21 @@
-import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
-import { storage } from '../init';
+import {
+    storage,
+    verticalImageTransformation,
+    horizontalImageTransformation,
+    firebaseBaseURL
+} from '../init';
 
-export class CragDB {
+export const CragDB = (function () {
 
     /*
     * Add a new post to firestore
     */
 
-    static async addPost(db, collectionName, post) {
+    async function addPost(db, collectionName, post) {
 
         const collectionRef = collection(db, collectionName);
 
@@ -21,6 +26,7 @@ export class CragDB {
                 setterName: post.getSetterName(),
                 name: post.getName(),
                 image: post.getImage(),
+                isVerticalImage: post.getIsVerticalImage(),
                 grade: post.getNumericalGrade(),
                 gradeCount: post.getGradeCount(),
                 comment: post.getComment(),
@@ -39,7 +45,7 @@ export class CragDB {
     * Update the Grade data on an existing post in firestore
     */
 
-    static async updatePostGrade(db, collectionName, postId, post) {
+    async function updatePostGrade(db, collectionName, postId, post) {
 
         const postRef = doc(db, collectionName, postId);
 
@@ -60,7 +66,7 @@ export class CragDB {
     * Get one post from firestore
     */
 
-    static async getPost(db, collectionName, postId) {
+    async function getPost(db, collectionName, postId) {
 
         const postRef = doc(db, collectionName, postId);
         const postDoc = await getDoc(postRef);
@@ -77,18 +83,18 @@ export class CragDB {
     * Get all posts that meet the query. If the query is all posts, check for Cached data before fetching from the db.
     */
 
-    static async getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
+    async function getAllPosts(queryRef, db, collectionName, forceUpdate = false) {
 
         if (queryRef != null) {
             console.log("Fetching from db...");
-            return await this.queryPosts(queryRef);
+            return await queryPosts(queryRef);
         }
 
         queryRef = collection(db, collectionName);
 
         if (isNewSession() || refreshedHomePage() || forceUpdate) {
             console.log("Fetching from db...");
-            let postArray = await this.queryPosts(queryRef);
+            let postArray = await queryPosts(queryRef);
             CacheDB.cacheAllPosts(postArray);
             return postArray;
         } else {
@@ -102,7 +108,7 @@ export class CragDB {
      * Input search parameters (grade, star rating, climb type, OR a time) and return a query object that meets those parameters
     */
 
-    static newQuery(db, collectionName, grade, starRating, climbType, time = null) {
+    function newQuery(db, collectionName, grade, starRating, climbType, time = null) {
 
         const dbCollection = collection(db, collectionName);
 
@@ -162,10 +168,6 @@ export class CragDB {
                 console.log("7");
                 return query(dbCollection, where("starRating", "==", starRating));
 
-            } else {
-
-                return null;
-
             }
         } else {
 
@@ -183,7 +185,7 @@ export class CragDB {
     * Query firestore and retreive posts that meet the criteria
     */
 
-    static async queryPosts(queryRef) {
+    async function queryPosts(queryRef) {
 
         let postArray = [];
         let dbPosts = await getDocs(queryRef);
@@ -201,7 +203,7 @@ export class CragDB {
     * Delete a post entirely, removing its data on firestore and in cloud storage
     */
 
-    static async deletePost(db, collectionName, postId, post = null) {
+    async function deletePost(db, collectionName, postId, post = null) {
 
         const docRef = doc(db, collectionName, postId);
 
@@ -209,56 +211,63 @@ export class CragDB {
             post = CacheDB.getCachedPost(postId);
         }
 
-        await this.deleteCloudImage(post.getImage());
+        await deleteCloudImage(post.getImage());
         await deleteDoc(docRef);
         CacheDB.removePost(postId);
     } /* deletePost() */
+
+    async function loadImageFile(image) {
+        return new Promise((resolve, reject) => {
+
+            let reader = new FileReader();
+
+            //Read the contents of Image File.
+            reader.readAsDataURL(image);
+            reader.onload = function (e) {
+
+                // Initiate the JavaScript Image object.
+                let image = new Image();
+
+                // Set the Base64 string return from FileReader as source.
+                image.src = e.target.result;
+
+                // Resolve whether the image is vertical or not, and its src (base64 url for display)
+                image.onload = function () {
+                    resolve([this.width < this.height, image.src]);
+                };
+
+                image.src = e.target.result;
+            };
+
+            reader.onerror = reject;
+
+        });
+    }
 
 
     /*
      * Upload a given image file to cloud storage and return its URL
     */
 
-    static async uploadCloudImage(directoryName, postTime, image) {
+    async function uploadCloudImage(directoryName, postTime, uid, image) {
 
-        function readFileAsync(file) {
-            return new Promise((resolve, reject) => {
-                let reader = new FileReader();
+        const imageData = await loadImageFile(image);
+        const isVertical = imageData[0];
 
-                reader.onload = function (e) {
-                    let image = new Image();
+        // Pass the user's uid as metadata to the image
+        // -------------------------------------------------------
+        // This allows for storage rules to ensure that a user
+        // requesting to delete an image is the owner of the image.
+        const metadata = {
+            customMetadata: {
+                'uid': uid
+            }
+        };
 
-                    image.onload = function () {
-                        console.log("Width: " + this.width + ", Height: " + this.height);
-                        resolve([this.width, this.height]);
-                    };
-
-                    image.src = e.target.result;
-                };
-
-                reader.onerror = reject;
-
-                reader.readAsDataURL(file);
-            })
-        }
-
-        const dimensions = await readFileAsync(image[0]);
-        const width = dimensions[0];
-        const height = dimensions[1];
-
-        let orientation = 0;
-        if (height > width) {
-            orientation = 1;
-        } else if (width > height) {
-            orientation = -1;
-        }
-
-        console.log("Orientation: " + orientation);
-
-        const storageRef = ref(storage, directoryName + postTime);
+        const storageRef = ref(storage, directoryName + "/" + uid + "/" + postTime);
         // Upload image to firebase storage
-        await uploadBytes(storageRef, image[0]);
-        return await this.getCloudImage(storageRef, orientation);
+        await uploadBytes(storageRef, image, metadata);
+        return [await getCloudImage(storageRef, isVertical), isVertical];
 
     } /* uploadCloudImage() */
 
@@ -267,29 +276,23 @@ export class CragDB {
      * Get the URL of a given image reference
     */
 
-    static async getCloudImage(storageRef, orientation) {
-
-        const verticalImageTransform = "tr:n-post-photo-vertical/";
-        const horizontalImageTransform = "tr:n-post-photo-horizontal/";
+    async function getCloudImage(storageRef, orientation) {
+        const forwardSlash = "%2F";
         let photoOrientationTransform = "";
 
-        if (orientation == 1) {
-            photoOrientationTransform = verticalImageTransform;
-        } else if (orientation == -1) {
-            photoOrientationTransform = horizontalImageTransform;
+        if (orientation == true) {
+            photoOrientationTransform = verticalImageTransformation;
+        } else {
+            photoOrientationTransform = horizontalImageTransformation;
         }
 
-        console.log("Photo Transform: " + photoOrientationTransform);
-
-        let imageUrl = null;
+        let imageURL = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {
-            imageUrl = url.replace("https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F", "https://ik.imagekit.io/communitycrag/" + photoOrientationTransform);
+            imageURL = url.replace(firebaseBaseURL, "").replace("%2F", "/");
         });
 
-        console.log(imageUrl);
-
-        return imageUrl;
+        return imageURL;
     } /* getCloudImage() */
 
 
@@ -297,17 +300,26 @@ export class CragDB {
      * Delete an image from cloud storage by URL
     */
 
-    static async deleteCloudImage(url) {
-
-        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-1500,h-2000/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-        url = url.replace("https://ik.imagekit.io/communitycrag/tr:w-2000,h-1500/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-        url = url.replace("https://ik.imagekit.io/communitycrag/", "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F");
-
+    async function deleteCloudImage(url) {
+        url = firebaseBaseURL + url;
         const imageRef = ref(storage, url);
         await deleteObject(imageRef);
     } /*deleteCloudImage() */
 
-}
+
+    return {
+        addPost: addPost,
+        getPost: getPost,
+        getAllPosts: getAllPosts,
+        deletePost: deletePost,
+        updatePostGrade: updatePostGrade,
+        newQuery: newQuery,
+        queryPosts: queryPosts,
+        loadImageFile: loadImageFile,
+        uploadCloudImage: uploadCloudImage
+    };
+
+})();
 
 // ----------------------------------------------------------------------------------->
 // These functions dont belong in this file. Need to find a new solution...

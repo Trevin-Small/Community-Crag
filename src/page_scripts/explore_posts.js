@@ -1,14 +1,19 @@
 import { db, postCollectionName, CragDB } from '../library/library.js';
 
+const postTemplateId = 'placeholder-post';
 
 export async function displayPosts(queryRef) {
 
-    let postListContainer = document.getElementById('post-list');
-    while (postListContainer.lastChild != null && postListContainer.lastChild.nodeName !== 'DIV') {
-        postListContainer.removeChild(postListContainer.lastChild);
-    }
-
     let postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, false);
+
+    const postListContainer = document.getElementById('post-list');
+    const listChildren = Array.from(postListContainer.children);
+    listChildren.forEach((child) => {
+        if (child.nodeName === 'LI' || child.id === 'loading') {
+            console.log("Removing: " + child.id + "\n");
+            postListContainer.removeChild(child);
+        }
+    });
 
     const noResults = document.getElementById('no-results');
     if (postArray.length == 0) {
@@ -18,17 +23,17 @@ export async function displayPosts(queryRef) {
     }
 
     postArray.forEach((post) => {
-        post.renderPostList('placeholder-post', post.getPostId());
+        post.renderPostList(postTemplateId, post.getPostId());
     });
 
 }
 
-export async function searchByFilters(formId, e) {
+export async function searchByFilters(formId) {
     const form = new FormData(document.getElementById(formId));
     await displayPosts(CragDB.newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
     document.getElementById('search-button').disabled = false;
 }
 
-export async function openPost(postId) {
-    window.location.href = "./viewpost.html?" + postId;
+export function openPost(postId, imageURL) {
+    window.location.href = "./viewpost.html?id=" + postId;// + "&url=" + imageURL;
 }

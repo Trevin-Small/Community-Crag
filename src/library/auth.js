@@ -192,7 +192,7 @@ export async function signIn() {
     }
   });
 
-  console.log("Verified: " + await isEmailVerified());
+  console.log("Email Verified: " + await isEmailVerified());
   const valid = await isValidUser();
   if (valid == 0) {
     Errors.errorMessage("You received an email from us. Please complete the verification before signing in.", errorId);
@@ -276,7 +276,6 @@ export async function getUsername() {
     if (userSnap.exists()) {
       const data = userSnap.data();
       const username = data.username.toString();
-      console.log("Username from firebase: " + username);
       return username;
     } else {
       return null;
@@ -320,11 +319,9 @@ export async function isValidUser() {
 
 export async function isAdmin() {
   let isAdminUser = false;
-  console.log("UID: " + getUID());
   try {
     isAdminUser = await getDoc(doc(db, usersCollectionName, getUID()));
     isAdminUser = isAdminUser.data().isAdmin;
-    console.log(isAdminUser);
   } catch { }
   return isAdminUser;
 }
