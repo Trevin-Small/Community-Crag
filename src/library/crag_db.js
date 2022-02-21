@@ -1,13 +1,8 @@
 import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
+import { storage, firebaseBaseURL} from '../init';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
-import {
-    storage,
-    verticalImageTransformation,
-    horizontalImageTransformation,
-    firebaseBaseURL
-} from '../init';
 
 export const CragDB = (function () {
 
@@ -26,7 +21,7 @@ export const CragDB = (function () {
                 setterName: post.getSetterName(),
                 name: post.getName(),
                 image: post.getImage(),
-                isVerticalImage: post.getIsVerticalImage(),
+                aspectRatio: post.getAspectRatio(),
                 grade: post.getNumericalGrade(),
                 gradeCount: post.getGradeCount(),
                 comment: post.getComment(),
@@ -224,9 +219,9 @@ export const CragDB = (function () {
                 // Set the Base64 string return from FileReader as source.
                 image.src = e.target.result;
 
-                // Resolve whether the image is vertical or not, and its src (base64 url for display)
+                // Resolve the aspect ratio of the image, and its src (base64 url for display)
                 image.onload = function () {
-                    resolve([this.width < this.height, image.src]);
+                    resolve([this.width / this.height, image.src]);
                 };
 
                 image.src = e.target.result;
@@ -245,7 +240,7 @@ export const CragDB = (function () {
     async function uploadCloudImage(directoryName, postTime, uid, image) {
 
         const imageData = await loadImageFile(image);
-        const isVertical = imageData[0];
+        const aspectRatio = imageData[0];
 
         // Pass the user's uid as metadata to the image
         // -------------------------------------------------------
@@ -260,7 +255,7 @@ export const CragDB = (function () {
         const storageRef = ref(storage, directoryName + "/" + uid + "/" + postTime);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image, metadata);
-        return [await getCloudImage(storageRef, isVertical), isVertical];
+        return [await getCloudImage(storageRef, aspectRatio), aspectRatio];
 
     } /* uploadCloudImage() */
 

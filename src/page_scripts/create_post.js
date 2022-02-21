@@ -118,7 +118,7 @@ export async function submitPost() {
         const uid = CacheDB.getUID();
         const imageData = await CragDB.uploadCloudImage(imageStorageName, postTime, uid, image);
         const imageURL = imageData[0];
-        const isVerticalImage = imageData[1];
+        const aspectRatio = imageData[1];
 
         let setterName = CacheDB.getUsername();
         if (setterName == null) {
@@ -127,7 +127,7 @@ export async function submitPost() {
         }
 
         // Create post object and push it to firestore
-        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageURL, isVerticalImage, comment, climbType, grade, starRating);
+        const newPost = createNewPostObject(firebasePostTime, uid, setterName, name, imageURL, aspectRatio, comment, climbType, grade, starRating);
         await CragDB.addPost(db, postCollectionName, newPost);
 
         // Query by post time to get the most recent post

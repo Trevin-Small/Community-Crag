@@ -139,7 +139,7 @@ export const CacheDB = (function () {
             setterName: post.getSetterName(),
             name: post.getName(),
             image: post.getImage(),
-            isVerticalImage: post.getIsVerticalImage(),
+            aspectRatio: post.getAspectRatio(),
             grade: post.getNumericalGrade(),
             gradeCount: post.getGradeCount(),
             comment: post.getComment(),
@@ -161,7 +161,7 @@ export const CacheDB = (function () {
             }
         });
 
-        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.isVerticalImage, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
+        return new Post(object.postTime, object.postId, object.setterUID, object.setterName, object.name, object.image, object.aspectRatio, object.comment, object.climbType, object.grade, object.gradeCount, object.starRating, suggestionList);
     }
 
     return {

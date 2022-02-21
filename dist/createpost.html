@@ -40,7 +40,14 @@
                     <div style="margin:0.25rem;"></div>
                     <b>Name Your Climb:</b>
                     <input class="text-input" type="text" name="title" id="name" placeholder="e.g. 'Beanbag'">
-                    <div style="margin:0.75rem;"></div>
+                    <div style="margin:0.5rem;"></div>
+                    <div id="image-preview-container"
+                        style="display:none;flex-direction:column;align-items:center;margin:0;padding:0;">
+                        <b>Preview:</b>
+                        <img src="" style="border:3px solid black;border-radius:14px;max-width:70%;max-height:400px;"
+                            id="image-preview" alt="image preview" />
+                    </div>
+                    <div style="margin:0.5rem;"></div>
                     <b>Upload an Image:</b>
                     <label for="file-upload" class="custom-file-upload"><img id="check" class="photo-icon"
                             style="display:none;" src="./assets/check.svg"><img id="camera" class="photo-icon"
@@ -50,12 +57,6 @@
                     <p class="centered-text">Please edit the photo before uploading.<br><a href="./photoguide">Photo
                             Editing Guide</a>
                     </p>
-                    <div id="image-preview-container"
-                        style="display:none;flex-direction:column;align-items:center;margin:0;padding:0;">
-                        <b>Preview:</b>
-                        <img src="" style="border:3px solid black;border-radius:14px;max-width:70%;max-height:400px;"
-                            id="image-preview" alt="image preview" />
-                    </div>
                     <div style="margin:0.5rem;"></div>
                     <b>Select a Grade:</b>
                     <select class="select" name="Grade" id="grade">

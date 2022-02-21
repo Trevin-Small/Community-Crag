@@ -2,9 +2,20 @@ import {
     imageKitBaseURL,
     verticalThumbnailTransformation,
     horizontalThumbnailTransformation,
-    verticalImageTransformation,
-    horizontalImageTransformation
 } from "../init";
+
+/*
+ * Maximum image resolutions in each orientation.
+ * ImageKit.io is used to scale down images through
+ * image url paths to significantly speed up load time.
+ *
+ * Max width is smaller than max height because it
+ * is assumed the user is on mobile, and a high-res
+ * width image larger than screen width would
+ * be a waste of data transfer.
+ */
+const maxImageWidth = 1000;
+const maxImageHeight = 1400;
 
 /*
  * Post object that encapsulates all important information about a user's post.
@@ -21,7 +32,7 @@ export class Post {
 
     static STATIC_INITIAL_GRADE_COUNT = 2;
 
-    constructor(postTime, postId, setterUID, setterName, name, image, isVerticalImage, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
+    constructor(postTime, postId, setterUID, setterName, name, image, aspectRatio, comment, climbType, grade, gradeCount, starRating, userSuggestionList) {
 
         this.INITIAL_GRADE_COUNT = 2;
 
@@ -33,7 +44,7 @@ export class Post {
 
         // Replace %2F (the firebase version) with a forward slash to make it compatible with imageKit
         this.image = image;
-        this.isVerticalImage = isVerticalImage;
+        this.aspectRatio = aspectRatio;
 
         if (grade - Math.floor(grade) == 0) {
             this.grade = grade + 0.5;
@@ -84,8 +95,8 @@ export class Post {
         return this.image;
     }
 
-    getIsVerticalImage() {
-        return this.isVerticalImage;
+    getAspectRatio() {
+        return this.aspectRatio;
     }
 
     getNumericalGrade() {
@@ -145,8 +156,8 @@ export class Post {
         this.image = image;
     }
 
-    setIsVerticalImage(isVerticalImage) {
-        this.isVerticalImage = isVerticalImage;
+    setAspectRatio(aspectRatio) {
+        this.aspectRatio = aspectRatio;
     }
 
     setGrade(grade) {
@@ -202,7 +213,7 @@ export class Post {
             setterName: this.getSetterName(),
             name: this.getName(),
             image: this.getImage(),
-            isVerticalImage: this.getIsVerticalImage(),
+            aspectRatio: this.getIsVerticalImage(),
             grade: this.getNumericalGrade(),
             gradeCount: this.getGradeCount(),
             comment: this.getComment(),
@@ -237,7 +248,8 @@ export class Post {
 
         // Apply the correct photo transform to the URL
         // (Requests downsized photo through imagekit for faster loading)
-        const transformation = this.isVerticalImage ? verticalThumbnailTransformation : horizontalThumbnailTransformation;
+        // If aspect ratio < 1, the image is vertical, and vice versa.
+        const transformation = this.aspectRatio <= 1 ? verticalThumbnailTransformation : horizontalThumbnailTransformation;
         clone.querySelector('#post-image').src = imageKitBaseURL + transformation + this.image;
 
         let postComment = clone.querySelector('#post-comment');
@@ -314,8 +326,18 @@ export class Post {
 
         // Apply the correct photo transform to the URL
         // (Requests downsized photo through imagekit for faster loading)
-        const transformation = this.isVerticalImage ? verticalImageTransformation : horizontalImageTransformation;
-        element.querySelector('#post-image').src = imageKitBaseURL + transformation + this.image;
+        // If aspect ratio < 1, the image is vertical, and vice versa.
+        let height = 0;
+        let width = 0;
+        if (this.aspectRatio <= 1) {
+            height = maxImageHeight;
+            width = Math.trunc(Math.floor((this.aspectRatio * maxImageWidth * 1000)) / 1000);
+        } else {
+            height =Math.trunc(Math.floor((this.aspectRatio * maxImageHeight * 1000)) / 1000);
+            width = maxImageWidth;
+        }
+
+        element.querySelector('#post-image').src = imageKitBaseURL + this.transformURL(width, height) + this.image;
 
         if (this.gradeCount > this.INITIAL_GRADE_COUNT) {
             element.querySelector('#grade-count').innerHTML = (this.gradeCount - this.INITIAL_GRADE_COUNT) + " Grade Suggestions";
@@ -362,6 +384,10 @@ export class Post {
     toString() {
         return "Name: " + this.name + "\nGrade: " + this.grade + "\nStar Rating: " + this.starRating + "\nComment: " + this.comment;
     }
+
+    transformURL (width, height) {
+        return `tr:w-${width},h-${height}/`;
+    }
 } /* class Post() */
 
 /*
@@ -371,7 +397,7 @@ export class Post {
 
 export function constructPostObject(postDoc) {
     const postData = postDoc.data();
-    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.isVerticalImage, postData.comment,
+    return new Post(postData.postTime, postDoc.id, postData.setterUID, postData.setterName, postData.name, postData.image, postData.aspectRatio, postData.comment,
         postData.climbType, postData.grade, postData.gradeCount, postData.starRating, postData.userList);
 } /* constructPostObject() */
 
@@ -379,6 +405,6 @@ export function constructPostObject(postDoc) {
  * Javascript doesnt support overloading, so this is basically an alternate "constructor"
 */
 
-export function createNewPostObject(postTime, setterUID, setterName, postName, imageURL, imageOrientation, comment, climbType, grade, starRating) {
-    return new Post(postTime, null, setterUID, setterName, postName, imageURL, imageOrientation, comment, climbType, grade, Post.getInitialGradeCount(), starRating, {});
+export function createNewPostObject(postTime, setterUID, setterName, postName, imageURL, aspectRatio, comment, climbType, grade, starRating) {
+    return new Post(postTime, null, setterUID, setterName, postName, imageURL, aspectRatio, comment, climbType, grade, Post.getInitialGradeCount(), starRating, {});
 } /* newPostObject() */

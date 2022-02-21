@@ -50,7 +50,5 @@ export const storage = getStorage();
 // Image transformation URLs
 export const firebaseBaseURL = "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F";
 export const imageKitBaseURL = "https://ik.imagekit.io/communitycrag/";
-export const verticalImageTransformation = "tr:n-post_photo_vertical/";
-export const horizontalImageTransformation = "tr:n-post_photo_horizontal/";
 export const verticalThumbnailTransformation = "tr:n-thumbnail_vertical/";
 export const horizontalThumbnailTransformation = "tr:n-thumbnail_horizontal/";
