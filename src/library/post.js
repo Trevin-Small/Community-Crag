@@ -331,10 +331,10 @@ export class Post {
         let width = 0;
         if (this.aspectRatio <= 1) {
             height = maxImageHeight;
-            width = Math.trunc(Math.floor((this.aspectRatio * maxImageWidth * 1000)) / 1000);
+            width = Math.trunc(Math.floor((this.aspectRatio * height * 1000)) / 1000);
         } else {
-            height =Math.trunc(Math.floor((this.aspectRatio * maxImageHeight * 1000)) / 1000);
             width = maxImageWidth;
+            height =Math.trunc(Math.floor((this.aspectRatio * width * 1000)) / 1000);
         }
 
         element.querySelector('#post-image').src = imageKitBaseURL + this.transformURL(width, height) + this.image;
