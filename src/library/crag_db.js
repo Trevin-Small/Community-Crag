@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
+import { refreshedPage } from './shared_functions';
 import { storage, firebaseBaseURL} from '../init';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
@@ -88,7 +89,7 @@ export const CragDB = (function () {
 
         queryRef = collection(db, collectionName);
 
-        if (isNewSession() || refreshedHomePage() || forceUpdate) {
+        if (refreshedPage() || forceUpdate) {
             console.log("Fetching from db...");
             let postArray = await queryPosts(queryRef);
             CacheDB.cacheAllPosts(postArray);
@@ -308,20 +309,3 @@ export const CragDB = (function () {
     };
 
 })();
-
-// ----------------------------------------------------------------------------------->
-// These functions dont belong in this file. Need to find a new solution...
-
-function refreshedHomePage() {
-    const prevURL = CacheDB.getPreviousURL();
-
-    if (prevURL != null && prevURL.localeCompare(window.location.href) == 0) {
-        CacheDB.clearPreviousURL();
-        return true;
-    }
-    return false;
-}
-
-function isNewSession() {
-    return CacheDB.getAllCachedPosts().length == 0;
-}

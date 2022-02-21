@@ -1,5 +1,6 @@
 import {
     homeRedirect,
+    refreshedPage,
     db,
     postCollectionName,
     isSignedIn,
@@ -12,7 +13,7 @@ export async function viewPost(postObject = null) {
     let post = postObject;
 
     if (post == null) {
-        post = await getPostByURL();
+        post = await getPostByURL(refreshedPage());
     }
 
     if (post != null) {
@@ -139,12 +140,12 @@ function getIdByURL() {
     return url;
 }
 
-async function getPostByURL() {
+async function getPostByURL(pageRefreshed) {
     const postId = getIdByURL();
     const cachedPost = CacheDB.getCachedPost(postId);
     let post = null;
 
-    if (cachedPost != null) { // If the post is already cached
+    if (cachedPost != null && !pageRefreshed) { // If the post is already cached
         console.log("Displaying cached post...");
         post = cachedPost;
     } else { // If a user visits a link directly without visiting the home page, the post wont be cached -> Fetch it instead.
