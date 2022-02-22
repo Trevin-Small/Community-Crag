@@ -21,6 +21,7 @@
     <link href="css/createpost.css" rel="stylesheet" />
     <link href="css/page-frame.css" rel="stylesheet" />
     <script src="./csi.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body class="background">
@@ -130,9 +131,6 @@
         window.addEventListener('beforeunload', function (e) {
             communityCrag.updatePreviousURL(window.location.href);
         });
-    </script>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-        async defer>
     </script>
 </body>
 

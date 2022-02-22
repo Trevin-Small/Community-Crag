@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection } from 'firebase/firestore';
 import { getStorage } from "firebase/storage";
-const { initializeAppCheck, ReCaptchaV3Provider } = require("firebase/app-check");
 
 // <-------------------------------------------------------------------------------------->
 
@@ -20,15 +19,6 @@ const firebaseConfig = {
 // Firebase initialization
 const app = initializeApp(firebaseConfig);
 
-// Captcha app check initialization
-const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('6LcqPHUeAAAAAIP9pwXSDBEohong3XTysrx_QqOn'),
-
-  // Optional argument. If true, the SDK automatically refreshes App Check
-  // tokens as needed.
-  isTokenAutoRefreshEnabled: true
-});
-
 // <-------------------------------------------------------------------------------------->
 
 // Firestore collection names
@@ -45,7 +35,6 @@ export const userCollection = collection(db, usersCollectionName);
 
 // Cloud storage
 export const storage = getStorage();
-
 
 // Image transformation URLs
 export const firebaseBaseURL = "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F";
