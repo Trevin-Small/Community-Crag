@@ -120,8 +120,31 @@ export const CacheDB = (function () {
      *  [ Grade , Climb Type , Number of Stars ]
     */
 
-    function queryCachedPosts(queries) {
+    function queryPosts(postList, query, queryName) {
+        let queriedList = [];
 
+        postList.forEach((post) => {
+            if (nonPostKeys.indexOf(post.getPostId()) == -1) {
+                if (queryName === "grade") {
+                    let grade = post.getNumericalGrade();
+                    if (grade >= query && grade < query + 1) {
+                        queriedList.push(post);
+                    }
+                } else if (queryName === "stars") {
+                    let stars = post.getStarRating();
+                    if (stars == query) {
+                        queriedList.push(post);
+                    }
+                } else if (queryName === "type") {
+                    let type = post.getClimbType();
+                    if (type == query) {
+                        queriedList.push(post);
+                    }
+                }
+            }
+        });
+
+        return queriedList;
     }
 
     function postToObject(post) {
