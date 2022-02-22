@@ -266,15 +266,6 @@ export const CragDB = (function () {
     */
 
     async function getCloudImage(storageRef, orientation) {
-        const forwardSlash = "%2F";
-        let photoOrientationTransform = "";
-
-        if (orientation == true) {
-            photoOrientationTransform = verticalImageTransformation;
-        } else {
-            photoOrientationTransform = horizontalImageTransformation;
-        }
-
         let imageURL = null;
         // Get the url of the image
         await getDownloadURL(storageRef).then((url) => {

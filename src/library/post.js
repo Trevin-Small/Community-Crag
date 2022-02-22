@@ -213,7 +213,7 @@ export class Post {
             setterName: this.getSetterName(),
             name: this.getName(),
             image: this.getImage(),
-            aspectRatio: this.getIsVerticalImage(),
+            aspectRatio: this.getAspectRatio(),
             grade: this.getNumericalGrade(),
             gradeCount: this.getGradeCount(),
             comment: this.getComment(),

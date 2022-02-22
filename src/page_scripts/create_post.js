@@ -137,7 +137,7 @@ export async function submitPost() {
     } catch (e) {
         Errors.infoMessage(null, infoId);
         Errors.errorMessage("An internal error occured. Try again later...", errorId);
-        console.log("Error submiting post: " + e);
+        console.log("Error submitting post: " + e);
         document.getElementById('submit-new-climb').disabled = false;
     }
 }
