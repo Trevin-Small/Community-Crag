@@ -1,5 +1,5 @@
-import { refreshedPage, homeRedirect } from '../library/shared_functions.js';
 import { db, imageStorageName, postCollectionName } from '../init';
+import { homeRedirect } from '../library/shared_functions.js';
 import { createNewPostObject } from '../library/post.js';
 import { getUsername, isValidUser } from '../library/auth.js';
 import { isSignedIn } from '../library/auth.js';
@@ -15,7 +15,6 @@ export {
 
     // Functions
     homeRedirect,
-    refreshedPage,
     createNewPostObject,
     getUsername,
     isValidUser,

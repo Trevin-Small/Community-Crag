@@ -153,10 +153,16 @@
     <!-- Main JS-->
     <script src="https://communitycrag.com/bundle.js"></script>
     <script>
-        communityCrag.viewPost();
-        window.addEventListener('beforeunload', function (e) {
-            communityCrag.updatePreviousURL(window.location.href);
-        });
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                console.log("Refreshed...");
+                communityCrag.viewPost(null, true);
+            } else {
+                communityCrag.viewPost(null, false);
+            }
+        } else {
+            communityCrag.viewPost(null, false);
+        }
     </script>
 </body>
 

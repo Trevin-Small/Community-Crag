@@ -2,9 +2,9 @@ import { db, postCollectionName, CragDB } from '../library/library.js';
 
 const postTemplateId = 'placeholder-post';
 
-export async function displayPosts(queryRef) {
+export async function displayPosts(queryRef, forceUpdate = false) {
 
-    const postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, false);
+    const postArray = await CragDB.getAllPosts(queryRef, db, postCollectionName, forceUpdate);
 
     const postListContainer = document.getElementById('post-list');
     const listChildren = Array.from(postListContainer.children);
@@ -35,9 +35,9 @@ export async function displayPosts(queryRef) {
 
 }
 
-export async function searchByFilters(formId) {
+export async function searchByFilters(formId, forceUpdate = false) {
     const form = new FormData(document.getElementById(formId));
-    await displayPosts(CragDB.newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')));
+    await displayPosts(CragDB.newQuery(db, postCollectionName, form.get('Grade'), form.get('Star Rating'), form.get('Climb Type')), forceUpdate);
     document.getElementById('search-button').disabled = false;
 }
 

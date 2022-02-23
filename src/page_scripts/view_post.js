@@ -1,6 +1,5 @@
 import {
     homeRedirect,
-    refreshedPage,
     db,
     postCollectionName,
     isSignedIn,
@@ -9,11 +8,11 @@ import {
 } from '../library/library.js';
 
 
-export async function viewPost(postObject = null) {
+export async function viewPost(postObject = null, pageRefreshed = false) {
     let post = postObject;
 
     if (post == null) {
-        post = await getPostByURL(refreshedPage());
+        post = await getPostByURL(pageRefreshed);
     }
 
     if (post != null) {

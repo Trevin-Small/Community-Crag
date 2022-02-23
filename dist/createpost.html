@@ -104,11 +104,11 @@
                     <textarea class="comment-input" name="comment" id="comment"
                         placeholder="Describe holds to use, unique beta, or anything else worth mentioning..."></textarea>
                     <div style="margin:0.5rem;"></div>
-                    <form action="?" method="POST">
-                        <div class="g-recaptcha" data-sitekey="6LftdZQeAAAAAHpzahaLOrGdqh6ohT4zdhTNWbuy"></div>
+                    <form action="?" data-callback="XXX" method="POST">
+                        <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LftdZQeAAAAAHpzahaLOrGdqh6ohT4zdhTNWbuy"></div>
                         <br/>
-                        <input class="btn submit-auth" style="margin-left:0px;" type="submit" id="submit-new-climb"
-                        onclick="communityCrag.submitPost();">
+                        <button class="btn submit-auth" style="margin-left:0px;" id="submit-new-climb"
+                        onclick="communityCrag.submitPost();" disabled>Submit Post</button>
                     </form>
                 </form>
             </div>
@@ -128,9 +128,9 @@
 
         authRedirect();
 
-        window.addEventListener('beforeunload', function (e) {
-            communityCrag.updatePreviousURL(window.location.href);
-        });
+        function recaptchaCallback() {
+            document.getElementById("submit-new-climb").removeAttribute("disabled");
+        }
     </script>
 </body>
 

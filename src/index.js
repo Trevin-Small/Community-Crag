@@ -7,7 +7,6 @@ import { updateNavBar, isSignedIn } from './library/auth.js';
 
 // Library imports -> the goal is to minimize/rid of these completely by structuring the code differently. In progress..
 import { signIn, signUp, logOut, sendPasswordReset, isAdmin } from './library/auth.js';
-import { updatePreviousURL } from './library/cache.js';
 
 //<------------------------------>
 //|  ElOhEl  ( ͡° ͜ʖ ͡°)  ElOhEl   |
@@ -32,7 +31,6 @@ export {
     sendPasswordReset,
     isAdmin,
     submitPost,
-    updatePreviousURL,
     deletePostsByDate,
     updateNavBar,
     isSignedIn,

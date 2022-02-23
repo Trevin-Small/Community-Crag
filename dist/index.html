@@ -150,11 +150,16 @@
     </ul>
     <script>
         document.getElementById('communityCragScript').addEventListener('load', function () {
-            communityCrag.displayPosts(null);
-        });
-
-        window.addEventListener('beforeunload', function (e) {
-            communityCrag.updatePreviousURL(window.location.href);
+            if (window.performance) {
+                if (performance.navigation.type == 1) {
+                    console.log("Refreshed...");
+                    communityCrag.displayPosts(null, true);
+                } else {
+                    communityCrag.displayPosts(null, false);
+                }
+            } else {
+                communityCrag.displayPosts(null), false;
+            }
         });
     </script>
 </body>

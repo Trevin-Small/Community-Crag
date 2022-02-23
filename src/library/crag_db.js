@@ -1,6 +1,5 @@
 import { collection, doc, getDoc, getDocs, addDoc, setDoc, deleteDoc, query, where, orderBy } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes, deleteObject } from 'firebase/storage';
-import { refreshedPage } from './shared_functions';
 import { storage, firebaseBaseURL} from '../init';
 import { constructPostObject } from './post.js';
 import { CacheDB } from './cache.js';
@@ -87,17 +86,18 @@ export const CragDB = (function () {
             return await queryPosts(queryRef);
         }
 
-        queryRef = collection(db, collectionName);
+        let cachedPosts = CacheDB.getAllCachedPosts();
 
-        if (refreshedPage() || forceUpdate) {
+        if (forceUpdate || cachedPosts.length == 0) {
             console.log("Fetching from db...");
+            let queryRef = collection(db, collectionName);
             let postArray = await queryPosts(queryRef);
             CacheDB.cacheAllPosts(postArray);
             return postArray;
-        } else {
-            console.log("Rendering cached data.");
-            return CacheDB.getAllCachedPosts();
-        }
+        } 
+
+        console.log("Displaying cached posts");
+        return cachedPosts;
     } /* getAllPosts() */
 
 
@@ -252,8 +252,9 @@ export const CragDB = (function () {
                 'uid': uid
             }
         };
-
-        const storageRef = ref(storage, directoryName + "/" + uid + "/" + postTime);
+        const imagePath = directoryName + "/" + uid + "/" + postTime;
+        console.log("Image Path: " + imagePath);
+        const storageRef = ref(storage, imagePath);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image, metadata);
         return [await getCloudImage(storageRef, aspectRatio), aspectRatio];

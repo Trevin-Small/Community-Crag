@@ -34,7 +34,7 @@ export const postCollection = collection(db, postCollectionName);
 export const userCollection = collection(db, usersCollectionName);
 
 // Cloud storage
-export const storage = getStorage();
+export const storage = getStorage(app);
 
 // Image transformation URLs
 export const firebaseBaseURL = "https://firebasestorage.googleapis.com/v0/b/community-crag.appspot.com/o/purdue%2F";

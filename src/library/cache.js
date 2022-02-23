@@ -6,8 +6,7 @@ export const CacheDB = (function () {
     const signedInKey = 'signed-in'
     const uidKey = 'uid';
     const usernameKey = 'username';
-    const prevURL = 'prev-URL';
-    let nonPostKeys = [signedInKey, uidKey, usernameKey, prevURL];
+    let nonPostKeys = [signedInKey, uidKey, usernameKey];
     let storage = window.sessionStorage;
 
     function cacheAllPosts(postArray) {
@@ -59,18 +58,6 @@ export const CacheDB = (function () {
         storage.removeItem(usernameKey);
         clearUID();
         markSignedOut();
-    }
-
-    function updatePreviousURL(url) {
-        storage.setItem(prevURL, url);
-    }
-
-    function getPreviousURL() {
-        return storage.getItem(prevURL);
-    }
-
-    function clearPreviousURL() {
-        storage.removeItem(prevURL);
     }
 
     // Define the addData() function
@@ -200,9 +187,6 @@ export const CacheDB = (function () {
         getUsername: getUsername,
         signIn: signIn,
         signOut: signOut,
-        updatePreviousURL: updatePreviousURL,
-        getPreviousURL: getPreviousURL,
-        clearPreviousURL: clearPreviousURL,
         cachePost: cachePost,
         removePost: removePost,
         removeAllPosts: removeAllPosts,
@@ -212,7 +196,3 @@ export const CacheDB = (function () {
         objectToPost: objectToPost
     };
 })();
-
-export function updatePreviousURL(url) {
-    CacheDB.updatePreviousURL(url);
-}
