@@ -12,7 +12,7 @@ export const CacheDB = (function () {
     function cacheAllPosts(postArray) {
         removeAllPosts();
 
-        postArray.forEach((post) => {
+        postArray.forEach(function(post) {
             cachePost(post);
         });
     }
@@ -72,7 +72,7 @@ export const CacheDB = (function () {
     function removeAllPosts() {
         let postIds = Object.keys(storage);
 
-        postIds.forEach((postId) => {
+        postIds.forEach(function(postId) {
             if (nonPostKeys.indexOf(postId) == -1) {
                 removePost(postId);
             }
@@ -93,7 +93,7 @@ export const CacheDB = (function () {
         let postIds = Object.keys(storage);
         let postList = [];
 
-        postIds.forEach((postId) => {
+        postIds.forEach(function(postId) {
             if (nonPostKeys.indexOf(postId) == -1) {
                 postList.push(getCachedPost(postId));
             }
@@ -110,7 +110,7 @@ export const CacheDB = (function () {
     function queryPosts(postList, query, queryName) {
         let queriedList = [];
 
-        postList.forEach((post) => {
+        postList.forEach(function(post) {
             if (nonPostKeys.indexOf(post.getPostId()) == -1) {
                 if (queryName === "grade") {
                     let grade = post.getNumericalGrade();
@@ -138,7 +138,7 @@ export const CacheDB = (function () {
         let suggestionsString = "";
         let suggestions = post.getUserSuggestionList();
         let keys = Object.keys(suggestions);
-        keys.forEach((key) => {
+        keys.forEach(function(key) {
             suggestionsString += key + "=" + suggestions[key] + " ";
         })
 
@@ -164,7 +164,7 @@ export const CacheDB = (function () {
         let keyValuePairs = suggestionsString.split(" ");
         let suggestionList = {};
 
-        keyValuePairs.forEach((keyValue) => {
+        keyValuePairs.forEach(function(keyValue) {
             if (keyValue.localeCompare("") != 0) {
                 let pair = keyValue.split('=');
                 suggestionList[pair[0]] = pair[1];

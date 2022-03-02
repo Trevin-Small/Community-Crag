@@ -8,7 +8,7 @@ export async function displayPosts(queryRef, forceUpdate = false) {
 
     const postListContainer = document.getElementById('post-list');
     const listChildren = Array.from(postListContainer.children);
-    listChildren.forEach((child) => {
+    listChildren.forEach(function(child) {
         if (child.nodeName === 'LI' || child.id === 'loading') {
             postListContainer.removeChild(child);
         }

@@ -10,7 +10,7 @@ export class Errors {
     static resetBorders(borderAttributes, elementIds) {
         const borderColor = borderAttributes[0];
         const borderWidth = borderAttributes[1];
-        elementIds.forEach((elementId) => {
+        elementIds.forEach(function(elementId) {
             document.getElementById(elementId).style.borderColor = borderColor;
             document.getElementById(elementId).style.borderWidth = borderWidth;
         });

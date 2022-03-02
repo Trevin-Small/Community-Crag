@@ -6,7 +6,7 @@ import { CacheDB } from './cache.js';
 
 const auth = getAuth();
 
-onAuthStateChanged(auth, (activeUser) => {
+onAuthStateChanged(auth, function(activeUser) {
   if (activeUser) {
 
     // User is signed in

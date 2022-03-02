@@ -179,7 +179,7 @@ export const CragDB = (function () {
         let postArray = [];
         let dbPosts = await getDocs(queryRef);
 
-        dbPosts.forEach((postDoc) => {
+        dbPosts.forEach(function(postDoc) {
             let post = constructPostObject(postDoc);
             postArray.push(post);
         });
@@ -206,7 +206,7 @@ export const CragDB = (function () {
     } /* deletePost() */
 
     async function loadImageFile(image) {
-        return new Promise((resolve, reject) => {
+        return new Promise(function(resolve, reject) {
 
             let reader = new FileReader();
 
@@ -257,7 +257,7 @@ export const CragDB = (function () {
         const storageRef = ref(storage, imagePath);
         // Upload image to firebase storage
         await uploadBytes(storageRef, image, metadata);
-        return [await getCloudImage(storageRef, aspectRatio), aspectRatio];
+        return [await getCloudImage(storageRef), aspectRatio];
 
     } /* uploadCloudImage() */
 
@@ -266,10 +266,10 @@ export const CragDB = (function () {
      * Get the URL of a given image reference
     */
 
-    async function getCloudImage(storageRef, orientation) {
+    async function getCloudImage(storageRef) {
         let imageURL = null;
         // Get the url of the image
-        await getDownloadURL(storageRef).then((url) => {
+        await getDownloadURL(storageRef).then(function(url) {
             imageURL = url.replace(firebaseBaseURL, "").replace("%2F", "/");
         });
 
