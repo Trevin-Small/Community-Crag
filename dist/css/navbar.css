@@ -78,7 +78,7 @@
     margin: 0;
 }
 .menu-icon {
-    height:50%;
+    height:2.25rem;
     width:auto;
     transform: rotate(0deg);
     transition: transform 0.2s;
