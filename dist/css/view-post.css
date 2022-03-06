@@ -32,6 +32,7 @@
 }
 .back-arrow {
     display: flex;
+    position: absolute;
     height: 2rem;
     width: 2rem;
     align-self: flex-start;
