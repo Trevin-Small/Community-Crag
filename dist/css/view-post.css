@@ -30,6 +30,13 @@
     padding: 0px;
     margin: 0px;
 }
+.back-arrow {
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-self: flex-start;
+    margin-left: 8px;
+}
 .post-img-container {
     display: flex;
     flex-direction: column;
