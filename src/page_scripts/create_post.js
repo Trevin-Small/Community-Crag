@@ -100,6 +100,9 @@ export async function submitPost() {
         case 4:
             climbType = "Vertical";
             break;
+        case 5:
+            climbType = "Dyno";
+            break;
         default:
             climbType = "Other";
             break;
