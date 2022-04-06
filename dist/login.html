@@ -36,7 +36,7 @@
                 <hr>
                 <div class="error-message" id="error-message" style="display:none;"></div>
                 <form class="auth-form" onsubmit="event.preventDefault();">
-                    <div style="margin:0.25rem;"></div>
+                    <div style="margin:0.3rem;"></div>
                     <b>Enter Your Purdue Email:</b>
                     <input class="text-input" type="text" id="email" name="email" placeholder="email@purdue.edu">
                     <div style="margin:0.5rem;"></div>
@@ -51,7 +51,16 @@
                     <div style="margin:0.75rem;"></div>
                     <button class="btn submit-auth" type="submit" id="submit-login"
                         onclick="communityCrag.signIn();">Login</button>
-                    <div style="margin:0.75rem;"></div>
+                    <div style="margin:1rem;"></div>
+                    <div style="margin:0;padding:0;display:flex;flex-direction:column;align-items:center;width:100%;">
+                        <hr>
+                        <div style="position:absolute;transform:translateY(-50%);background-color:var(--old-gold);border-radius:8px;border:2px solid gray;padding:1px 4px 1px 4px;">
+                            <p style="margin:0;">OR</p>
+                        </div>
+                    </div>
+                    <div style="margin:0.3rem;"></div>
+                    <p style="margin:0;">New to the Crag? <a href="./signup.html"><b>Sign up here</b></a></p>
+                    <div style="margin:0.3rem;"></div>
                 </form>
             </div>
         </div>
