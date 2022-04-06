@@ -125,6 +125,8 @@ export const CragDB = (function () {
             } else if (climbType == 4) {
                 climbType = "Vertical";
             } else if (climbType == 5) {
+                climbType = "Dyno";
+            } else if (climbType == 6) {
                 climbType = "Other";
             } else {
                 climbType = null;
