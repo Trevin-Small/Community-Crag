@@ -21,6 +21,7 @@
     <link href="css/page-frame.css" rel="stylesheet" />
     <link href="css/navbar.css" rel="stylesheet" />
     <script src="./csi.js"></script>
+    <script src="https://communitycrag.com/bundle.js"></script>
     <script>
         async function authRedirect() {
             const authError = "https://communitycrag.com/autherror.html";
@@ -62,7 +63,7 @@
                         date.</p>
                     <div style="margin:0.25rem;"></div>
                     <button class="btn submit-auth" type="submit" id="submit-reset"
-                        onclick="communityCrag.deleteByDate();">Delete Old Posts</button>
+                        onclick="communityCrag.deletePostsByDate();">Delete Old Posts</button>
                     <div style="margin:0.75rem;"></div>
                 </form>
             </div>
@@ -70,7 +71,6 @@
         <div data-include="./footer.html"></div>
         <div data-include="./spacer.html"></div>
     </div>
-    <script src="https://communitycrag.com/bundle.js"></script>
 </body>
 
 </html>

@@ -109,7 +109,7 @@ export const CragDB = (function () {
 
         const dbCollection = collection(db, collectionName);
 
-        if (grade != null && starRating != null && climbType != null) {
+        if (grade != null && starRating != null && climbType != null && time == null) {
 
             grade = parseInt(grade);
             grade = grade == -1 ? null : grade;
@@ -162,7 +162,7 @@ export const CragDB = (function () {
 
             }
         } else {
-
+            console.log(time);
             if (time != null) {
                 return query(dbCollection, where("postTime", "<=", time));
             } else {
